@@ -16,6 +16,8 @@
   --sh-1:0 1px 2px rgba(14,27,42,.07);
   --sh-2:0 2px 4px rgba(14,27,42,.05),0 12px 28px rgba(14,27,42,.09);
   --r:10px; --r-s:7px; --r-l:16px;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
   --ff-lat:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,sans-serif;
   --ff-ar:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif;
   --ff:var(--ff-lat);
@@ -185,6 +187,8 @@ tbody tr[data-click]:hover{background:var(--surface-2)}
 .pcard .pr{font-weight:700;font-size:16px;margin-top:auto;padding-top:6px}
 .pcard .acts{display:flex;gap:6px;padding:0 13px 13px}
 .pcard .acts .btn{flex:1}
+.pgrid>.rev{display:flex;flex-direction:column}
+.pgrid>.rev>.pcard{flex:1}
 
 .filters{display:flex;flex-direction:column;gap:16px}
 .catalog{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:start}
@@ -306,6 +310,74 @@ tbody tr[data-click]:hover{background:var(--surface-2)}
 .stat div{display:flex;flex-direction:column}
 .stat .v{font-size:26px;font-weight:700;letter-spacing:-.02em}
 .stat .l{font-size:12.5px;color:var(--muted)}
+
+/* ---------- mouvement ---------- */
+.rise{opacity:0;transform:translateY(10px);animation:rise 420ms var(--ease-out) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.d1{animation-delay:60ms}.d2{animation-delay:120ms}.d3{animation-delay:180ms}.d4{animation-delay:240ms}.d5{animation-delay:300ms}
+.rev{opacity:0;transform:translateY(14px);transition:opacity 500ms var(--ease-out),transform 500ms var(--ease-out)}
+.rev[data-seen]{opacity:1;transform:none}
+.r1{transition-delay:60ms}.r2{transition-delay:120ms}.r3{transition-delay:180ms}.r4{transition-delay:240ms}
+.btn{transition:transform 160ms var(--ease-out),background-color 160ms ease,border-color 160ms ease}
+.btn:active{transform:scale(.97)}
+@media(hover:hover) and (pointer:fine){
+ .lift{transition:transform 220ms var(--ease-out),box-shadow 220ms var(--ease-out)}
+ .lift:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
+ .pcard{transition:transform 220ms var(--ease-out),box-shadow 220ms var(--ease-out),border-color 220ms ease}
+ .pcard:hover{transform:translateY(-3px);box-shadow:var(--sh-2);border-color:var(--line-2)}
+ .marq:hover .marq-t{animation-play-state:paused}
+}
+
+/* bandeau de marques */
+.marq{overflow:hidden;direction:ltr;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marq-t{display:flex;align-items:center;gap:46px;width:max-content;animation:marq 30s linear infinite}
+.marq-t span{font-size:15px;font-weight:600;letter-spacing:.06em;color:var(--muted);white-space:nowrap;text-transform:uppercase}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* scene animee du heros */
+.scene{position:relative}
+.scene-h{display:flex;align-items:center;gap:8px;padding:9px 13px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.scene-h i{width:7px;height:7px;border-radius:50%;background:var(--ok);display:block}
+.c1{transform-box:view-box;transform-origin:30px 30px}
+.c2{transform-box:view-box;transform-origin:490px 30px}
+.c3{transform-box:view-box;transform-origin:384px 154px}
+@media (prefers-reduced-motion:no-preference){
+ .sc-wall{animation:sc-draw 9s linear infinite both}
+ .sc-fix{animation:sc-fade 9s linear infinite both}
+ .sc-cam{animation:sc-cam 9s linear infinite both}
+ .sc-cone{animation:sc-cone 9s linear infinite both}
+ .sc-2{animation-delay:.12s}.sc-3{animation-delay:.24s}
+ .sc-scan{animation:sc-scan 9s linear infinite both}
+ .sc-badge{animation:sc-badge 9s linear infinite both}
+}
+@keyframes sc-draw{0%{stroke-dashoffset:100}14%,100%{stroke-dashoffset:0}}
+@keyframes sc-fade{0%,10%{opacity:0}20%,100%{opacity:1}}
+@keyframes sc-cam{0%,18%{opacity:0;transform:scale(.4)}27%{opacity:1;transform:scale(1.18)}32%,100%{opacity:1;transform:scale(1)}}
+@keyframes sc-cone{0%,27%{opacity:0;transform:scale(.2)}42%,93%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.2)}}
+@keyframes sc-scan{0%,42%{transform:translateX(-90px);opacity:0}47%{opacity:.9}76%{transform:translateX(540px);opacity:0}100%{transform:translateX(540px);opacity:0}}
+@keyframes sc-badge{0%,60%{opacity:0;transform:translateY(7px)}68%,94%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(7px)}}
+
+/* portraits */
+.avm{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:0 0 auto}
+.avl{width:52px;height:52px;border-radius:50%;background:linear-gradient(145deg,var(--navy),var(--blue));color:#fff;display:grid;place-items:center;font-size:17px;font-weight:700;flex:0 0 auto;letter-spacing:.02em}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(164px,1fr));gap:12px}
+.person{display:flex;gap:11px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.quote{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.quote p{font-size:14.5px;line-height:1.6;color:var(--ink)}
+.quote .who2{font-size:12.5px;color:var(--muted)}
+.quote .qm{font-family:var(--ff-mono);font-size:26px;line-height:1;color:var(--blue);opacity:.55}
+.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.val{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:var(--r);padding:15px 17px;display:flex;flex-direction:column;gap:5px}
+[dir="rtl"] .val{border-left:1px solid var(--line);border-right:3px solid var(--blue)}
+.val b{font-size:14.5px}
+.val span{font-size:13px;color:var(--ink-2)}
+
+@media (prefers-reduced-motion:reduce){
+ .rise{animation:none;opacity:1;transform:none}
+ .rev{opacity:1;transform:none;transition:none}
+ .marq-t{animation:none}
+ .btn:active{transform:none}
+}
 </style>
 <div id="app"></div>
 <div class="toasts" id="toasts"></div>
@@ -649,6 +721,45 @@ const T={
  today:{fr:"Aujourd'hui",ar:"اليوم"},
  tomorrow:{fr:"Demain",ar:"غدا"},
  dh:{fr:"DH",ar:"درهم"},
+ th_sent:{fr:"Envoyé sur place",ar:"المُرسَل إلى المكان"},
+ th_by:{fr:"Envoyé par",ar:"أرسله"},
+ a_team:{fr:"Équipe",ar:"الفريق"},
+ a_team_h:{fr:"Le responsable et les personnes qu'il envoie sur le terrain. Chaque demande et chaque intervention garde le nom de celui qui s'est déplacé.",ar:"المسؤول والأشخاص الذين يرسلهم إلى الميدان. كل طلب وكل تدخل يحتفظ باسم من انتقل."},
+ a_mname:{fr:"Nom",ar:"الاسم"},
+ a_mrole:{fr:"Rôle",ar:"الدور"},
+ a_mactive:{fr:"Actif",ar:"نشط"},
+ a_addmember:{fr:"Ajouter au staff",ar:"إضافة إلى الفريق"},
+ a_memberadded:{fr:"Ajouté à l'équipe",ar:"تمت الإضافة إلى الفريق"},
+ a_keepmanager:{fr:"Gardez au moins un responsable.",ar:"احتفظوا بمسؤول واحد على الأقل."},
+ s_other_t:{fr:"Autre demande",ar:"طلب آخر"},
+ q_svcother:{fr:"Dites-nous en quelques mots ce dont vous avez besoin",ar:"أخبرونا في بضع كلمات بما تحتاجونه"},
+ q_svcother_ph:{fr:"Ex. : sonorisation du magasin, borne Wi-Fi pour les clients, écran d'affichage…",ar:"مثال: نظام صوتي للمحل، واي فاي للزبناء، شاشة عرض…"},
+ q_svcother_h:{fr:"Même si ce n'est pas dans la liste, écrivez-le : nous vous répondons dans tous les cas, quitte à vous dire que ce n'est pas notre métier.",ar:"حتى لو لم يكن في اللائحة، اكتبوه: سنجيبكم في كل الحالات، ولو للقول إن ذلك ليس من اختصاصنا."},
+ ab_eye:{fr:"Qui sommes-nous",ar:"من نحن"},
+ ab_title:{fr:"Une équipe de terrain, pas un centre d'appels",ar:"فريق ميداني، لا مركز اتصالات"},
+ ab_p1:{fr:"{company} est née d'un atelier de Casablanca. Nous posons nous-mêmes ce que nous vendons : pas de sous-traitance, pas d'installateur que vous ne reverrez jamais.",ar:"{company} انطلقت من ورشة بالدار البيضاء. نركّب بأنفسنا ما نبيعه: لا مناولة، ولا تقني تروْنه مرة واحدة ولا يعود."},
+ ab_p2:{fr:"Chaque chantier commence par une visite et finit par une démonstration : nous ne partons pas avant que vous sachiez consulter vos caméras depuis votre téléphone.",ar:"كل ورش يبدأ بزيارة وينتهي بعرض عملي: لا نغادر قبل أن تعرفوا كيف تشاهدون كاميراتكم من هواتفكم."},
+ ab_manager:{fr:"Responsable",ar:"المسؤول"},
+ ab_v1_t:{fr:"On se déplace avant de chiffrer",ar:"نتنقل قبل تحديد الثمن"},
+ ab_v1_d:{fr:"Un devis fait au téléphone est un devis faux. D'où les frais d'état des lieux, annoncés d'avance.",ar:"عرض سعر عبر الهاتف عرض خاطئ. لذلك مصاريف المعاينة، معلنة مسبقا."},
+ ab_v2_t:{fr:"Le matériel est à vous",ar:"المعدات ملك لكم"},
+ ab_v2_d:{fr:"Codes d'accès, comptes, configuration : tout vous est remis. Aucun verrouillage.",ar:"رموز الولوج، الحسابات، الإعدادات: كل شيء يُسلَّم لكم. بدون أي تقييد."},
+ ab_v3_t:{fr:"On répond après la pose",ar:"نجيبكم بعد التركيب"},
+ ab_v3_d:{fr:"Garantie 12 mois et une ligne directe. C'est là que se juge un installateur.",ar:"ضمان 12 شهرا وخط مباشر. هنا يُحكم على المركِّب."},
+ ab_team_t:{fr:"L'équipe qui se déplace",ar:"الفريق الذي ينتقل إليكم"},
+ ab_team_d:{fr:"Vous savez toujours qui sonne à votre porte : le nom du technicien vous est communiqué avant la visite.",ar:"تعرفون دائما من يطرق بابكم: يُبلَّغ اسم التقني قبل الزيارة."},
+ br_title:{fr:"Les marques que nous installons",ar:"العلامات التي نركّبها"},
+ te_title:{fr:"Ce qu'ils en disent",ar:"ماذا يقولون"},
+ te_lead:{fr:"Trois clients, trois chantiers terminés.",ar:"ثلاثة زبناء، ثلاثة أوراش منتهية."},
+ te1:{fr:"Ils sont venus mesurer avant de me donner un prix. Le devis n'a pas bougé d'un dirham à la fin.",ar:"جاؤوا للقياس قبل إعطائي الثمن. لم يتغير عرض السعر ولو بدرهم في الأخير."},
+ te1_a:{fr:"Karim B. — épicerie, Casablanca",ar:"كريم ب. — بقالة، الدار البيضاء"},
+ te2:{fr:"Trois caméras coupées un dimanche soir. Réparé le lundi à 10 h.",ar:"ثلاث كاميرات متوقفة مساء الأحد. تم الإصلاح الاثنين على العاشرة."},
+ te2_a:{fr:"Rachid A. — café, Mohammedia",ar:"رشيد أ. — مقهى، المحمدية"},
+ te3:{fr:"Le Wi-Fi ne passait pas dans la salle d'attente. Deux bornes, problème réglé.",ar:"الواي فاي لم يكن يصل قاعة الانتظار. نقطتان، وانتهى المشكل."},
+ te3_a:{fr:"Dr N. Ouazzani — cabinet, Rabat",ar:"د. ن. وزاني — عيادة، الرباط"},
+ hero_badge:{fr:"3 caméras · 94 % de la surface couverte",ar:"3 كاميرات · 94٪ من المساحة مغطاة"},
+ hero_scan:{fr:"Étude de couverture",ar:"دراسة التغطية"},
+ st_4:{fr:"ans sur le terrain",ar:"سنوات في الميدان"},
  lang_switch:{fr:"العربية",ar:"Français"}
 };
 let LANG="fr";
@@ -707,7 +818,6 @@ function art(cat,size){
  else body='<circle cx="48" cy="45" r="26" '+f+' '+g+'/><circle cx="48" cy="45" r="15" '+g+'/><circle cx="48" cy="45" r="5" '+g+'/><path d="M74 45h10M12 45H2" '+g+'/>';
  return '<svg viewBox="0 0 96 90" width="'+s+'" height="'+Math.round(s*90/96)+'" role="img" aria-hidden="true" style="max-width:100%;height:auto">'+body+"</svg>";
 }
-window.__OUFI_ART=art;
 
 /* ============================================================
    3. Données de démonstration
@@ -761,7 +871,14 @@ const SEED_SETTINGS={
  sla:24,
  channels:{phone:true,wa:true,mail:true},
  fees:[["Casablanca",200],["Mohammedia",250],["Bouskoura",250],["Rabat",350],["Marrakech",500],["Tanger",600],["Agadir",700]],
- techs:["Youssef Bennani","Hamza Tazi","Salma Rachidi"]
+ manager:"Ibrahim Oufi",
+ team:[
+  {id:"t1",name:"Ibrahim Oufi",role:"manager",phone:"+212 6 61 24 18 05",active:true},
+  {id:"t2",name:"Youssef Bennani",role:"tech",phone:"06 61 55 20 14",active:true},
+  {id:"t3",name:"Hamza Tazi",role:"tech",phone:"06 62 18 74 03",active:true},
+  {id:"t4",name:"Salma Rachidi",role:"tech",phone:"06 70 41 09 88",active:true},
+  {id:"t5",name:"Anas El Idrissi",role:"sales",phone:"06 55 33 62 17",active:true}
+ ]
 };
 const LOCALS=[
  {id:"shop",fr:"Magasin / commerce",ar:"محل تجاري"},
@@ -797,6 +914,12 @@ const statusOf=id=>STATUSES.find(s=>s.id===id)||STATUSES[0];
 const typeOf=id=>TYPES.find(s=>s.id===id)||TYPES[0];
 const chanOf=id=>CHANS.find(s=>s.id===id)||CHANS[0];
 const catOf=id=>CATS.find(c=>c.id===id)||CATS[0];
+const team=()=>db.settings.team||[];
+const member=id=>team().find(x=>x.id===id);
+const techName=id=>{const m=member(id);return m?m.name:(id||"");};
+const ROLES=[{id:"manager",fr:"Responsable",ar:"المسؤول"},{id:"tech",fr:"Technicien",ar:"تقني"},{id:"sales",fr:"Commercial",ar:"تجاري"}];
+const roleOf=id=>ROLES.find(r=>r.id===id)||ROLES[1];
+const initials=n=>String(n||"?").trim().split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase();
 
 const SEED_REQUESTS=[
  {ref:"DEV-2026-0142",src:"form",type:"install",svc:"cam",status:"visit",created:"2026-09-26T09:12:00",
@@ -804,7 +927,7 @@ const SEED_REQUESTS=[
   local:"shop",surface:"90",rooms:"3",cams:"6",place:"both",net:"yes",exist:"no",delay:"week",budget:"10 000 – 15 000 DH",
   chan:"wa",phone:"06 61 24 90 12",email:"",slot:"pm",fee:200,
   desc:"Magasin sur deux niveaux. Je veux couvrir la caisse, l'entrée et la réserve à l'étage.",
-  tech:"Youssef Bennani",items:[],notes:[{at:"2026-09-26T11:40:00",txt:"Appelé, très intéressé. Visite calée jeudi 14 h, il sera sur place."}],
+  tech:"t2",items:[],notes:[{at:"2026-09-26T11:40:00",txt:"Appelé, très intéressé. Visite calée jeudi 14 h, il sera sur place."}],
   tl:[{at:"2026-09-26T09:12:00",k:"created"},{at:"2026-09-26T11:40:00",k:"status",v:"contacted"},{at:"2026-09-26T11:45:00",k:"status",v:"visit"}]},
  {ref:"DEV-2026-0141",src:"cart",type:"prod",svc:"net",status:"new",created:"2026-09-27T08:05:00",
   name:"Nadia Ouazzani",company:"Cabinet dentaire Ouazzani",city:"Rabat",addr:"Avenue Fal Ould Oumeir, rés. Yasmine, 2e étage",
@@ -818,20 +941,20 @@ const SEED_REQUESTS=[
   local:"cafe",surface:"140",rooms:"4",cams:"8",place:"both",net:"yes",exist:"yes",delay:"urgent",budget:"",
   chan:"phone",phone:"06 70 33 12 44",email:"",slot:"am",fee:250,
   desc:"Trois caméras sur huit n'enregistrent plus depuis la coupure de courant de dimanche.",
-  tech:"Hamza Tazi",notes:[{at:"2026-09-25T17:30:00",txt:"Probablement l'alimentation du NVR. Passage prévu lundi matin."}],items:[],
+  tech:"t3",notes:[{at:"2026-09-25T17:30:00",txt:"Probablement l'alimentation du NVR. Passage prévu lundi matin."}],items:[],
   tl:[{at:"2026-09-25T16:48:00",k:"created"},{at:"2026-09-25T17:30:00",k:"status",v:"contacted"}]},
  {ref:"DEV-2026-0139",src:"form",type:"install",svc:"acc",status:"sent",created:"2026-09-23T10:20:00",
   name:"Imane Fassi",company:"Résidence Les Oliviers",city:"Casablanca",addr:"Lotissement Al Fath, rue 12, syndic bloc C",
   local:"other",surface:"",rooms:"2",cams:"4",place:"out",net:"no",exist:"no",delay:"month",budget:"25 000 DH",
   chan:"wa",phone:"06 62 88 41 09",email:"syndic.oliviers@gmail.com",slot:"any",fee:200,
   desc:"Interphone vidéo pour 18 appartements et deux caméras sur le portail.",
-  tech:"Salma Rachidi",notes:[{at:"2026-09-24T09:00:00",txt:"Devis 27 400 DH envoyé par WhatsApp. Le syndic doit passer en AG."}],items:[],
+  tech:"t4",notes:[{at:"2026-09-24T09:00:00",txt:"Devis 27 400 DH envoyé par WhatsApp. Le syndic doit passer en AG."}],items:[],
   tl:[{at:"2026-09-23T10:20:00",k:"created"},{at:"2026-09-23T15:10:00",k:"status",v:"contacted"},{at:"2026-09-24T08:30:00",k:"status",v:"visit"},{at:"2026-09-24T09:00:00",k:"status",v:"sent"}]},
  {ref:"DEV-2026-0138",src:"cart",type:"prod",svc:"cam",status:"won",created:"2026-09-22T13:02:00",
   name:"Mehdi Sbai",company:"Sbai Électroménager",city:"Casablanca",addr:"Derb Omar, rue 7, magasin 22",
   local:"shop",surface:"",rooms:"",cams:"",place:"",net:"yes",exist:"no",delay:"week",budget:"",
   chan:"phone",phone:"06 55 19 77 30",email:"",slot:"pm",fee:200,
-  desc:"",tech:"Youssef Bennani",items:[{id:"p2",q:4,inst:true},{id:"p5",q:1,inst:true},{id:"p7",q:1,inst:false}],
+  desc:"",tech:"t2",items:[{id:"p2",q:4,inst:true},{id:"p5",q:1,inst:true},{id:"p7",q:1,inst:false}],
   notes:[{at:"2026-09-22T14:20:00",txt:"Commande confirmée au téléphone, pose samedi matin."}],
   tl:[{at:"2026-09-22T13:02:00",k:"created"},{at:"2026-09-22T14:20:00",k:"status",v:"contacted"},{at:"2026-09-22T14:25:00",k:"status",v:"won"}]},
  {ref:"DEV-2026-0137",src:"form",type:"maint",svc:"it",status:"done",created:"2026-09-18T11:15:00",
@@ -839,14 +962,14 @@ const SEED_REQUESTS=[
   local:"shop",surface:"60",rooms:"2",cams:"4",place:"in",net:"yes",exist:"yes",delay:"plan",budget:"",
   chan:"mail",phone:"06 43 02 55 18",email:"pharmacie.ennour@menara.ma",slot:"any",fee:250,
   desc:"Contrat de maintenance trimestriel pour les 4 caméras et les 2 postes de la pharmacie.",
-  tech:"Salma Rachidi",items:[],notes:[{at:"2026-09-20T10:00:00",txt:"Contrat signé : 1 200 DH / trimestre, première visite le 15/10."}],
+  tech:"t4",items:[],notes:[{at:"2026-09-20T10:00:00",txt:"Contrat signé : 1 200 DH / trimestre, première visite le 15/10."}],
   tl:[{at:"2026-09-18T11:15:00",k:"created"},{at:"2026-09-18T14:00:00",k:"status",v:"contacted"},{at:"2026-09-19T09:30:00",k:"status",v:"sent"},{at:"2026-09-20T10:00:00",k:"status",v:"done"}]}
 ];
 const SEED_INTERV=[
- {id:"TCK-0451",ref:"DEV-2026-0142",client:"Karim Belhaj — Épicerie Al Baraka",city:"Casablanca",obj:{fr:"État des lieux — 6 caméras",ar:"معاينة — 6 كاميرات"},when:"2026-09-27T14:00:00",tech:"Youssef Bennani",state:"sched"},
- {id:"TCK-0450",ref:"DEV-2026-0140",client:"Rachid Amrani — Café Le Patio",city:"Mohammedia",obj:{fr:"Dépannage NVR — 3 caméras muettes",ar:"إصلاح NVR — 3 كاميرات معطلة"},when:"2026-09-27T09:30:00",tech:"Hamza Tazi",state:"prog"},
- {id:"TCK-0449",ref:"DEV-2026-0138",client:"Mehdi Sbai — Sbai Électroménager",city:"Casablanca",obj:{fr:"Pose 4 caméras + NVR 8 canaux",ar:"تركيب 4 كاميرات + NVR بـ 8 قنوات"},when:"2026-09-28T09:00:00",tech:"Youssef Bennani",state:"sched"},
- {id:"TCK-0448",ref:"DEV-2026-0137",client:"Pharmacie Ennour",city:"Bouskoura",obj:{fr:"Visite trimestrielle de maintenance",ar:"زيارة صيانة فصلية"},when:"2026-09-25T15:00:00",tech:"Salma Rachidi",state:"done"}
+ {id:"TCK-0451",ref:"DEV-2026-0142",client:"Karim Belhaj — Épicerie Al Baraka",city:"Casablanca",obj:{fr:"État des lieux — 6 caméras",ar:"معاينة — 6 كاميرات"},when:"2026-09-27T14:00:00",tech:"t2",by:"t1",state:"sched"},
+ {id:"TCK-0450",ref:"DEV-2026-0140",client:"Rachid Amrani — Café Le Patio",city:"Mohammedia",obj:{fr:"Dépannage NVR — 3 caméras muettes",ar:"إصلاح NVR — 3 كاميرات معطلة"},when:"2026-09-27T09:30:00",tech:"t3",by:"t1",state:"prog"},
+ {id:"TCK-0449",ref:"DEV-2026-0138",client:"Mehdi Sbai — Sbai Électroménager",city:"Casablanca",obj:{fr:"Pose 4 caméras + NVR 8 canaux",ar:"تركيب 4 كاميرات + NVR بـ 8 قنوات"},when:"2026-09-28T09:00:00",tech:"t2",by:"t1",state:"sched"},
+ {id:"TCK-0448",ref:"DEV-2026-0137",client:"Pharmacie Ennour",city:"Bouskoura",obj:{fr:"Visite trimestrielle de maintenance",ar:"زيارة صيانة فصلية"},when:"2026-09-25T15:00:00",tech:"t4",by:"t1",state:"done"}
 ];
 const SEED_NOTIFS=[
  {id:"n1",at:"2026-09-27T08:05:00",ref:"DEV-2026-0141",txt:{fr:"Nouvelle demande de Nadia Ouazzani — panier de 3 articles",ar:"طلب جديد من نادية وزاني — سلة من 3 منتجات"},read:false},
@@ -909,37 +1032,47 @@ function brandMark(sz){
  return '<span class="mk" aria-hidden="true">'+icon("shield",sz||19)+"</span>";
 }
 function heroPlan(){
- const wall='fill="none" stroke="var(--navy)" stroke-width="2.4" stroke-linejoin="round"';
+ const wall='fill="none" stroke="var(--navy)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"';
  const thin='fill="none" stroke="var(--line-2)" stroke-width="1.4"';
- const cone='fill="var(--blue)" fill-opacity=".14" stroke="var(--blue)" stroke-width="1" stroke-dasharray="4 3"';
+ const cone='fill="var(--blue)" fill-opacity=".15" stroke="var(--blue)" stroke-width="1" stroke-dasharray="4 3"';
  const lab='fill="var(--muted)" font-size="11" font-family="var(--ff)"';
  const labD='fill="var(--ink-2)" font-size="11.5" font-weight="600" font-family="var(--ff)"';
- const camDot='fill="var(--navy)"';
  const P={ent:{fr:"Entrée",ar:"المدخل"},cash:{fr:"Caisse",ar:"الصندوق"},sale:{fr:"Surface de vente",ar:"قاعة البيع"},
   res:{fr:"Réserve",ar:"المستودع"},nvr:{fr:"NVR + routeur",ar:"المسجل + الراوتر"}};
- return '<svg class="plan" viewBox="0 0 520 330" role="img" aria-label="'+esc(t("h_planlabel"))+'">'+
-  '<rect x="0" y="0" width="520" height="330" fill="var(--surface)"/>'+
-  '<g opacity=".5">'+Array.from({length:12},(_,i)=>'<path d="M'+(20+i*40)+' 20V270" '+thin+' stroke-dasharray="2 6"/>').join("")+"</g>"+
-  '<path d="M20 270h40M140 270h360V20H20v250" '+wall+'/>'+
-  '<path d="M370 270V140h130" '+wall+'/>'+
-  '<rect x="52" y="58" width="104" height="44" rx="3" '+thin+' fill="var(--surface-2)"/>'+
-  '<rect x="196" y="58" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
-  '<rect x="196" y="108" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
-  '<rect x="196" y="186" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
-  '<polygon points="30,30 268,132 96,262" '+cone+'/>'+
-  '<polygon points="490,30 258,112 430,236" '+cone+'/>'+
-  '<polygon points="384,154 500,244 386,262" '+cone+'/>'+
-  '<circle cx="30" cy="30" r="6" '+camDot+'/><circle cx="490" cy="30" r="6" '+camDot+'/><circle cx="384" cy="154" r="6" '+camDot+'/>'+
-  '<text x="42" y="26" '+labD+'>C1</text><text x="470" y="26" '+labD+' text-anchor="end">C2</text><text x="396" y="150" '+labD+'>C3</text>'+
-  '<rect x="404" y="42" width="72" height="30" rx="4" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.2"/>'+
-  '<text x="440" y="61" '+labD+' text-anchor="middle">'+esc(L(P.nvr))+"</text>"+
-  '<path d="M440 72v46" stroke="var(--blue)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>'+
-  '<text x="72" y="284" '+labD+'>'+esc(L(P.ent))+"</text>"+
-  '<text x="104" y="86" '+lab+' text-anchor="middle">'+esc(L(P.cash))+"</text>"+
-  '<text x="260" y="160" '+lab+' text-anchor="middle">'+esc(L(P.sale))+"</text>"+
-  '<text x="434" y="206" '+lab+' text-anchor="middle">'+esc(L(P.res))+"</text>"+
-  '<text x="20" y="312" '+lab+'>'+esc(t("h_planlabel"))+"</text>"+
-  "</svg>";
+ return '<div class="card scene" style="overflow:hidden;box-shadow:var(--sh-2);border-radius:var(--r-l)">'+
+  '<div class="scene-h"><i></i>'+esc(t("hero_scan"))+'</div>'+
+  '<svg viewBox="0 0 520 300" role="img" aria-label="'+esc(t("h_planlabel"))+'" style="display:block;width:100%;height:auto;background:var(--surface)">'+
+  '<defs><linearGradient id="scanG" x1="0" x2="1"><stop offset="0" stop-color="var(--blue)" stop-opacity="0"/><stop offset=".5" stop-color="var(--blue)" stop-opacity=".30"/><stop offset="1" stop-color="var(--blue)" stop-opacity="0"/></linearGradient>'+
+  '<clipPath id="scanC"><rect x="20" y="20" width="480" height="250"/></clipPath></defs>'+
+  '<g class="sc-fix" opacity=".5">'+Array.from({length:12},(_,i)=>'<path d="M'+(20+i*40)+' 20V270" '+thin+' stroke-dasharray="2 6"/>').join("")+"</g>"+
+  '<path class="sc-wall" pathLength="100" stroke-dasharray="100" d="M20 270h40M140 270h360V20H20v250" '+wall+'/>'+
+  '<path class="sc-wall" pathLength="100" stroke-dasharray="100" d="M370 270V140h130" '+wall+'/>'+
+  '<g class="sc-fix">'+
+   '<rect x="52" y="58" width="104" height="44" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+   '<rect x="196" y="58" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+   '<rect x="196" y="108" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+   '<rect x="196" y="186" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+   '<rect x="404" y="42" width="72" height="30" rx="4" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.2"/>'+
+   '<text x="440" y="61" '+labD+' text-anchor="middle">'+esc(L(P.nvr))+"</text>"+
+   '<path d="M440 72v46" stroke="var(--blue)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>'+
+   '<text x="72" y="286" '+labD+'>'+esc(L(P.ent))+"</text>"+
+   '<text x="104" y="86" '+lab+' text-anchor="middle">'+esc(L(P.cash))+"</text>"+
+   '<text x="260" y="160" '+lab+' text-anchor="middle">'+esc(L(P.sale))+"</text>"+
+   '<text x="434" y="206" '+lab+' text-anchor="middle">'+esc(L(P.res))+"</text></g>"+
+  '<polygon class="sc-cone c1" points="30,30 268,132 96,262" '+cone+'/>'+
+  '<polygon class="sc-cone sc-2 c2" points="490,30 258,112 430,236" '+cone+'/>'+
+  '<polygon class="sc-cone sc-3 c3" points="384,154 500,244 386,262" '+cone+'/>'+
+  '<g clip-path="url(#scanC)"><rect class="sc-scan" x="-40" y="20" width="110" height="250" fill="url(#scanG)"/></g>'+
+  '<circle class="sc-cam c1" cx="30" cy="30" r="6" fill="var(--navy)"/>'+
+  '<circle class="sc-cam sc-2 c2" cx="490" cy="30" r="6" fill="var(--navy)"/>'+
+  '<circle class="sc-cam sc-3 c3" cx="384" cy="154" r="6" fill="var(--navy)"/>'+
+  '<g class="sc-cam"><text x="42" y="26" '+labD+'>C1</text></g>'+
+  '<g class="sc-cam sc-2"><text x="470" y="26" '+labD+' text-anchor="end">C2</text></g>'+
+  '<g class="sc-cam sc-3"><text x="396" y="150" '+labD+'>C3</text></g>'+
+  '<g class="sc-badge"><rect x="128" y="222" width="264" height="34" rx="17" fill="var(--navy)"/>'+
+   '<circle cx="152" cy="239" r="7" fill="var(--ok)"/><path d="m148.6 239 2.4 2.4 4.4-4.6" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'+
+   '<text x="260" y="243" fill="#EAF2FB" font-size="12.5" font-weight="600" font-family="var(--ff)" text-anchor="middle">'+esc(t("hero_badge"))+"</text></g>"+
+  "</svg></div>";
 }
 function productCard(p){
  return '<article class="pcard"><div class="art">'+art(p.cat,110)+'</div><div class="bd">'+
@@ -978,36 +1111,73 @@ function clientFooter(){
 function pageHome(){
  const city=db.settings.fees[0][0],fee=db.settings.fees[0][1];
  const feat=db.products.filter(p=>p.active).slice().sort((a,b)=>b.pop-a.pop).slice(0,4);
+ const brands=["Hikvision","Dahua","TP-Link","Ubiquiti","MikroTik","ZKTeco","Ezviz","Eaton","HP","Epson"];
  const sectors=[{fr:"Magasins & commerces",ar:"المحلات التجارية"},{fr:"Cafés & restaurants",ar:"المقاهي والمطاعم"},{fr:"Cabinets médicaux",ar:"العيادات الطبية"},{fr:"Dépôts & ateliers",ar:"المستودعات والورشات"},{fr:"Écoles privées",ar:"المدارس الخاصة"},{fr:"Syndics de résidence",ar:"نقابات الإقامات"}];
+ const boss=team().find(m=>m.role==="manager")||{name:db.settings.manager,role:"manager"};
+ const field=team().filter(m=>m.active&&m.role!=="manager");
+ const stat=(n,suf,lab)=>'<div><span class="v num"><span data-count="'+n+'">0</span>'+suf+'</span><span class="l">'+lab+"</span></div>";
+
  return '<section class="hero"><div class="wrap"><div class="hero-g">'+
   '<div style="display:flex;flex-direction:column;gap:16px">'+
-   '<span class="eyebrow">'+t("h_eyebrow")+"</span><h1>"+t("h_title")+'</h1><p class="lead">'+t("h_lead")+"</p>"+
-   '<div class="cta"><button class="btn btn-pri btn-lg" data-act="go" data-page="quote">'+t("h_cta1")+" "+icon("arrow",17)+"</button>"+
-   '<button class="btn btn-out btn-lg" data-act="go" data-page="products">'+t("h_cta2")+"</button></div>"+
-   '<div class="feebar">'+icon("pin",18)+"<span>"+t("h_fee",{fee:money(fee),city:city})+"</span></div>"+
-  "</div><div>"+heroPlan()+"</div></div></div></section>"+
+   '<span class="eyebrow rise">'+t("h_eyebrow")+'</span>'+
+   '<h1 class="rise d1">'+t("h_title")+'</h1>'+
+   '<p class="lead rise d2">'+t("h_lead")+"</p>"+
+   '<div class="cta rise d3"><button class="btn btn-pri btn-lg" data-act="go" data-page="quote">'+t("h_cta1")+" "+icon("arrow",17)+"</button>"+
+    '<button class="btn btn-out btn-lg" data-act="go" data-page="products">'+t("h_cta2")+"</button></div>"+
+   '<div class="feebar rise d4">'+icon("pin",18)+"<span>"+t("h_fee",{fee:money(fee),city:city})+"</span></div>"+
+  '</div><div class="rise d2">'+heroPlan()+"</div></div>"+
+  '<div class="marq rise d5" style="padding-block:20px;border-top:1px solid var(--line)"><div class="marq-t">'+
+   brands.concat(brands).map(b=>"<span>"+esc(b)+"</span>").join("")+'</div></div>'+
+  '<p class="xs muted rev" style="text-align:center;padding-bottom:18px">'+t("br_title")+"</p>"+
+  "</div></section>"+
 
-  '<section class="sec"><div class="wrap"><div class="sec-h"><h2>'+t("s_title")+'</h2><p class="ink2">'+t("s_lead")+'</p></div><div class="svc">'+
-  SVCS.map(v=>'<div class="card"><span class="ic">'+icon(v.ic,21)+"</span><h3>"+t(v.k)+"</h3><ul>"+v.li.map(x=>"<li>"+t(x)+"</li>").join("")+
+  /* --- services --- */
+  '<section class="sec"><div class="wrap"><div class="sec-h rev"><h2>'+t("s_title")+'</h2><p class="ink2">'+t("s_lead")+'</p></div><div class="svc">'+
+  SVCS.map((v,i)=>'<div class="card lift rev r'+(i%4+1)+'"><span class="ic">'+icon(v.ic,21)+"</span><h3>"+t(v.k)+"</h3><ul>"+v.li.map(x=>"<li>"+t(x)+"</li>").join("")+
    '</ul><div class="from">'+t("s_from")+' <b class="num">'+money(v.from)+"</b></div></div>").join("")+
   "</div></div></section>"+
 
-  '<section class="sec" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap"><div class="sec-h"><h2>'+t("p_title")+'</h2><p class="ink2">'+t("p_lead")+'</p></div><div class="steps">'+
-  [1,2,3,4].map(i=>'<div class="step"><span class="n">'+i+"</span><h3>"+t("p"+i+"_t")+"</h3><p>"+t("p"+i+"_d")+"</p></div>").join("")+
-  "</div></div></section>"+
-
-  '<section class="sec"><div class="wrap"><div class="sec-h" style="flex-direction:row;align-items:flex-end;justify-content:space-between;max-width:none;flex-wrap:wrap;gap:12px">'+
-   '<div><h2>'+t("f_title")+'</h2><p class="ink2">'+t("f_lead")+'</p></div>'+
-   '<button class="btn btn-out" data-act="go" data-page="products">'+t("f_all")+" "+icon("chev",16)+'</button></div><div class="pgrid">'+
-  feat.map(productCard).join("")+"</div></div></section>"+
-
+  /* --- qui sommes-nous --- */
   '<section class="sec" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">'+
-   '<div class="sec-h"><h2>'+t("sect_title")+'</h2><p class="ink2">'+t("sect_lead")+'</p></div>'+
-   '<div class="frow" style="margin-bottom:26px">'+sectors.map(s=>'<span class="chip" style="cursor:default">'+esc(L(s))+"</span>").join("")+"</div>"+
-   '<div class="stat"><div><span class="v num">240+</span><span class="l">'+t("st_1")+'</span></div><div><span class="v num">7</span><span class="l">'+t("st_2")+'</span></div><div><span class="v num">48 h</span><span class="l">'+t("st_3")+"</span></div></div>"+
+   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:34px;align-items:start">'+
+    '<div class="rev" style="display:flex;flex-direction:column;gap:14px">'+
+     '<span class="eyebrow">'+t("ab_eye")+"</span><h2>"+t("ab_title")+"</h2>"+
+     '<p class="ink2" style="max-width:56ch">'+t("ab_p1",{company:esc(db.settings.company)})+"</p>"+
+     '<p class="ink2" style="max-width:56ch">'+t("ab_p2")+"</p>"+
+     '<div class="card pad lift" style="display:flex;gap:14px;align-items:center;max-width:380px">'+
+      '<span class="avl">'+esc(initials(boss.name))+"</span>"+
+      '<div><b style="font-size:16px">'+esc(boss.name)+'</b><br><span class="sm muted">'+t("ab_manager")+" · "+esc(db.settings.company)+"</span>"+
+      (boss.phone?'<br><span class="xs mono muted">'+esc(boss.phone)+"</span>":"")+"</div></div>"+
+     '<div class="stat" style="margin-top:6px">'+stat(9,"",t("st_4"))+stat(240,"+",t("st_1"))+stat(7,"",t("st_2"))+"</div>"+
+    "</div>"+
+    '<div class="vals rev r1" style="grid-template-columns:1fr">'+
+     [["ab_v1_t","ab_v1_d"],["ab_v2_t","ab_v2_d"],["ab_v3_t","ab_v3_d"]].map(v=>'<div class="val"><b>'+t(v[0])+"</b><span>"+t(v[1])+"</span></div>").join("")+
+    "</div></div>"+
+   '<div class="rev" style="margin-top:34px"><h3 style="margin-bottom:6px">'+t("ab_team_t")+'</h3><p class="sm ink2" style="max-width:62ch;margin-bottom:16px">'+t("ab_team_d")+"</p>"+
+    '<div class="people">'+field.map(m=>'<div class="person lift"><span class="avm" style="width:36px;height:36px;font-size:12.5px">'+esc(initials(m.name))+"</span>"+
+     '<div><b class="sm">'+esc(m.name)+'</b><br><span class="xs muted">'+esc(L(roleOf(m.role)))+"</span></div></div>").join("")+"</div></div>"+
   "</div></section>"+
 
-  '<section class="sec"><div class="wrap"><div class="card pad" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-color:var(--blue);background:var(--blue-soft)">'+
+  /* --- deroulement --- */
+  '<section class="sec"><div class="wrap"><div class="sec-h rev"><h2>'+t("p_title")+'</h2><p class="ink2">'+t("p_lead")+'</p></div><div class="steps">'+
+  [1,2,3,4].map(i=>'<div class="step rev r'+i+'"><span class="n">'+i+"</span><h3>"+t("p"+i+"_t")+"</h3><p>"+t("p"+i+"_d")+"</p></div>").join("")+
+  "</div></div></section>"+
+
+  /* --- produits --- */
+  '<section class="sec" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap"><div class="sec-h rev" style="flex-direction:row;align-items:flex-end;justify-content:space-between;max-width:none;flex-wrap:wrap;gap:12px">'+
+   '<div><h2>'+t("f_title")+'</h2><p class="ink2">'+t("f_lead")+'</p></div>'+
+   '<button class="btn btn-out" data-act="go" data-page="products">'+t("f_all")+" "+icon("chev",16)+'</button></div><div class="pgrid">'+
+  feat.map((p,i)=>'<div class="rev r'+(i%4+1)+'">'+productCard(p)+"</div>").join("")+"</div></div></section>"+
+
+  /* --- temoignages + secteurs --- */
+  '<section class="sec"><div class="wrap"><div class="sec-h rev"><h2>'+t("te_title")+'</h2><p class="ink2">'+t("te_lead")+'</p></div>'+
+   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:14px">'+
+   [1,2,3].map(i=>'<figure class="quote lift rev r'+i+'" style="margin:0"><span class="qm">&#8220;</span><p>'+t("te"+i)+'</p><figcaption class="who2">'+t("te"+i+"_a")+"</figcaption></figure>").join("")+"</div>"+
+   '<div class="frow rev" style="margin-top:26px">'+sectors.map(x=>'<span class="chip" style="cursor:default">'+esc(L(x))+"</span>").join("")+"</div>"+
+  "</div></section>"+
+
+  /* --- appel a l action --- */
+  '<section class="sec" style="padding-top:0"><div class="wrap"><div class="card pad rev" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-color:var(--blue);background:var(--blue-soft)">'+
    '<div style="max-width:52ch"><h2 style="font-size:22px">'+t("cta_t")+'</h2><p class="ink2" style="margin-top:6px">'+t("cta_d")+"</p></div>"+
    '<button class="btn btn-pri btn-lg" data-act="go" data-page="quote">'+t("h_cta1")+"</button></div></div></section>";
 }
@@ -1063,7 +1233,7 @@ function pageTrack(){
    '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><b class="mono">'+esc(r.ref)+'</b><span class="pill '+st.p+'">'+t(st.k)+'</span><span class="sm muted">'+t("th_date")+" "+fmtD(r.created)+"</span></div>"+
    '<dl class="kv"><dt>'+t("th_client")+"</dt><dd>"+esc(r.name)+(r.company?" — "+esc(r.company):"")+"</dd>"+
     "<dt>"+t("th_type")+"</dt><dd>"+t(typeOf(r.type).k)+"</dd><dt>"+t("th_city")+"</dt><dd>"+esc(r.city)+"</dd>"+
-    (r.tech?"<dt>"+t("th_tech")+"</dt><dd>"+esc(r.tech)+"</dd>":"")+"</dl>"+
+    (r.tech?"<dt>"+t("th_tech")+"</dt><dd>"+esc(techName(r.tech))+"</dd>":"")+"</dl>"+
    "<div><h3 style=\"font-size:14px;margin-bottom:10px\">"+t("tr_hist")+'</h3><ul class="tl">'+
     steps.map((s,i)=>'<li data-on="'+(i<=reached?1:0)+'"><span class="dot"></span><span><span class="t">'+t(statusOf(s).k)+"</span>"+
       (i<=reached?'<span class="m">'+(r.tl&&r.tl[i]?fmtDT(r.tl[i].at):fmtD(r.created))+"</span>":'<span class="m">—</span>')+"</span></li>").join("")+"</ul></div>"+
@@ -1147,7 +1317,8 @@ function pageQuote(){
  let body="";
  if(ui.step===1){
   body=cards("type",t("q_type"),TYPES.map(x=>({v:x.id,t:t(x.k),d:t(x.d)})))+
-   sel("svc",t("q_svc"),SVCS.map(v=>[v.id,t(v.k)]))+
+   sel("svc",t("q_svc"),SVCS.map(v=>[v.id,t(v.k)]).concat([["other",t("s_other_t")]]))+
+   (fv("svc")==="other"?fld("svcother",t("q_svcother"),"textarea",t("q_svcother_ph"),t("q_svcother_h")):"")+
    fld("desc",t("q_desc"),"textarea",t("q_desc_ph"));
  }else if(ui.step===2){
   body=sel("city",t("q_city"),db.settings.fees.map(f=>[f[0],f[0]]).concat([["Autre",LANG==="fr"?"Autre ville":"مدينة أخرى"]]))+
@@ -1284,11 +1455,11 @@ function adminShell(inner,title){
   '<div class="bd"><span class="mk">'+icon("shield",18)+'</span><span><span class="nm">'+esc(db.settings.company)+'</span><br><span class="sl">'+t("demo_admin")+"</span></span></div>"+
   "<nav>"+nav.map(n=>'<button data-act="ago" data-p="'+n[0]+'"'+(ui.aPage===n[0]?' aria-current="page"':"")+">"+icon(n[2],18)+"<span>"+t(n[1])+"</span>"+
    (n[0]==="requests"&&newCount?'<span class="b num">'+newCount+"</span>":"")+"</button>").join("")+"</nav>"+
-  '<div class="ft">'+t("a_role")+" · "+esc(db.settings.company)+"</div></aside>"+
+  '<div class="ft">'+esc(db.settings.manager)+" · "+t("a_role")+"</div></aside>"+
   '<div class="main"><div class="topbar"><h2>'+title+'</h2><span class="sp"></span>'+
    '<div class="bellwrap"><button class="bell" data-act="notif" aria-label="'+t("a_notifs")+'">'+icon("bell",18)+
     (unread?'<span class="cnt num">'+unread+"</span>":"")+"</button>"+(ui.notifOpen?notifPanel():"")+"</div>"+
-   '<div class="who"><span class="av">AD</span><span><b>'+t("a_role")+'</b><br><span class="xs muted">'+esc(db.settings.email)+"</span></span></div>"+
+   '<div class="who"><span class="av">'+esc(initials(db.settings.manager))+'</span><span><b>'+esc(db.settings.manager)+'</b><br><span class="xs muted">'+t("a_role")+"</span></span></div>"+
   '</div><div class="content">'+inner+"</div></div></div>";
 }
 function notifPanel(){
@@ -1328,7 +1499,7 @@ function aDash(){
     '<div style="height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(x.n/mxT*100)+'%;background:var(--navy);border-radius:4px"></i></div></div>').join("")+"</div></section>"+
   '<section class="pane"><header><h3>'+t("a_planning")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:10px">'+
    (planning.length?planning.map(i=>'<div style="display:flex;gap:10px;align-items:flex-start"><b class="mono sm" style="color:var(--blue-ink);min-width:44px">'+fmtT(i.when)+"</b>"+
-    '<div style="flex:1;min-width:0"><div class="sm" style="font-weight:600">'+esc(L(i.obj))+'</div><div class="xs muted">'+esc(i.client)+" · "+esc(i.tech)+"</div></div>"+
+    '<div style="flex:1;min-width:0"><div class="sm" style="font-weight:600">'+esc(L(i.obj))+'</div><div class="xs muted">'+esc(i.client)+" · "+esc(techName(i.tech))+"</div></div>"+
     ivPill(i.state)+"</div>").join(""):'<p class="muted sm">'+t("a_nores")+"</p>")+"</div></section>"+
  "</div></div>";
 }
@@ -1382,7 +1553,8 @@ function reqModal(){
      '<dt>'+t("q_feeline")+'</dt><dd class="num"><b>'+(r.fee?money(r.fee):t("q_feeask"))+"</b></dd></dl></div>"+
     '<div class="card pad"><h4 class="lab" style="margin-bottom:9px">'+t("a_needs")+'</h4><dl class="kv">'+
      "<dt>"+t("q_type")+"</dt><dd>"+t(typeOf(r.type).k)+"</dd>"+
-     (r.svc?"<dt>"+t("q_svc")+"</dt><dd>"+t((SVCS.find(s=>s.id===r.svc)||SVCS[0]).k)+"</dd>":"")+
+     (r.svc?"<dt>"+t("q_svc")+"</dt><dd>"+(r.svc==="other"?t("s_other_t"):t((SVCS.find(s=>s.id===r.svc)||SVCS[0]).k))+"</dd>":"")+
+     (r.svcother?"<dt>"+t("q_svcother")+"</dt><dd>"+esc(r.svcother)+"</dd>":"")+
      (r.delay?"<dt>"+t("q_delay")+"</dt><dd>"+t("dl_"+r.delay)+"</dd>":"")+
      (r.budget?"<dt>"+t("q_budget")+"</dt><dd>"+esc(r.budget)+"</dd>":"")+
      "<dt>"+t("th_source")+"</dt><dd>"+t(r.src==="cart"?"src_cart":"src_form")+"</dd></dl>"+
@@ -1393,7 +1565,7 @@ function reqModal(){
     '<div class="grid2"><div class="field"><label for="rst">'+t("a_setstatus")+'</label><select class="select" id="rst" data-act="setstatus" data-ref="'+esc(r.ref)+'">'+
       STATUSES.map(s=>'<option value="'+s.id+'"'+(r.status===s.id?" selected":"")+">"+t(s.k)+"</option>").join("")+"</select></div>"+
      '<div class="field"><label for="rtec">'+t("a_assign")+'</label><select class="select" id="rtec" data-act="settech" data-ref="'+esc(r.ref)+'">'+
-      '<option value="">'+t("a_unassigned")+"</option>"+db.settings.techs.map(x=>'<option value="'+esc(x)+'"'+(r.tech===x?" selected":"")+">"+esc(x)+"</option>").join("")+"</select></div></div>"+
+      '<option value="">'+t("a_unassigned")+"</option>"+team().filter(x=>x.active&&x.role!=="sales").map(x=>'<option value="'+esc(x.id)+'"'+(r.tech===x.id?" selected":"")+">"+esc(x.name)+" — "+esc(L(roleOf(x.role)))+"</option>").join("")+"</select></div></div>"+
     '<div class="field"><label for="rnote">'+t("a_notes")+'</label><textarea class="textarea" id="rnote" placeholder="'+t("a_notes_ph")+'"></textarea>'+
      '<button class="btn btn-sm btn-out" data-act="addnote" data-ref="'+esc(r.ref)+'" style="align-self:flex-start">'+t("a_addnote")+"</button></div>"+
     ((r.notes||[]).length?'<div style="display:flex;flex-direction:column;gap:8px">'+r.notes.slice().reverse().map(n=>'<div style="background:var(--surface-2);border-radius:7px;padding:9px 11px"><div class="xs muted mono">'+fmtDT(n.at)+'</div><div class="sm">'+esc(n.txt)+"</div></div>").join("")+"</div>":"")+"</div>"+
@@ -1449,13 +1621,15 @@ function delModal(){
 }
 function aInterv(){
  const list=db.interv.slice().sort((a,b)=>b.when.localeCompare(a.when));
- return '<div class="tw"><table><thead><tr><th>'+t("th_ref")+"</th><th>"+t("th_when")+"</th><th>"+t("th_obj")+"</th><th>"+t("th_client")+"</th><th>"+t("th_tech")+"</th><th>"+t("th_status")+"</th><th>"+t("th_act")+"</th></tr></thead><tbody>"+
+ return '<div class="tw"><table><thead><tr><th>'+t("th_ref")+"</th><th>"+t("th_when")+"</th><th>"+t("th_obj")+"</th><th>"+t("th_client")+"</th><th>"+t("th_sent")+"</th><th>"+t("th_by")+"</th><th>"+t("th_status")+"</th><th>"+t("th_act")+"</th></tr></thead><tbody>"+
  (list.length?list.map(i=>'<tr><td class="mono">'+esc(i.id)+'<br><span class="xs muted">'+esc(i.ref)+"</span></td>"+
   '<td class="num"><b>'+(isToday(i.when)?t("today"):fmtD(i.when))+"</b><br>"+fmtT(i.when)+"</td>"+
-  "<td>"+esc(L(i.obj))+"</td><td>"+esc(i.client)+'<br><span class="xs muted">'+esc(i.city)+"</span></td><td>"+esc(i.tech||"—")+"</td>"+
+  "<td>"+esc(L(i.obj))+"</td><td>"+esc(i.client)+'<br><span class="xs muted">'+esc(i.city)+"</span></td>"+
+  "<td>"+(i.tech?"<b>"+esc(techName(i.tech))+'</b><br><span class="xs muted">'+esc(L(roleOf((member(i.tech)||{}).role)))+"</span>":"—")+"</td>"+
+  '<td class="sm">'+esc(techName(i.by)||db.settings.manager)+"</td>"+
   "<td>"+ivPill(i.state)+"</td>"+
   '<td>'+(i.state!=="done"?'<button class="btn btn-sm btn-out" data-act="ivdone" data-id="'+esc(i.id)+'">'+t("a_int_done")+"</button>":"—")+"</td></tr>").join("")
-  :'<tr><td colspan="7" class="muted">'+t("a_nores")+"</td></tr>")+"</tbody></table></div>";
+  :'<tr><td colspan="8" class="muted">'+t("a_nores")+"</td></tr>")+"</tbody></table></div>";
 }
 function aSettings(){
  const s=db.settings;
@@ -1480,8 +1654,18 @@ function aSettings(){
   '<div class="field"><span class="lab">'+t("a_channels")+'</span><div class="grid3">'+
    CHANS.map(c=>'<label class="opt" data-on="'+(s.channels[c.id]?1:0)+'"><input type="checkbox" data-act="chan" data-id="'+c.id+'"'+(s.channels[c.id]?" checked":"")+'><span class="t" style="font-weight:500;font-size:13.5px">'+t(c.k)+"</span></label>").join("")+"</div></div>"+
   '<div class="field"><label for="s_sla">'+t("a_sla")+'</label><input class="input num" id="s_sla" data-s="sla" type="number" value="'+s.sla+'" style="width:110px"></div>'+
-  '<div class="field"><span class="lab">'+t("a_techs")+'</span><div class="frow">'+s.techs.map(x=>'<span class="tag-soft">'+esc(x)+"</span>").join("")+"</div></div>"+
-  '<button class="btn btn-pri" data-act="savesettings" style="align-self:flex-start">'+t("a_save")+"</button></div></section></div>";
+  '<button class="btn btn-pri" data-act="savesettings" style="align-self:flex-start">'+t("a_save")+"</button></div></section></div>"+
+ '<section class="pane"><header>'+icon("user",17)+'<h3>'+t("a_team")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:12px">'+
+  '<p class="hint">'+t("a_team_h")+"</p>"+
+  '<div class="tw"><table><thead><tr><th>'+t("a_mname")+"</th><th>"+t("a_mrole")+"</th><th>"+t("ch_phone")+"</th><th>"+t("a_mactive")+"</th><th></th></tr></thead><tbody>"+
+   s.team.map((m,i)=>'<tr><td><div style="display:flex;gap:9px;align-items:center"><span class="avm">'+esc(initials(m.name))+"</span><b>"+esc(m.name)+"</b></div></td>"+
+    '<td><select class="select" style="padding:5px 8px;width:auto" data-act="mrole" data-i="'+i+'">'+ROLES.map(r=>'<option value="'+r.id+'"'+(m.role===r.id?" selected":"")+">"+esc(L(r))+"</option>").join("")+"</select></td>"+
+    '<td class="mono sm">'+esc(m.phone||"—")+"</td>"+
+    '<td><label class="sm" style="display:inline-flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" data-act="mactive" data-i="'+i+'"'+(m.active?" checked":"")+">"+(m.active?t("yes"):t("no"))+"</label></td>"+
+    '<td><button class="btn btn-sm btn-dan" data-act="rmmember" data-i="'+i+'">'+icon("trash",14)+"</button></td></tr>").join("")+"</tbody></table></div>"+
+  '<div class="toolbar"><input class="input" id="nm_name" placeholder="'+t("a_mname")+'" style="flex:1 1 140px"><input class="input" id="nm_phone" placeholder="06 00 00 00 00" style="flex:0 1 150px">'+
+   '<select class="select" id="nm_role" style="width:auto">'+ROLES.map(r=>'<option value="'+r.id+'"'+(r.id==="tech"?" selected":"")+">"+esc(L(r))+"</option>").join("")+"</select>"+
+   '<button class="btn btn-out" data-act="addmember">'+icon("plus",15)+" "+t("a_addmember")+"</button></div></div></section>";
 }
 
 /* ============================================================
@@ -1519,7 +1703,7 @@ function aSettings(){
    name:x[5],company:x[6],city:x[7],addr:"Adresse communiquée par le client",local:x[8],
    surface:"",rooms:"",cams:"",place:"",net:"yes",exist:x[2]==="fix"?"yes":"no",delay:"month",budget:"",
    chan:x[9],phone:x[10],email:x[11],slot:"any",fee:feeFor(x[7]),desc:descs[x[2]],
-   tech:x[4]==="new"?"":SEED_SETTINGS.techs[rows.indexOf(x)%3],
+   tech:x[4]==="new"?"":["t2","t3","t4"][rows.indexOf(x)%3],
    items:x[12]==="cart"?carts.cart[(ci++)%3]:[],notes:[],tl:tl});
  });
 })();
@@ -1577,6 +1761,24 @@ function render(){
  document.getElementById("layer").innerHTML=
   ui.cartOpen?cartDrawer():ui.openProd?productModal():ui.openReq?reqModal():ui.editProd?prodModal():ui.delProd?delModal():"";
  if(ui.focus){const el=document.querySelector(ui.focus);if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}}}
+ wireMotion();
+}
+const reduceMotion=()=>{try{return window.matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}};
+function countUp(el){
+ const to=+el.getAttribute("data-count")||0;
+ if(reduceMotion()||!window.requestAnimationFrame){el.textContent=to;return;}
+ const t0=performance.now(),dur=900;
+ const step=n=>{const k=Math.min(1,(n-t0)/dur);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step);};
+ requestAnimationFrame(step);
+}
+let _io=null;
+function wireMotion(){
+ if(_io){_io.disconnect();_io=null;}
+ const els=document.querySelectorAll(".rev");
+ const seen=el=>{el.setAttribute("data-seen","");el.querySelectorAll("[data-count]").forEach(countUp);};
+ if(!("IntersectionObserver" in window)){els.forEach(seen);return;}
+ _io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){seen(e.target);_io.unobserve(e.target);}});},{rootMargin:"0px 0px -70px 0px",threshold:.04});
+ els.forEach(e=>_io.observe(e));
 }
 
 /* ============================================================
@@ -1587,7 +1789,7 @@ function newRef(){const n=db.seq++;return "DEV-2026-"+("000"+n).slice(-4);}
 function validate(step){
  ui.errors={};
  const need=k=>{const v=fv(k);if(v===""||v==null||v===false)ui.errors[k]=t("err_req");};
- if(step===1){need("type");need("desc");}
+ if(step===1){need("type");need("desc");if(fv("svc")==="other")need("svcother");}
  if(step===2){need("city");need("addr");}
  if(step===3||step==="cart"){
   need("name");need("chan");
@@ -1604,7 +1806,7 @@ function submit(src){
   name:f.name||"",company:f.company||"",city:f.city||"",addr:f.addr||"",local:f.local||"",surface:f.surface||"",
   rooms:f.rooms||"",cams:f.cams||"",place:f.place||"",net:f.net||"",exist:f.exist||"",delay:f.delay||"",budget:f.budget||"",
   chan:f.chan||"phone",phone:f.phone||"",email:f.email||"",slot:f.slot||"any",fee:feeFor(f.city),
-  desc:f.desc||"",tech:"",items:src==="cart"?db.cart.slice():[],notes:[],tl:[{at:now,k:"created"}]};
+  desc:f.desc||"",svcother:f.svcother||"",tech:"",items:src==="cart"?db.cart.slice():[],notes:[],tl:[{at:now,k:"created"}]};
  const n=src==="cart"?cartCount():0;
  db.requests.unshift(r);
  db.notifs.unshift({id:"n"+Date.now(),at:now,ref:r.ref,read:false,
@@ -1719,7 +1921,7 @@ document.addEventListener("click",function(ev){
   case "planiv":{const r=db.requests.find(x=>x.ref===ref);if(!r)break;
     const d=new Date();const when=TODAY+"T"+pad((d.getHours()+1)%24)+":00:00";
     db.interv.unshift({id:"TCK-0"+(452+db.interv.length),ref:r.ref,client:r.name+(r.company?" — "+r.company:""),city:r.city,
-     obj:{fr:t(typeOf(r.type).k)+" — "+r.city,ar:t(typeOf(r.type).k)+" — "+r.city},when:when,tech:r.tech||db.settings.techs[0],state:"sched"});
+     obj:{fr:t(typeOf(r.type).k)+" — "+r.city,ar:t(typeOf(r.type).k)+" — "+r.city},when:when,tech:r.tech||"t2",by:db.settings.team[0].id,state:"sched"});
     if(r.status==="new"||r.status==="contacted")setStatus(r.ref,"visit");
     ui.openReq=null;ui.aPage="interv";save();render();toast(t("a_plan"),r.ref);break;}
   case "ivdone":{const i=db.interv.find(x=>x.id===id);if(i)i.state="done";save();render();break;}
@@ -1727,6 +1929,12 @@ document.addEventListener("click",function(ev){
     if(c&&c.value.trim()){db.settings.fees.push([c.value.trim(),+((f&&f.value)||0)]);save();render();}break;}
   case "rmfee":db.settings.fees.splice(+el.getAttribute("data-i"),1);save();render();break;
   case "savesettings":saveSettings();break;
+  case "addmember":{const n=document.getElementById("nm_name"),ph=document.getElementById("nm_phone"),ro=document.getElementById("nm_role");
+    if(n&&n.value.trim()){db.settings.team.push({id:"t"+Date.now(),name:n.value.trim(),role:ro?ro.value:"tech",phone:ph?ph.value.trim():"",active:true});
+     save();render();toast(t("a_memberadded"),n.value.trim());}break;}
+  case "rmmember":{const i=+el.getAttribute("data-i");const m=db.settings.team[i];
+    if(m&&db.settings.team.filter(x=>x.role==="manager").length<2&&m.role==="manager"){toast(t("a_keepmanager"),"");break;}
+    db.settings.team.splice(i,1);save();render();break;}
  }
 });
 document.addEventListener("input",function(ev){
@@ -1746,12 +1954,14 @@ document.addEventListener("change",function(ev){
  if(a==="pub"){const p=prod(el.getAttribute("data-id"));if(p)p.active=el.checked;save();render();return;}
  if(a==="fee"){db.settings.fees[+el.getAttribute("data-i")][1]=+el.value||0;save();return;}
  if(a==="chan"){db.settings.channels[el.getAttribute("data-id")]=el.checked;save();render();return;}
+ if(a==="mrole"){db.settings.team[+el.getAttribute("data-i")].role=el.value;save();render();return;}
+ if(a==="mactive"){db.settings.team[+el.getAttribute("data-i")].active=el.checked;save();render();return;}
  if(a==="setstatus"){setStatus(el.getAttribute("data-ref"),el.value);return;}
  if(a==="settech"){const r=db.requests.find(x=>x.ref===el.getAttribute("data-ref"));if(r){r.tech=el.value;save();render();}return;}
  if(el.hasAttribute&&el.hasAttribute("data-f")){
   harvest();
   const k=el.getAttribute("data-f");
-  if(el.type==="radio"||el.type==="checkbox"||k==="city"||k==="chan"){ui.errors={};render();}
+  if(el.type==="radio"||el.type==="checkbox"||k==="city"||k==="chan"||k==="svc"){ui.errors={};render();}
  }
 });
 document.addEventListener("keydown",function(ev){
