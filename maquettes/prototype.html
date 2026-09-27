@@ -1,0 +1,1770 @@
+<title>Maquette Oufi Sécurité</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  color-scheme:light;
+  --bg:#F4F6F9; --surface:#ffffff; --surface-2:#EDF1F6; --surface-3:#E2EAF3;
+  --ink:#0E1B2A; --ink-2:#3C4E62; --muted:#6C7D91;
+  --line:#DCE3EC; --line-2:#C2CEDC;
+  --navy:#0E3A63; --navy-2:#15507F; --on-navy:#EAF2FB; --navy-line:#24537F;
+  --blue:#1668B8; --blue-ink:#0F4E8C; --blue-soft:#E5EFFA;
+  --ok:#0F7A5A; --ok-soft:#E2F3EC;
+  --warn:#8A5800; --warn-soft:#FAEED8;
+  --dan:#B02A20; --dan-soft:#FBE8E6;
+  --sh-1:0 1px 2px rgba(14,27,42,.07);
+  --sh-2:0 2px 4px rgba(14,27,42,.05),0 12px 28px rgba(14,27,42,.09);
+  --r:10px; --r-s:7px; --r-l:16px;
+  --ff-lat:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --ff-ar:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif;
+  --ff:var(--ff-lat);
+  --ff-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0A1521; --surface:#10202F; --surface-2:#17293A; --surface-3:#1F3448;
+  --ink:#E9EFF6; --ink-2:#B6C5D5; --muted:#8699AD;
+  --line:#22394E; --line-2:#31495F;
+  --navy:#0C2B45; --navy-2:#154466; --on-navy:#DCE9F6; --navy-line:#254C6E;
+  --blue:#4E9EE8; --blue-ink:#8CC2F2; --blue-soft:#132B42;
+  --ok:#4FC79E; --ok-soft:#0E3129;
+  --warn:#E0A64A; --warn-soft:#33260F;
+  --dan:#F0827A; --dan-soft:#3A1A18;
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.45);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0A1521; --surface:#10202F; --surface-2:#17293A; --surface-3:#1F3448;
+  --ink:#E9EFF6; --ink-2:#B6C5D5; --muted:#8699AD;
+  --line:#22394E; --line-2:#31495F;
+  --navy:#0C2B45; --navy-2:#154466; --on-navy:#DCE9F6; --navy-line:#254C6E;
+  --blue:#4E9EE8; --blue-ink:#8CC2F2; --blue-soft:#132B42;
+  --ok:#4FC79E; --ok-soft:#0E3129;
+  --warn:#E0A64A; --warn-soft:#33260F;
+  --dan:#F0827A; --dan-soft:#3A1A18;
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.45);
+}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+[dir="rtl"]{--ff:var(--ff-ar)}
+h1,h2,h3,h4{margin:0;text-wrap:balance;line-height:1.18;font-weight:600;letter-spacing:-.015em}
+h1{font-size:clamp(28px,4.6vw,46px);font-weight:700}
+h2{font-size:clamp(21px,2.6vw,30px)}
+h3{font-size:18px}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--ff-mono);font-variant-numeric:tabular-nums;unicode-bidi:plaintext}
+.num{font-variant-numeric:tabular-nums;unicode-bidi:plaintext}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-ink)}
+.muted{color:var(--muted)}
+.ink2{color:var(--ink-2)}
+.sm{font-size:13px}
+.xs{font-size:12px}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- demo bar ---------- */
+.demobar{background:#081D31;color:#CFE2F3;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-block:9px;padding-inline:16px;font-size:12.5px;border-bottom:1px solid #12354F}
+.demobar .tag{background:#F2C14E;color:#2A1D00;font-weight:700;font-size:10.5px;letter-spacing:.09em;padding:3px 7px;border-radius:4px}
+.demobar .grow{flex:1 1 40px}
+.seg{display:inline-flex;background:#0F2C46;border:1px solid #1C4463;border-radius:8px;padding:2px;gap:2px}
+.seg button{background:none;border:0;color:#A9C6E0;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12.5px;font-weight:500}
+.seg button[aria-pressed="true"]{background:#1668B8;color:#fff}
+.demobar .lnk{background:none;border:1px solid #1C4463;color:#A9C6E0;padding:5px 10px;border-radius:7px;cursor:pointer;font-size:12.5px}
+.demobar .lnk:hover{border-color:#2E6795;color:#E4F0FA}
+
+/* ---------- shared atoms ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:var(--r-s);padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;background:var(--surface-2);color:var(--ink);text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--surface-3)}
+.btn-pri{background:var(--blue);color:#fff}
+.btn-pri:hover{background:var(--blue-ink)}
+.btn-navy{background:var(--navy);color:var(--on-navy)}
+.btn-navy:hover{background:var(--navy-2)}
+.btn-out{background:transparent;border-color:var(--line-2);color:var(--ink)}
+.btn-out:hover{background:var(--surface-2)}
+.btn-dan{background:transparent;border-color:var(--line-2);color:var(--dan)}
+.btn-dan:hover{background:var(--dan-soft)}
+.btn-sm{padding:6px 11px;font-size:13px}
+.btn-lg{padding:12px 22px;font-size:15.5px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1)}
+.pad{padding:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill-new{background:var(--blue-soft);color:var(--blue-ink)}
+.pill-ok{background:var(--ok-soft);color:var(--ok)}
+.pill-warn{background:var(--warn-soft);color:var(--warn)}
+.pill-dan{background:var(--dan-soft);color:var(--dan)}
+.pill-mute{background:var(--surface-2);color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+.chip:hover{border-color:var(--blue);color:var(--blue-ink)}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
+.tag-soft{display:inline-block;background:var(--surface-2);color:var(--ink-2);border-radius:5px;padding:2px 7px;font-size:11.5px}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.lab{font-size:13px;font-weight:600;color:var(--ink-2)}
+.hint{font-size:12px;color:var(--muted)}
+.input,.select,.textarea{width:100%;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-s);padding:9px 11px;font-size:14px}
+.textarea{min-height:92px;resize:vertical}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line-2);background:var(--surface);border-radius:var(--r-s);padding:11px 13px;cursor:pointer}
+.opt:hover{border-color:var(--blue)}
+.opt[data-on="1"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue)}
+.opt input{margin-top:3px;accent-color:var(--blue)}
+.opt .t{font-weight:600;font-size:14px}
+.err{color:var(--dan);font-size:12.5px}
+.input[data-bad="1"],.select[data-bad="1"]{border-color:var(--dan)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:start;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 13px;background:var(--surface-2);border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.mono,td>.mono{white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr[data-click]{cursor:pointer}
+tbody tr[data-click]:hover{background:var(--surface-2)}
+
+/* ---------- client site ---------- */
+.site{display:flex;flex-direction:column;min-height:60vh}
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--surface);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr-in{max-width:1180px;margin-inline:auto;padding-inline:16px;padding-block:11px;display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:0 0 auto}
+.brand .mk{width:34px;height:34px;border-radius:8px;background:var(--navy);display:grid;place-items:center;color:#fff;flex:0 0 auto}
+.brand .nm{font-weight:700;font-size:16px;letter-spacing:-.02em;line-height:1.1}
+.brand .sl{font-size:10.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.nav{display:flex;gap:2px;margin-inline-start:auto;flex-wrap:wrap}
+.nav button{background:none;border:0;padding:7px 11px;border-radius:7px;cursor:pointer;font-size:14px;color:var(--ink-2)}
+.nav button:hover{background:var(--surface-2);color:var(--ink)}
+.nav button[aria-current="page"]{color:var(--blue-ink);font-weight:600;background:var(--blue-soft)}
+.cartbtn{position:relative}
+@media(max-width:760px){.brand{flex:1 1 auto;min-width:0}.nav{order:3;width:100%;margin-inline-start:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}.nav button{white-space:nowrap}}
+.cartbtn .cnt{position:absolute;top:-4px;inset-inline-end:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--dan);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:16px;width:100%}
+.sec{padding-block:clamp(38px,6vw,64px)}
+.sec-h{display:flex;flex-direction:column;gap:8px;margin-bottom:26px;max-width:62ch}
+
+.hero{background:linear-gradient(180deg,var(--surface) 0%,var(--surface) 55%,var(--bg) 100%);border-bottom:1px solid var(--line)}
+.hero-g{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:38px;align-items:center;padding-block:clamp(30px,5vw,58px)}
+.hero p.lead{font-size:clamp(15px,1.5vw,17px);color:var(--ink-2);max-width:56ch}
+.hero .cta{display:flex;flex-wrap:wrap;gap:10px}
+.feebar{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent);border-radius:var(--r-s);padding:11px 13px;font-size:13px;color:var(--ink-2)}
+.feebar b{color:var(--ink)}
+.plan{width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:var(--sh-2)}
+@media(max-width:860px){.hero-g{grid-template-columns:1fr;gap:26px}}
+
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px}
+.svc .card{display:flex;flex-direction:column;gap:9px;padding:18px}
+.svc .ic{width:40px;height:40px;border-radius:9px;background:var(--blue-soft);color:var(--blue-ink);display:grid;place-items:center}
+.svc ul{margin:0;padding-inline-start:18px;color:var(--ink-2);font-size:13.5px;display:flex;flex-direction:column;gap:3px}
+.svc .from{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}
+.svc .from b{color:var(--ink);font-size:15px}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:14px;counter-reset:s}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;position:relative;display:flex;flex-direction:column;gap:6px}
+.step .n{font-family:var(--ff-mono);font-size:12px;color:#fff;background:var(--navy);width:24px;height:24px;border-radius:6px;display:grid;place-items:center}
+.step h3{font-size:15.5px}
+.step p{font-size:13.5px;color:var(--ink-2)}
+
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:14px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.pcard .art{aspect-ratio:4/3;background:var(--surface-2);display:grid;place-items:center;border-bottom:1px solid var(--line);max-width:100%}
+.pcard .bd{padding:12px 13px;display:flex;flex-direction:column;gap:5px;flex:1}
+.pcard .bd .br{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pcard .nm{font-weight:600;font-size:14px;line-height:1.3}
+.pcard .pr{font-weight:700;font-size:16px;margin-top:auto;padding-top:6px}
+.pcard .acts{display:flex;gap:6px;padding:0 13px 13px}
+.pcard .acts .btn{flex:1}
+
+.filters{display:flex;flex-direction:column;gap:16px}
+.catalog{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:820px){.catalog{grid-template-columns:1fr}}
+.fbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.fbox h4{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.frow{display:flex;flex-wrap:wrap;gap:6px}
+
+.footer{background:var(--navy);color:var(--on-navy);margin-top:auto}
+.footer a{color:#B9D6F0}
+.footer-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:26px;padding-block:38px}
+.footer h4{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#8FB6D8;margin-bottom:10px;font-weight:600}
+.footer .li{font-size:13.5px;color:#D5E6F5;display:block;padding-block:3px}
+.footer .bot{border-top:1px solid var(--navy-line);padding-block:14px;font-size:12px;color:#8FB6D8;display:flex;flex-wrap:wrap;gap:8px 16px}
+
+/* ---------- drawer / modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(8,20,32,.5);z-index:80;display:flex;justify-content:flex-end}
+.scrim.center{align-items:center;justify-content:center;padding:16px}
+.drawer{width:min(420px,100%);background:var(--bg);height:100%;display:flex;flex-direction:column;box-shadow:var(--sh-2)}
+.modal{width:min(720px,100%);max-height:min(88vh,860px);background:var(--bg);border-radius:var(--r-l);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-2)}
+.dhead{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
+.dhead h3{flex:1;font-size:16px}
+.dbody{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.dfoot{border-top:1px solid var(--line);background:var(--surface);padding:13px 16px;display:flex;gap:10px;flex-wrap:wrap}
+.x{background:none;border:0;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:4px 8px;border-radius:6px}
+.x:hover{background:var(--surface-2);color:var(--ink)}
+
+.line{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:10px}
+.line .art{width:54px;height:54px;border-radius:6px;background:var(--surface-2);display:grid;place-items:center;flex:0 0 auto}
+.qty{display:inline-flex;border:1px solid var(--line-2);border-radius:6px;overflow:hidden}
+.qty button{background:var(--surface);border:0;width:28px;height:28px;cursor:pointer;color:var(--ink-2)}
+.qty button:hover{background:var(--surface-2);color:var(--ink)}
+.qty span{min-width:30px;display:grid;place-items:center;font-size:13.5px;border-inline:1px solid var(--line-2);font-variant-numeric:tabular-nums}
+
+/* ---------- admin ---------- */
+.admin{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:78vh;background:var(--bg)}
+.side{background:var(--navy);color:var(--on-navy);display:flex;flex-direction:column;gap:4px;padding:16px 12px}
+.side .bd{display:flex;align-items:center;gap:10px;padding:4px 8px 14px;border-bottom:1px solid var(--navy-line);margin-bottom:10px}
+.side .bd .mk{width:32px;height:32px;border-radius:8px;background:#fff;color:var(--navy);display:grid;place-items:center}
+.side .bd .nm{font-weight:700;font-size:14.5px;line-height:1.15}
+.side .bd .sl{font-size:10.5px;color:#8FB6D8;letter-spacing:.06em;text-transform:uppercase}
+.side nav{display:flex;flex-direction:column;gap:2px}
+.side nav button{display:flex;align-items:center;gap:10px;background:none;border:0;color:#C3DBF0;padding:9px 11px;border-radius:7px;cursor:pointer;font-size:14px;text-align:start;width:100%}
+.side nav button:hover{background:var(--navy-2);color:#fff}
+.side nav button[aria-current="page"]{background:#fff;color:var(--navy);font-weight:600}
+.side nav .b{margin-inline-start:auto;background:var(--dan);color:#fff;font-size:11px;font-weight:700;border-radius:9px;padding:1px 6px;min-width:18px;text-align:center}
+.side nav button[aria-current="page"] .b{background:var(--dan)}
+.side .ft{margin-top:auto;font-size:11.5px;color:#7FA8CC;padding:10px 8px 0;border-top:1px solid var(--navy-line)}
+@media(max-width:820px){
+  .admin{grid-template-columns:1fr}
+  .side{flex-direction:row;align-items:center;gap:8px;overflow-x:auto;padding:10px 12px}
+  .side .bd,.side .ft{display:none}
+  .side nav{flex-direction:row;gap:6px}
+  .side nav button{white-space:nowrap;padding:7px 12px}
+}
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+.topbar h2{font-size:19px;flex:0 0 auto}
+.topbar .sp{flex:1 1 20px}
+.bell{position:relative;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer}
+.bell .cnt{position:absolute;top:-5px;inset-inline-end:-5px;min-width:18px;height:18px;border-radius:9px;background:var(--dan);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.who{display:flex;align-items:center;gap:9px;font-size:13px}
+.who .av{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:12.5px;font-weight:600}
+.content{padding:20px;display:flex;flex-direction:column;gap:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:13px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px;display:flex;flex-direction:column;gap:3px;border-top:3px solid var(--blue)}
+.kpi.k-warn{border-top-color:var(--warn)}.kpi.k-ok{border-top-color:var(--ok)}.kpi.k-dan{border-top-color:var(--dan)}
+.kpi .l{font-size:12.5px;color:var(--muted)}
+.kpi .v{font-size:29px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px;color:var(--ink-2)}
+.panes{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:900px){.panes{grid-template-columns:1fr}}
+.pane{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.pane>header{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.pane>header h3{font-size:14.5px;flex:1}
+.pane .bd{padding:15px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.toolbar .search{flex:1 1 180px;min-width:150px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;font-size:13.5px;align-items:baseline}
+.kv dt{color:var(--muted);white-space:nowrap}
+.kv dd{margin:0;color:var(--ink)}
+.tl{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:auto 1fr;gap:11px;padding-bottom:13px;position:relative}
+.tl li::before{content:"";position:absolute;inset-inline-start:5px;top:14px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child{padding-bottom:0}
+.tl li:last-child::before{display:none}
+.tl .dot{width:12px;height:12px;border-radius:50%;background:var(--line-2);margin-top:4px;z-index:1;border:2px solid var(--surface)}
+.tl li[data-on="1"] .dot{background:var(--blue)}
+.tl .t{font-size:13.5px;font-weight:600}
+.tl .m{font-size:12px;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;gap:9px;height:130px;padding-top:6px}
+.bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;text-align:center}
+.bars .b i{display:block;background:var(--blue);border-radius:3px 3px 0 0;min-height:3px}
+.bars .b em{font-style:normal;font-size:11px;color:var(--muted)}
+.bars .b b{font-size:12px;font-variant-numeric:tabular-nums}
+.notif{position:absolute;inset-inline-end:0;top:calc(100% + 8px);width:min(330px,88vw);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-2);z-index:60;overflow:hidden}
+.notif .it{padding:11px 13px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px;cursor:pointer;text-align:start;background:none;border-inline:0;border-top:0;width:100%}
+.notif .it:hover{background:var(--surface-2)}
+.notif .it[data-unread="1"]{background:var(--blue-soft)}
+.bellwrap{position:relative}
+
+.toasts{position:fixed;inset-block-end:16px;inset-inline-end:16px;z-index:200;display:flex;flex-direction:column;gap:9px;max-width:min(340px,92vw)}
+.toast{background:var(--navy);color:var(--on-navy);border-radius:var(--r-s);padding:11px 14px;box-shadow:var(--sh-2);font-size:13.5px;display:flex;gap:9px;align-items:flex-start;animation:tin .25s ease}
+.toast b{display:block;font-size:13.5px}
+.toast .m{font-size:12.5px;color:#B9D6F0}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.note{background:var(--blue-soft);border:1px solid color-mix(in srgb,var(--blue) 28%,transparent);border-radius:var(--r-s);padding:12px 14px;font-size:13.5px;color:var(--ink-2)}
+.ok-box{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 34%,transparent);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
+.stepper{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.stepper .s{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);padding:7px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.stepper .s b{width:20px;height:20px;border-radius:50%;background:var(--surface-3);color:var(--ink-2);display:grid;place-items:center;font-size:11.5px}
+.stepper .s[data-on="1"]{border-color:var(--blue);color:var(--blue-ink);background:var(--blue-soft)}
+.stepper .s[data-on="1"] b{background:var(--blue);color:#fff}
+.stepper .s[data-done="1"] b{background:var(--ok);color:#fff}
+.recap{background:var(--surface-2);border-radius:var(--r-s);padding:13px 15px}
+.stat{display:flex;gap:26px;flex-wrap:wrap}
+.stat div{display:flex;flex-direction:column}
+.stat .v{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.stat .l{font-size:12.5px;color:var(--muted)}
+</style>
+<div id="app"></div>
+<div class="toasts" id="toasts"></div>
+<div id="layer"></div>
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   1. i18n — toutes les chaînes d'interface, FR + AR
+   ============================================================ */
+const T={
+ /* démo */
+ demo_tag:{fr:"MAQUETTE",ar:"نموذج"},
+ demo_note:{fr:"Nom de l'entreprise provisoire — modifiable dans Back-office › Réglages",ar:"اسم الشركة مؤقت — يمكن تغييره في لوحة التحكم › الإعدادات"},
+ demo_client:{fr:"Site client",ar:"موقع الزبون"},
+ demo_admin:{fr:"Back-office",ar:"لوحة التحكم"},
+ demo_reset:{fr:"Réinitialiser la démo",ar:"إعادة ضبط النموذج"},
+
+ /* navigation */
+ nav_home:{fr:"Accueil",ar:"الرئيسية"},
+ nav_services:{fr:"Services",ar:"الخدمات"},
+ nav_products:{fr:"Produits",ar:"المنتجات"},
+ nav_quote:{fr:"Devis",ar:"طلب عرض سعر"},
+ nav_track:{fr:"Suivi",ar:"تتبع الطلب"},
+ nav_contact:{fr:"Contact",ar:"اتصل بنا"},
+ nav_cart:{fr:"Panier",ar:"السلة"},
+
+ /* accueil */
+ h_eyebrow:{fr:"Installation & maintenance — Casablanca et région",ar:"التركيب والصيانة — الدار البيضاء والنواحي"},
+ h_title:{fr:"Vidéosurveillance, réseau et informatique pour votre local",ar:"المراقبة بالكاميرات والشبكات والمعلوميات لمحلكم"},
+ h_lead:{fr:"Nous installons et entretenons les caméras, les routeurs et le parc informatique des magasins, cafés, cabinets et entreprises. Étude sur site, devis détaillé, garantie 12 mois.",ar:"نقوم بتركيب وصيانة الكاميرات والراوترات وأجهزة المعلوميات للمحلات والمقاهي والمكاتب والشركات. دراسة في عين المكان، عرض سعر مفصل، وضمان 12 شهرا."},
+ h_cta1:{fr:"Demander un devis",ar:"اطلب عرض سعر"},
+ h_cta2:{fr:"Voir le catalogue",ar:"تصفح المنتجات"},
+ h_fee:{fr:"Déplacement pour l'état des lieux : <b>{fee}</b> à {city}. Ce montant est déduit du devis si les travaux sont confirmés.",ar:"مصاريف التنقل لمعاينة المكان: <b>{fee}</b> في {city}. يُخصم هذا المبلغ من عرض السعر عند تأكيد الأشغال."},
+ h_planlabel:{fr:"Plan de couverture type — magasin 120 m²",ar:"مثال لخطة التغطية — محل 120 م²"},
+
+ s_title:{fr:"Ce que nous faisons",ar:"ما الذي نقوم به"},
+ s_lead:{fr:"Quatre métiers, une seule équipe : de l'étude au dépannage.",ar:"أربعة تخصصات وفريق واحد: من الدراسة إلى الإصلاح."},
+ s_cam_t:{fr:"Vidéosurveillance",ar:"المراقبة بالكاميرات"},
+ s_cam_1:{fr:"Étude des angles et du nombre de caméras",ar:"دراسة الزوايا وعدد الكاميرات"},
+ s_cam_2:{fr:"Caméras IP, analogiques, PTZ, intérieur et extérieur",ar:"كاميرات IP، تناظرية، PTZ، داخلية وخارجية"},
+ s_cam_3:{fr:"NVR/DVR, stockage et accès à distance sur téléphone",ar:"NVR/DVR، التخزين والولوج عن بعد عبر الهاتف"},
+ s_net_t:{fr:"Réseau & internet",ar:"الشبكات والإنترنت"},
+ s_net_1:{fr:"Câblage structuré Cat6, baies et goulottes",ar:"كابلاج مهيكل Cat6، خزانات ومجاري"},
+ s_net_2:{fr:"Routeurs, switchs PoE, Wi-Fi multi-points",ar:"راوترات، سويتشات PoE، واي فاي متعدد النقاط"},
+ s_net_3:{fr:"Réseau invité, filtrage et supervision",ar:"شبكة للزوار، تصفية ومراقبة"},
+ s_it_t:{fr:"Informatique & bureautique",ar:"المعلوميات والمكتبيات"},
+ s_it_1:{fr:"Postes de travail, serveurs, imprimantes réseau",ar:"حواسيب، خوادم، طابعات شبكية"},
+ s_it_2:{fr:"Sauvegarde, antivirus, messagerie professionnelle",ar:"نسخ احتياطي، مضاد فيروسات، بريد مهني"},
+ s_it_3:{fr:"Contrat de maintenance mensuel ou à l'intervention",ar:"عقد صيانة شهري أو عند كل تدخل"},
+ s_acc_t:{fr:"Contrôle d'accès",ar:"التحكم في الولوج"},
+ s_acc_1:{fr:"Pointeuses biométriques et badges",ar:"أجهزة البصمة والبطاقات"},
+ s_acc_2:{fr:"Interphones vidéo et gâches électriques",ar:"إنتركوم فيديو وأقفال كهربائية"},
+ s_acc_3:{fr:"Barrières et portails automatiques",ar:"حواجز وبوابات أوتوماتيكية"},
+ s_from:{fr:"À partir de",ar:"ابتداء من"},
+ s_more:{fr:"Détail du service",ar:"تفاصيل الخدمة"},
+
+ p_title:{fr:"Comment ça se passe",ar:"كيف تتم العملية"},
+ p_lead:{fr:"Quatre étapes, du premier appel à la mise en service.",ar:"أربع مراحل، من أول اتصال إلى التشغيل."},
+ p1_t:{fr:"Vous décrivez le besoin",ar:"تصفون حاجتكم"},
+ p1_d:{fr:"Formulaire en ligne ou appel. Adresse, type de local, ce que vous voulez couvrir.",ar:"استمارة على الموقع أو اتصال هاتفي. العنوان، نوع المحل، وما تريدون تغطيته."},
+ p2_t:{fr:"État des lieux sur site",ar:"معاينة في عين المكان"},
+ p2_d:{fr:"Un technicien se déplace, relève les distances et les points d'alimentation. Frais de déplacement facturés d'avance.",ar:"يتنقل تقني لأخذ المقاسات ونقاط التغذية الكهربائية. تُؤدى مصاريف التنقل مسبقا."},
+ p3_t:{fr:"Devis détaillé sous 48 h",ar:"عرض سعر مفصل خلال 48 ساعة"},
+ p3_d:{fr:"Matériel ligne par ligne, main-d'œuvre, délai. Sans engagement.",ar:"المعدات بندا بندا، اليد العاملة، والأجل. بدون التزام."},
+ p4_t:{fr:"Installation & garantie",ar:"التركيب والضمان"},
+ p4_d:{fr:"Pose, configuration, formation de vos équipes. Garantie 12 mois pièces et main-d'œuvre.",ar:"التركيب، الإعداد، وتكوين فريقكم. ضمان 12 شهرا على القطع واليد العاملة."},
+
+ f_title:{fr:"Produits en vedette",ar:"منتجات مختارة"},
+ f_lead:{fr:"Le matériel que nous installons le plus. Prix indicatifs, hors pose.",ar:"المعدات الأكثر تركيبا لدينا. أثمنة إرشادية، بدون التركيب."},
+ f_all:{fr:"Tout le catalogue",ar:"كل المنتجات"},
+ sect_title:{fr:"Ils nous font confiance",ar:"يثقون بنا"},
+ sect_lead:{fr:"Des installations livrées dans ces secteurs.",ar:"تركيبات منجزة في هذه القطاعات."},
+ st_1:{fr:"installations livrées",ar:"تركيبة منجزة"},
+ st_2:{fr:"villes couvertes",ar:"مدن مغطاة"},
+ st_3:{fr:"délai moyen de devis",ar:"متوسط أجل عرض السعر"},
+ cta_t:{fr:"Un projet, une panne, une question de prix ?",ar:"مشروع، عطل، أو سؤال عن الثمن؟"},
+ cta_d:{fr:"Décrivez votre local en deux minutes. Nous vous rappelons sous 24 h ouvrées.",ar:"صفوا محلكم في دقيقتين. نعاود الاتصال بكم خلال 24 ساعة عمل."},
+
+ /* produits */
+ cat_title:{fr:"Catalogue",ar:"المنتجات"},
+ cat_lead:{fr:"Prix TTC en dirhams, hors installation. Aucun paiement en ligne : vous composez votre panier, nous vous rappelons pour confirmer la disponibilité et le prix posé.",ar:"الأثمنة بالدرهم شاملة الضريبة، بدون التركيب. لا يوجد أداء عبر الإنترنت: تختارون منتجاتكم ونتصل بكم لتأكيد التوفر وثمن التركيب."},
+ f_cat:{fr:"Catégorie",ar:"الصنف"},
+ f_brand:{fr:"Marque",ar:"العلامة"},
+ f_price:{fr:"Prix maximum",ar:"أقصى ثمن"},
+ f_avail:{fr:"Disponibilité",ar:"التوفر"},
+ f_instock:{fr:"En stock seulement",ar:"المتوفر فقط"},
+ f_all2:{fr:"Toutes",ar:"الكل"},
+ f_clear:{fr:"Effacer les filtres",ar:"مسح الفلاتر"},
+ f_search:{fr:"Rechercher un produit, une référence…",ar:"ابحث عن منتج أو مرجع…"},
+ f_sort:{fr:"Trier",ar:"ترتيب"},
+ sort_new:{fr:"Les plus demandés",ar:"الأكثر طلبا"},
+ sort_asc:{fr:"Prix croissant",ar:"الثمن تصاعديا"},
+ sort_desc:{fr:"Prix décroissant",ar:"الثمن تنازليا"},
+ n_found:{fr:"{n} produit(s)",ar:"{n} منتج"},
+ none_found:{fr:"Aucun produit ne correspond à ces filtres.",ar:"لا يوجد منتج يطابق هذه الفلاتر."},
+ add:{fr:"Ajouter",ar:"أضف"},
+ details:{fr:"Détails",ar:"التفاصيل"},
+ instock:{fr:"En stock",ar:"متوفر"},
+ lowstock:{fr:"Dernières pièces",ar:"آخر القطع"},
+ outstock:{fr:"Sur commande",ar:"عند الطلب"},
+ ref:{fr:"Réf.",ar:"المرجع"},
+ specs:{fr:"Caractéristiques",ar:"الخصائص"},
+ withinstall:{fr:"Je veux aussi l'installation par vos soins",ar:"أريد كذلك التركيب من طرفكم"},
+ withinstall_h:{fr:"Chiffrée dans le devis après l'état des lieux.",ar:"تُحتسب في عرض السعر بعد المعاينة."},
+ addcart:{fr:"Ajouter au panier",ar:"أضف إلى السلة"},
+ added:{fr:"Ajouté au panier",ar:"أضيف إلى السلة"},
+
+ /* panier */
+ cart_t:{fr:"Votre panier",ar:"سلتكم"},
+ cart_empty:{fr:"Votre panier est vide.",ar:"سلتكم فارغة."},
+ cart_empty_d:{fr:"Ajoutez du matériel depuis le catalogue, puis demandez un devis en une minute.",ar:"أضيفوا معدات من الكتالوج ثم اطلبوا عرض سعر في دقيقة."},
+ cart_go:{fr:"Parcourir le catalogue",ar:"تصفح الكتالوج"},
+ cart_sub:{fr:"Total matériel indicatif",ar:"المجموع الإرشادي للمعدات"},
+ cart_inst:{fr:"Installation demandée",ar:"التركيب مطلوب"},
+ cart_note:{fr:"Aucun paiement sur le site. Vous serez contacté sous 24 h ouvrées pour confirmer la disponibilité, le prix posé et le délai.",ar:"لا يوجد أداء عبر الموقع. سيتم الاتصال بكم خلال 24 ساعة عمل لتأكيد التوفر وثمن التركيب والأجل."},
+ cart_req:{fr:"Demander un devis pour ce panier",ar:"اطلب عرض سعر لهذه السلة"},
+ cart_clear:{fr:"Vider",ar:"إفراغ"},
+ items:{fr:"article(s)",ar:"منتج"},
+
+ /* formulaire devis */
+ q_title:{fr:"Demande de devis",ar:"طلب عرض سعر"},
+ q_lead:{fr:"Plus vos réponses sont précises, plus le devis est juste. Trois minutes.",ar:"كلما كانت أجوبتكم دقيقة كان عرض السعر أقرب للواقع. ثلاث دقائق."},
+ q_s1:{fr:"Votre besoin",ar:"حاجتكم"},
+ q_s2:{fr:"Le site",ar:"المكان"},
+ q_s3:{fr:"Vous contacter",ar:"كيف نتصل بكم"},
+ q_type:{fr:"Type de demande",ar:"نوع الطلب"},
+ ty_install:{fr:"Nouvelle installation",ar:"تركيب جديد"},
+ ty_install_d:{fr:"Caméras, réseau ou informatique à poser.",ar:"كاميرات أو شبكة أو معلوميات للتركيب."},
+ ty_prod:{fr:"Devis matériel",ar:"عرض سعر للمعدات"},
+ ty_prod_d:{fr:"Vous savez déjà ce que vous voulez acheter.",ar:"تعرفون مسبقا ما تريدون شراءه."},
+ ty_maint:{fr:"Contrat de maintenance",ar:"عقد صيانة"},
+ ty_maint_d:{fr:"Suivi régulier d'une installation existante.",ar:"متابعة منتظمة لتركيبة موجودة."},
+ ty_fix:{fr:"Dépannage",ar:"إصلاح عطل"},
+ ty_fix_d:{fr:"Quelque chose ne marche plus.",ar:"شيء ما توقف عن العمل."},
+ q_svc:{fr:"Service concerné",ar:"الخدمة المعنية"},
+ q_desc:{fr:"Décrivez votre besoin",ar:"صفوا حاجتكم"},
+ q_desc_ph:{fr:"Ex. : magasin de 90 m² sur deux niveaux, je veux couvrir la caisse, l'entrée et la réserve.",ar:"مثال: محل مساحته 90 م² في طابقين، أريد تغطية الصندوق والمدخل والمستودع."},
+ q_city:{fr:"Ville",ar:"المدينة"},
+ q_addr:{fr:"Adresse complète du site",ar:"العنوان الكامل للمكان"},
+ q_addr_ph:{fr:"Rue, numéro, quartier, étage, repère",ar:"الشارع، الرقم، الحي، الطابق، علامة مميزة"},
+ q_addr_h:{fr:"Le technicien en a besoin pour l'état des lieux. Elle n'apparaît nulle part publiquement.",ar:"التقني يحتاجه للمعاينة. لن يظهر في أي مكان علني."},
+ q_local:{fr:"Type de local",ar:"نوع المحل"},
+ q_surf:{fr:"Surface approximative (m²)",ar:"المساحة التقريبية (م²)"},
+ q_rooms:{fr:"Nombre de pièces / zones",ar:"عدد الغرف أو المناطق"},
+ q_cams:{fr:"Caméras souhaitées (estimation)",ar:"عدد الكاميرات المطلوبة (تقديري)"},
+ q_place:{fr:"Emplacement",ar:"موقع التركيب"},
+ pl_in:{fr:"Intérieur",ar:"داخلي"},
+ pl_out:{fr:"Extérieur",ar:"خارجي"},
+ pl_both:{fr:"Les deux",ar:"الاثنان معا"},
+ q_net:{fr:"Y a-t-il une connexion internet sur place ?",ar:"هل يوجد اتصال بالإنترنت في المكان؟"},
+ q_exist:{fr:"Une installation existe déjà ?",ar:"هل توجد تركيبة سابقة؟"},
+ yes:{fr:"Oui",ar:"نعم"},
+ no:{fr:"Non",ar:"لا"},
+ dunno:{fr:"Je ne sais pas",ar:"لا أعرف"},
+ q_delay:{fr:"Délai souhaité",ar:"الأجل المرغوب"},
+ dl_urgent:{fr:"Urgent (48 h)",ar:"مستعجل (48 ساعة)"},
+ dl_week:{fr:"Cette semaine",ar:"هذا الأسبوع"},
+ dl_month:{fr:"Ce mois-ci",ar:"هذا الشهر"},
+ dl_plan:{fr:"Je prépare un budget",ar:"أحضّر ميزانية"},
+ q_budget:{fr:"Budget approximatif (facultatif)",ar:"الميزانية التقريبية (اختياري)"},
+ q_name:{fr:"Nom et prénom",ar:"الاسم الكامل"},
+ q_comp:{fr:"Entreprise / enseigne (facultatif)",ar:"الشركة أو اسم المحل (اختياري)"},
+ q_chan:{fr:"Par quel moyen préférez-vous être contacté ?",ar:"بأي وسيلة تفضلون أن نتصل بكم؟"},
+ ch_phone:{fr:"Téléphone",ar:"الهاتف"},
+ ch_wa:{fr:"WhatsApp",ar:"واتساب"},
+ ch_mail:{fr:"E-mail",ar:"البريد الإلكتروني"},
+ q_phone:{fr:"Numéro de téléphone",ar:"رقم الهاتف"},
+ q_mail:{fr:"Adresse e-mail",ar:"البريد الإلكتروني"},
+ q_slot:{fr:"Créneau de rappel préféré",ar:"الوقت المفضل للاتصال"},
+ sl_am:{fr:"Matin (9 h – 12 h)",ar:"صباحا (9 – 12)"},
+ sl_pm:{fr:"Après-midi (14 h – 18 h)",ar:"بعد الزوال (14 – 18)"},
+ sl_any:{fr:"Peu importe",ar:"لا يهم"},
+ q_ok:{fr:"J'accepte d'être contacté au sujet de cette demande.",ar:"أوافق على أن يتم الاتصال بي بخصوص هذا الطلب."},
+ q_next:{fr:"Continuer",ar:"متابعة"},
+ q_back:{fr:"Retour",ar:"رجوع"},
+ q_send:{fr:"Envoyer la demande",ar:"إرسال الطلب"},
+ q_recap:{fr:"Récapitulatif",ar:"ملخص الطلب"},
+ q_feeline:{fr:"Frais de déplacement — état des lieux",ar:"مصاريف التنقل — المعاينة"},
+ q_feenote:{fr:"À régler au technicien le jour de la visite, déduits du devis si les travaux sont confirmés.",ar:"تُؤدى للتقني يوم الزيارة، وتُخصم من عرض السعر عند تأكيد الأشغال."},
+ q_feeask:{fr:"Sur devis pour cette ville",ar:"حسب عرض السعر لهذه المدينة"},
+ err_req:{fr:"Ce champ est obligatoire.",ar:"هذا الحقل إجباري."},
+ err_mail:{fr:"Adresse e-mail invalide.",ar:"البريد الإلكتروني غير صحيح."},
+ err_phone:{fr:"Numéro invalide (ex. 06 12 34 56 78).",ar:"رقم غير صحيح (مثال: 06 12 34 56 78)."},
+ err_fix:{fr:"Corrigez les champs en rouge.",ar:"صححوا الحقول المظللة بالأحمر."},
+
+ /* confirmation */
+ cf_t:{fr:"Demande envoyée",ar:"تم إرسال الطلب"},
+ cf_ref:{fr:"Votre référence",ar:"مرجع طلبكم"},
+ cf_24:{fr:"Vous serez contacté sous 24 h ouvrées par {chan} au {contact}.",ar:"سيتم الاتصال بكم خلال 24 ساعة عمل عبر {chan} على {contact}."},
+ cf_keep:{fr:"Gardez cette référence : elle permet de suivre votre demande depuis la page Suivi.",ar:"احتفظوا بهذا المرجع: يمكنكم به تتبع طلبكم من صفحة التتبع."},
+ cf_track:{fr:"Suivre ma demande",ar:"تتبع طلبي"},
+ cf_home:{fr:"Revenir à l'accueil",ar:"العودة إلى الرئيسية"},
+ cf_demo:{fr:"Dans cette maquette, la demande vient d'apparaître dans le back-office. Basculez en haut de page pour la voir arriver.",ar:"في هذا النموذج، ظهر الطلب للتو في لوحة التحكم. بدّلوا من أعلى الصفحة لرؤيته."},
+
+ /* suivi */
+ tr_t:{fr:"Suivi de demande",ar:"تتبع الطلب"},
+ tr_lead:{fr:"Entrez la référence reçue lors de votre demande, ou le numéro de téléphone que vous avez laissé.",ar:"أدخلوا المرجع الذي توصلتم به، أو رقم الهاتف الذي تركتموه."},
+ tr_ph:{fr:"DEV-2026-0142 ou 06 61 …",ar:"DEV-2026-0142 أو 06 61 …"},
+ tr_btn:{fr:"Rechercher",ar:"بحث"},
+ tr_none:{fr:"Aucune demande trouvée pour « {q} ». Vérifiez la référence ou appelez-nous.",ar:"لم يتم العثور على أي طلب بـ « {q} ». تحققوا من المرجع أو اتصلوا بنا."},
+ tr_demo:{fr:"Pour la démonstration, essayez {r}.",ar:"للتجربة، جرّبوا {r}."},
+ tr_state:{fr:"État actuel",ar:"الحالة الحالية"},
+ tr_hist:{fr:"Historique",ar:"سجل الطلب"},
+ tr_next:{fr:"Prochaine étape",ar:"الخطوة التالية"},
+
+ /* contact */
+ ct_t:{fr:"Nous contacter",ar:"اتصلوا بنا"},
+ ct_lead:{fr:"Un devis passe par le formulaire dédié — il nous évite trois allers-retours. Pour tout le reste, voici comment nous joindre.",ar:"طلب عرض السعر يمر عبر الاستمارة المخصصة — فهي توفر علينا عدة اتصالات. لأي شيء آخر، إليكم وسائل التواصل."},
+ ct_addr:{fr:"Adresse",ar:"العنوان"},
+ ct_hours:{fr:"Horaires",ar:"أوقات العمل"},
+ ct_zone:{fr:"Zones d'intervention",ar:"مناطق التدخل"},
+ ct_copy:{fr:"Copier",ar:"نسخ"},
+ ct_copied:{fr:"Copié",ar:"تم النسخ"},
+ ct_msg:{fr:"Message rapide",ar:"رسالة سريعة"},
+ ct_send:{fr:"Envoyer",ar:"إرسال"},
+ ct_quote:{fr:"Je veux un devis",ar:"أريد عرض سعر"},
+ ct_fees:{fr:"Frais de déplacement par ville",ar:"مصاريف التنقل حسب المدينة"},
+ ct_feesd:{fr:"Facturés une seule fois pour l'état des lieux, puis déduits du devis si vous confirmez les travaux.",ar:"تُؤدى مرة واحدة للمعاينة، ثم تُخصم من عرض السعر إذا أكدتم الأشغال."},
+
+ /* footer */
+ ft_nav:{fr:"Le site",ar:"الموقع"},
+ ft_svc:{fr:"Nos services",ar:"خدماتنا"},
+ ft_ct:{fr:"Contact",ar:"الاتصال"},
+ ft_demo:{fr:"Maquette de démonstration — contenu et chiffres fictifs.",ar:"نموذج للعرض — المحتوى والأرقام غير حقيقية."},
+
+ /* ===== admin ===== */
+ a_dash:{fr:"Tableau de bord",ar:"لوحة القيادة"},
+ a_req:{fr:"Demandes",ar:"الطلبات"},
+ a_cat:{fr:"Catalogue",ar:"الكتالوج"},
+ a_int:{fr:"Interventions",ar:"التدخلات"},
+ a_set:{fr:"Réglages",ar:"الإعدادات"},
+ a_role:{fr:"Administrateur",ar:"مدير"},
+ a_new:{fr:"Nouvelles demandes",ar:"طلبات جديدة"},
+ a_new_d:{fr:"à traiter aujourd'hui",ar:"للمعالجة اليوم"},
+ a_pend:{fr:"Devis en attente",ar:"عروض أسعار معلقة"},
+ a_pend_d:{fr:"envoyés, sans réponse",ar:"مُرسلة بدون جواب"},
+ a_today:{fr:"Interventions du jour",ar:"تدخلات اليوم"},
+ a_today_d:{fr:"planifiées",ar:"مبرمجة"},
+ a_low:{fr:"Stock bas",ar:"مخزون منخفض"},
+ a_low_d:{fr:"articles à réapprovisionner",ar:"منتجات تحتاج تموينا"},
+ a_recent:{fr:"Demandes récentes",ar:"آخر الطلبات"},
+ a_week:{fr:"Demandes des 7 derniers jours",ar:"طلبات آخر 7 أيام"},
+ a_bytype:{fr:"Répartition par type",ar:"التوزيع حسب النوع"},
+ a_planning:{fr:"Planning du jour",ar:"برنامج اليوم"},
+ a_seeall:{fr:"Tout voir",ar:"عرض الكل"},
+ a_search_req:{fr:"Réf., client, ville, téléphone…",ar:"المرجع، الزبون، المدينة، الهاتف…"},
+ a_search_prod:{fr:"Nom, réf. ou marque…",ar:"الاسم، المرجع أو العلامة…"},
+ th_ref:{fr:"Réf.",ar:"المرجع"},
+ th_client:{fr:"Client",ar:"الزبون"},
+ th_type:{fr:"Type",ar:"النوع"},
+ th_city:{fr:"Ville",ar:"المدينة"},
+ th_chan:{fr:"Canal",ar:"القناة"},
+ th_date:{fr:"Reçue le",ar:"تاريخ التوصل"},
+ th_status:{fr:"Statut",ar:"الحالة"},
+ th_source:{fr:"Origine",ar:"المصدر"},
+ th_prod:{fr:"Article",ar:"المنتج"},
+ th_cat:{fr:"Catégorie",ar:"الصنف"},
+ th_brand:{fr:"Marque",ar:"العلامة"},
+ th_price:{fr:"Prix",ar:"الثمن"},
+ th_stock:{fr:"Stock",ar:"المخزون"},
+ th_state:{fr:"Publié",ar:"منشور"},
+ th_act:{fr:"Actions",ar:"إجراءات"},
+ th_when:{fr:"Quand",ar:"متى"},
+ th_tech:{fr:"Technicien",ar:"التقني"},
+ th_obj:{fr:"Objet",ar:"الموضوع"},
+ src_form:{fr:"Formulaire",ar:"استمارة"},
+ src_cart:{fr:"Panier",ar:"سلة"},
+ st_new:{fr:"Nouvelle",ar:"جديد"},
+ st_contacted:{fr:"Contactée",ar:"تم الاتصال"},
+ st_visit:{fr:"Visite planifiée",ar:"معاينة مبرمجة"},
+ st_sent:{fr:"Devis envoyé",ar:"عرض سعر مُرسل"},
+ st_won:{fr:"Acceptée",ar:"مقبول"},
+ st_done:{fr:"Terminée",ar:"منتهي"},
+ st_lost:{fr:"Annulée",ar:"ملغى"},
+ f_status:{fr:"Statut",ar:"الحالة"},
+ a_all:{fr:"Toutes",ar:"الكل"},
+ a_detail:{fr:"Détail de la demande",ar:"تفاصيل الطلب"},
+ a_contactnow:{fr:"Prendre contact",ar:"الاتصال بالزبون"},
+ a_openwa:{fr:"Copier le n° WhatsApp",ar:"نسخ رقم واتساب"},
+ a_call:{fr:"Appeler",ar:"اتصال"},
+ a_mail:{fr:"Envoyer un e-mail",ar:"إرسال بريد"},
+ a_prefers:{fr:"Le client a demandé à être contacté par {chan}.",ar:"طلب الزبون أن يتم الاتصال به عبر {chan}."},
+ a_site:{fr:"Le site",ar:"المكان"},
+ a_needs:{fr:"Le besoin",ar:"الحاجة"},
+ a_cartof:{fr:"Panier du client",ar:"سلة الزبون"},
+ a_setstatus:{fr:"Changer le statut",ar:"تغيير الحالة"},
+ a_assign:{fr:"Technicien assigné",ar:"التقني المكلف"},
+ a_unassigned:{fr:"Non assigné",ar:"غير مكلف"},
+ a_notes:{fr:"Notes internes",ar:"ملاحظات داخلية"},
+ a_notes_ph:{fr:"Ce que le client a dit au téléphone, le prix annoncé, le rendez-vous…",ar:"ما قاله الزبون في الهاتف، الثمن المعلن، الموعد…"},
+ a_addnote:{fr:"Ajouter la note",ar:"إضافة الملاحظة"},
+ a_hist:{fr:"Historique",ar:"السجل"},
+ a_close:{fr:"Fermer",ar:"إغلاق"},
+ a_plan:{fr:"Planifier une intervention",ar:"برمجة تدخل"},
+ a_newprod:{fr:"Nouvel article",ar:"منتج جديد"},
+ a_editprod:{fr:"Modifier l'article",ar:"تعديل المنتج"},
+ a_namefr:{fr:"Nom (français)",ar:"الاسم (بالفرنسية)"},
+ a_namear:{fr:"Nom (arabe)",ar:"الاسم (بالعربية)"},
+ a_refh:{fr:"Référence interne",ar:"المرجع الداخلي"},
+ a_pricedh:{fr:"Prix TTC (DH)",ar:"الثمن شامل الضريبة (درهم)"},
+ a_stockq:{fr:"Quantité en stock",ar:"الكمية في المخزون"},
+ a_warr:{fr:"Garantie (mois)",ar:"الضمان (أشهر)"},
+ a_specs:{fr:"Caractéristiques (une par ligne, format « Clé : valeur »)",ar:"الخصائص (واحدة في كل سطر، بصيغة « المفتاح: القيمة »)"},
+ a_pub:{fr:"Visible sur le site",ar:"ظاهر في الموقع"},
+ a_save:{fr:"Enregistrer",ar:"حفظ"},
+ a_cancel:{fr:"Annuler",ar:"إلغاء"},
+ a_del:{fr:"Supprimer",ar:"حذف"},
+ a_delq:{fr:"Supprimer « {n} » du catalogue ?",ar:"حذف « {n} » من الكتالوج؟"},
+ a_delok:{fr:"Oui, supprimer",ar:"نعم، احذف"},
+ a_saved:{fr:"Article enregistré",ar:"تم حفظ المنتج"},
+ a_deleted:{fr:"Article supprimé",ar:"تم حذف المنتج"},
+ a_edit:{fr:"Modifier",ar:"تعديل"},
+ a_statusup:{fr:"Statut mis à jour",ar:"تم تحديث الحالة"},
+ a_noteadded:{fr:"Note ajoutée",ar:"تمت إضافة الملاحظة"},
+ a_notifs:{fr:"Notifications",ar:"الإشعارات"},
+ a_nonotif:{fr:"Rien de nouveau.",ar:"لا جديد."},
+ a_markread:{fr:"Tout marquer comme lu",ar:"تعليم الكل كمقروء"},
+ a_newreq_n:{fr:"Nouvelle demande de {name}",ar:"طلب جديد من {name}"},
+ a_company:{fr:"Identité de l'entreprise",ar:"هوية الشركة"},
+ a_cname:{fr:"Nom de l'entreprise",ar:"اسم الشركة"},
+ a_cname_h:{fr:"En attente du nom définitif. Ce champ le remplace partout sur le site.",ar:"في انتظار الاسم النهائي. هذا الحقل يعوضه في كل الموقع."},
+ a_ctag:{fr:"Accroche (sous le logo)",ar:"الشعار النصي (تحت اسم الشركة)"},
+ a_fees:{fr:"Frais de déplacement",ar:"مصاريف التنقل"},
+ a_fees_h:{fr:"Montant affiché au client avant l'envoi de sa demande, et repris sur le devis.",ar:"المبلغ الذي يُعرض على الزبون قبل إرسال طلبه، ويُدرج في عرض السعر."},
+ a_addcity:{fr:"Ajouter une ville",ar:"إضافة مدينة"},
+ a_channels:{fr:"Canaux de contact proposés",ar:"قنوات الاتصال المتاحة"},
+ a_sla:{fr:"Délai de réponse annoncé (heures)",ar:"أجل الجواب المعلن (ساعات)"},
+ a_techs:{fr:"Techniciens",ar:"التقنيون"},
+ a_settings_saved:{fr:"Réglages enregistrés",ar:"تم حفظ الإعدادات"},
+ a_nores:{fr:"Aucun résultat.",ar:"لا توجد نتائج."},
+ a_from_cart:{fr:"Demande issue du panier",ar:"طلب صادر عن السلة"},
+ a_est:{fr:"Total indicatif",ar:"المجموع الإرشادي"},
+ a_reqof:{fr:"Demande {ref}",ar:"الطلب {ref}"},
+ a_int_new:{fr:"Nouvelle intervention",ar:"تدخل جديد"},
+ a_int_done:{fr:"Marquer terminée",ar:"تعليم كمنتهي"},
+ i_sched:{fr:"Planifiée",ar:"مبرمج"},
+ i_prog:{fr:"En cours",ar:"جار"},
+ i_done:{fr:"Terminée",ar:"منتهي"},
+ today:{fr:"Aujourd'hui",ar:"اليوم"},
+ tomorrow:{fr:"Demain",ar:"غدا"},
+ dh:{fr:"DH",ar:"درهم"},
+ lang_switch:{fr:"العربية",ar:"Français"}
+};
+let LANG="fr";
+const t=(k,vars)=>{let s=(T[k]&&T[k][LANG])||k;if(vars)for(const v in vars)s=s.split("{"+v+"}").join(vars[v]);return s;};
+const L=o=>!o?"":(typeof o==="string"?o:(o[LANG]||o.fr||""));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>new Intl.NumberFormat("fr-FR").format(Math.round(n))+" "+t("dh");
+
+/* ============================================================
+   2. Icônes et illustrations
+   ============================================================ */
+const IC={
+ cam:'<rect x="2.5" y="8.5" width="14" height="7.5" rx="3.7"/><circle cx="6.6" cy="12.2" r="1.9"/><path d="M12.5 8.5V5.5h7"/><path d="M9.5 16v3.5M7 19.5h5"/>',
+ router:'<rect x="2.5" y="13" width="19" height="7" rx="1.6"/><path d="M6 16.5h.01M9 16.5h.01"/><path d="M18 16.5h1.5"/><path d="M12 13V9"/><path d="M8.6 6.6a4.8 4.8 0 0 1 6.8 0M6 4.2a8.2 8.2 0 0 1 12 0"/>',
+ shield:'<path d="M12 3 4.5 6v5.6c0 4.4 3.1 7.7 7.5 9.4 4.4-1.7 7.5-5 7.5-9.4V6z"/><path d="m9 12 2.2 2.2L15.4 10"/>',
+ wrench:'<path d="M15.8 3.6a5.2 5.2 0 0 0-6.6 6.4L3.6 15.6a2 2 0 1 0 2.8 2.8l5.6-5.6a5.2 5.2 0 0 0 6.4-6.6L15.9 9 13 9l0-2.9z"/>',
+ cart:'<circle cx="9.5" cy="19" r="1.4"/><circle cx="17.5" cy="19" r="1.4"/><path d="M2.5 3.5h2.2l2.6 11h11.1l1.9-7.7H6.2"/>',
+ phone:'<path d="M6.3 3.5h3l1.5 3.7-1.9 1.3a12 12 0 0 0 5.6 5.6l1.3-1.9 3.7 1.5v3a1.8 1.8 0 0 1-2 1.8A15.8 15.8 0 0 1 4.5 5.5a1.8 1.8 0 0 1 1.8-2z"/>',
+ mail:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6.5 9 6.2 9-6.2"/>',
+ wa:'<path d="M3.5 20.5 5 16.3a7.8 7.8 0 1 1 3 2.9z"/><path d="M9 9.2c.3 2.4 3.2 5.3 5.6 5.6l1-1.4 1.8.9-.2 1.3c-2.6.8-6.9-2.5-8.3-5.5l1.3-.5z" fill="currentColor" stroke="none"/>',
+ check:'<path d="m4.5 12.5 4.5 4.5 10.5-11"/>',
+ chev:'<path d="m9 5 7 7-7 7"/>',
+ bell:'<path d="M6 9a6 6 0 1 1 12 0c0 4 1.5 5.5 1.5 5.5h-15S6 13 6 9z"/><path d="M10 18.5a2 2 0 0 0 4 0"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+ grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.2"/>',
+ list:'<path d="M8 6.5h12M8 12h12M8 17.5h12M4 6.5h.01M4 12h.01M4 17.5h.01"/>',
+ box:'<path d="M12 3 3.5 7.2v9.6L12 21l8.5-4.2V7.2z"/><path d="M3.5 7.2 12 11.5l8.5-4.3M12 11.5V21"/>',
+ cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+ gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7M18.5 18.5l-1.7-1.7M7.2 7.2 5.5 5.5"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.3l3.3 2"/>',
+ pin:'<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+ doc:'<path d="M13.5 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8.5z"/><path d="M13.5 3v5.5H19M8.5 13h7M8.5 16.5h5"/>',
+ badge:'<rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9.5" r="2.6"/><path d="M8 17c.8-1.7 2.3-2.6 4-2.6s3.2.9 4 2.6"/>',
+ pc:'<rect x="2.5" y="4" width="19" height="12.5" rx="1.8"/><path d="M8.5 20.5h7M12 16.5v4"/>',
+ cable:'<path d="M6 3.5v5.2a6 6 0 0 0 12 0V3.5"/><path d="M4 3.5h4M16 3.5h4M12 14.7V20"/><circle cx="12" cy="20.5" r="1.4"/>',
+ trash:'<path d="M4.5 6.5h15M9.5 6.5V4.2h5v2.3M6.5 6.5l1 13.3h9l1-13.3"/>',
+ copy:'<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 5.5h-11a1 1 0 0 0-1 1v11"/>',
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+ x:'<path d="m6 6 12 12M18 6 6 18"/>'
+};
+const icon=(n,s)=>'<svg width="'+(s||20)+'" height="'+(s||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||"")+"</svg>";
+
+/* illustration produit par catégorie */
+function art(cat,size){
+ const s=size||96;
+ const g='stroke="var(--navy)" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+ const f='fill="var(--blue-soft)"';
+ let body="";
+ if(cat==="cam")body='<rect x="32" y="12" width="38" height="7" rx="3.5" '+g+'/><path d="M51 19v11" '+g+'/><rect x="14" y="30" width="60" height="24" rx="12" '+f+' '+g+'/><circle cx="28" cy="42" r="7.5" '+g+'/><circle cx="28" cy="42" r="2.8" fill="var(--navy)"/><path d="M46 36h18M46 48h18" '+g+'/><path d="M66 54v8h10" '+g+'/>';
+ else if(cat==="nvr")body='<rect x="10" y="26" width="76" height="30" rx="4" '+f+' '+g+'/><path d="M18 36h30M18 42h22M18 48h26" '+g+'/><circle cx="70" cy="37" r="3" '+g+'/><circle cx="70" cy="47" r="3" '+g+'/><path d="M20 56v8M76 56v8" '+g+'/>';
+ else if(cat==="net")body='<rect x="16" y="46" width="64" height="18" rx="4" '+f+' '+g+'/><path d="M26 55h6M38 55h6" '+g+'/><circle cx="68" cy="55" r="2.6" fill="var(--blue)"/><path d="M34 46V34M62 46V34" '+g+'/><path d="M40 26a16 16 0 0 1 16 0M34 18a28 28 0 0 1 28 0" '+g+'/>';
+ else if(cat==="acc")body='<rect x="26" y="16" width="44" height="58" rx="6" '+f+' '+g+'/><rect x="34" y="24" width="28" height="14" rx="2" '+g+'/><circle cx="41" cy="48" r="3" '+g+'/><circle cx="55" cy="48" r="3" '+g+'/><circle cx="41" cy="60" r="3" '+g+'/><circle cx="55" cy="60" r="3" '+g+'/>';
+ else if(cat==="it")body='<rect x="12" y="20" width="72" height="42" rx="4" '+f+' '+g+'/><path d="M22 30h30M22 38h20" '+g+'/><path d="M36 62v8M28 70h40M60 62v8" '+g+'/>';
+ else body='<circle cx="48" cy="45" r="26" '+f+' '+g+'/><circle cx="48" cy="45" r="15" '+g+'/><circle cx="48" cy="45" r="5" '+g+'/><path d="M74 45h10M12 45H2" '+g+'/>';
+ return '<svg viewBox="0 0 96 90" width="'+s+'" height="'+Math.round(s*90/96)+'" role="img" aria-hidden="true" style="max-width:100%;height:auto">'+body+"</svg>";
+}
+window.__OUFI_ART=art;
+
+/* ============================================================
+   3. Données de démonstration
+   ============================================================ */
+const CATS=[
+ {id:"cam",fr:"Caméras de surveillance",ar:"كاميرات المراقبة"},
+ {id:"nvr",fr:"Enregistreurs & stockage",ar:"أجهزة التسجيل والتخزين"},
+ {id:"net",fr:"Routeurs & réseau",ar:"الراوترات والشبكات"},
+ {id:"acc",fr:"Contrôle d'accès",ar:"التحكم في الولوج"},
+ {id:"it",fr:"Informatique & bureautique",ar:"المعلوميات والمكتبيات"},
+ {id:"cbl",fr:"Câblage & énergie",ar:"الكابلاج والطاقة"}
+];
+const SPECK={
+ res:{fr:"Résolution",ar:"الدقة"},lens:{fr:"Objectif",ar:"العدسة"},ir:{fr:"Vision nocturne",ar:"الرؤية الليلية"},
+ prot:{fr:"Indice de protection",ar:"درجة الحماية"},ch:{fr:"Canaux",ar:"القنوات"},poe:{fr:"Alimentation PoE",ar:"تغذية PoE"},
+ hdd:{fr:"Stockage maximum",ar:"أقصى تخزين"},ports:{fr:"Ports",ar:"المنافذ"},wifi:{fr:"Wi-Fi",ar:"واي فاي"},
+ thr:{fr:"Débit",ar:"الصبيب"},cap:{fr:"Capacité",ar:"السعة"},pow:{fr:"Puissance",ar:"القدرة"},
+ users:{fr:"Utilisateurs",ar:"المستخدمون"},zoom:{fr:"Zoom",ar:"التقريب"},len:{fr:"Longueur",ar:"الطول"},
+ aut:{fr:"Autonomie",ar:"الاستقلالية"},cpu:{fr:"Processeur",ar:"المعالج"},ram:{fr:"Mémoire",ar:"الذاكرة"},disk:{fr:"Disque",ar:"القرص"}
+};
+function P(id,ref,cat,brand,fr,ar,price,stock,warr,specs,pop){
+ return {id:id,ref:ref,cat:cat,brand:brand,name:{fr:fr,ar:ar},price:price,stock:stock,warr:warr,specs:specs,pop:pop,active:true};
+}
+const SEED_PRODUCTS=[
+ P("p1","OF-CAM-D4","cam","Hikvision","Caméra dôme IP 4 MP — intérieure","كاميرا قبة IP بدقة 4 ميغابكسل — داخلية",690,24,24,[["res","4 MP (2560×1440)"],["lens","2,8 mm"],["ir","30 m"],["poe","802.3af"]],98),
+ P("p2","OF-CAM-B4","cam","Hikvision","Caméra bullet IP 4 MP — extérieure","كاميرا بوليت IP بدقة 4 ميغابكسل — خارجية",850,16,24,[["res","4 MP"],["prot","IP67"],["ir","50 m"],["poe","802.3af"]],91),
+ P("p3","OF-CAM-P25","cam","Dahua","Caméra PTZ motorisée — zoom ×25","كاميرا PTZ متحركة — تقريب ×25",4200,3,24,[["res","2 MP"],["zoom","×25 optique"],["ir","100 m"],["prot","IP66"]],44),
+ P("p4","OF-CAM-W2","cam","Ezviz","Caméra Wi-Fi intérieure 2 MP","كاميرا واي فاي داخلية بدقة 2 ميغابكسل",390,41,12,[["res","2 MP"],["wifi","2,4 GHz"],["ir","10 m"],["cap","microSD 256 Go"]],87),
+ P("p5","OF-NVR-8P","nvr","Hikvision","Enregistreur NVR 8 canaux PoE","مسجل NVR بـ 8 قنوات PoE",1950,9,24,[["ch","8"],["poe","8 ports"],["hdd","2 × 8 To"],["res","jusqu'à 8 MP"]],76),
+ P("p6","OF-XVR-16","nvr","Dahua","Enregistreur XVR 16 canaux","مسجل XVR بـ 16 قناة",2400,4,24,[["ch","16"],["hdd","2 × 10 To"],["res","5 MP Lite"]],52),
+ P("p7","OF-HDD-2T","nvr","Seagate","Disque dur surveillance 2 To","قرص صلب للمراقبة سعة 2 تيرابايت",780,12,36,[["cap","2 To"],["aut","24/7"]],69),
+ P("p8","OF-RTR-HEX","net","MikroTik","Routeur hEX RB750Gr3","راوتر hEX RB750Gr3",1150,7,12,[["ports","5 × Gigabit"],["thr","1 Gb/s"]],58),
+ P("p9","OF-RTR-AX18","net","TP-Link","Routeur Wi-Fi 6 AX1800","راوتر واي فاي 6 بسرعة AX1800",890,15,24,[["wifi","Wi-Fi 6"],["thr","1 800 Mb/s"],["ports","4 × Gigabit"]],83),
+ P("p10","OF-AP-U6L","net","Ubiquiti","Point d'accès UniFi U6 Lite","نقطة ولوج UniFi U6 Lite",1450,6,24,[["wifi","Wi-Fi 6"],["users","≈ 150"],["poe","802.3af"]],61),
+ P("p11","OF-SW-8P","net","TP-Link","Switch PoE+ 8 ports — 120 W","سويتش PoE+ بـ 8 منافذ — 120 واط",1090,5,36,[["ports","8 × PoE+"],["pow","120 W"]],64),
+ P("p12","OF-ACC-BIO","acc","ZKTeco","Pointeuse biométrique empreinte + badge","جهاز بصمة وبطاقة للحضور والانصراف",1690,4,12,[["users","3 000 empreintes"],["ports","TCP/IP, USB"]],47),
+ P("p13","OF-ACC-INT","acc","Dahua","Interphone vidéo IP — 2 fils","إنتركوم فيديو IP بسلكين",2250,2,24,[["res","2 MP"],["prot","IP65"]],33),
+ P("p14","OF-PC-I5","it","HP","PC de bureau i5 — 8 Go / SSD 256 Go","حاسوب مكتبي i5 — 8 غيغا / SSD 256 غيغا",4900,3,12,[["cpu","Intel Core i5"],["ram","8 Go"],["disk","SSD 256 Go"]],40),
+ P("p15","OF-IMP-MF","it","Epson","Imprimante multifonction Wi-Fi","طابعة متعددة الوظائف بالواي فاي",1350,6,12,[["wifi","Wi-Fi"],["ports","USB, réseau"]],38),
+ P("p16","OF-CBL-C6","cbl","Générique","Câble réseau Cat6 UTP — rouleau 305 m","كابل شبكة Cat6 UTP — بكرة 305 متر",1250,8,0,[["len","305 m"],["thr","1 Gb/s"]],55),
+ P("p17","OF-UPS-1K","cbl","Eaton","Onduleur 1000 VA","جهاز إمداد بالطاقة 1000 فولت أمبير",950,10,24,[["pow","1000 VA / 600 W"],["aut","≈ 20 min"]],49)
+];
+const SEED_SETTINGS={
+ company:"Oufi Sécurité",
+ tagline:{fr:"Vidéosurveillance & réseaux",ar:"المراقبة والشبكات"},
+ phone:"+212 6 61 24 18 05",
+ whatsapp:"+212 6 61 24 18 05",
+ email:"contact@oufi-securite.ma",
+ address:{fr:"14, rue Ibn Battouta — Quartier Belvédère, Casablanca",ar:"14، زنقة ابن بطوطة — حي بلفيدير، الدار البيضاء"},
+ hours:{fr:"Lundi – vendredi : 9 h – 18 h 30 · Samedi : 9 h – 13 h",ar:"الاثنين – الجمعة: 9:00 – 18:30 · السبت: 9:00 – 13:00"},
+ sla:24,
+ channels:{phone:true,wa:true,mail:true},
+ fees:[["Casablanca",200],["Mohammedia",250],["Bouskoura",250],["Rabat",350],["Marrakech",500],["Tanger",600],["Agadir",700]],
+ techs:["Youssef Bennani","Hamza Tazi","Salma Rachidi"]
+};
+const LOCALS=[
+ {id:"shop",fr:"Magasin / commerce",ar:"محل تجاري"},
+ {id:"cafe",fr:"Café / restaurant",ar:"مقهى / مطعم"},
+ {id:"office",fr:"Bureau / cabinet",ar:"مكتب / عيادة"},
+ {id:"depot",fr:"Dépôt / atelier",ar:"مستودع / ورشة"},
+ {id:"villa",fr:"Villa / appartement",ar:"فيلا / شقة"},
+ {id:"other",fr:"Autre",ar:"آخر"}
+];
+const SVCS=[
+ {id:"cam",k:"s_cam_t",ic:"cam",from:2400,li:["s_cam_1","s_cam_2","s_cam_3"]},
+ {id:"net",k:"s_net_t",ic:"router",from:1800,li:["s_net_1","s_net_2","s_net_3"]},
+ {id:"it",k:"s_it_t",ic:"pc",from:600,li:["s_it_1","s_it_2","s_it_3"]},
+ {id:"acc",k:"s_acc_t",ic:"badge",from:2100,li:["s_acc_1","s_acc_2","s_acc_3"]}
+];
+const STATUSES=[
+ {id:"new",k:"st_new",p:"pill-new"},
+ {id:"contacted",k:"st_contacted",p:"pill-warn"},
+ {id:"visit",k:"st_visit",p:"pill-warn"},
+ {id:"sent",k:"st_sent",p:"pill-new"},
+ {id:"won",k:"st_won",p:"pill-ok"},
+ {id:"done",k:"st_done",p:"pill-ok"},
+ {id:"lost",k:"st_lost",p:"pill-mute"}
+];
+const TYPES=[
+ {id:"install",k:"ty_install",d:"ty_install_d"},
+ {id:"prod",k:"ty_prod",d:"ty_prod_d"},
+ {id:"maint",k:"ty_maint",d:"ty_maint_d"},
+ {id:"fix",k:"ty_fix",d:"ty_fix_d"}
+];
+const CHANS=[{id:"phone",k:"ch_phone",ic:"phone"},{id:"wa",k:"ch_wa",ic:"wa"},{id:"mail",k:"ch_mail",ic:"mail"}];
+const statusOf=id=>STATUSES.find(s=>s.id===id)||STATUSES[0];
+const typeOf=id=>TYPES.find(s=>s.id===id)||TYPES[0];
+const chanOf=id=>CHANS.find(s=>s.id===id)||CHANS[0];
+const catOf=id=>CATS.find(c=>c.id===id)||CATS[0];
+
+const SEED_REQUESTS=[
+ {ref:"DEV-2026-0142",src:"form",type:"install",svc:"cam",status:"visit",created:"2026-09-26T09:12:00",
+  name:"Karim Belhaj",company:"Épicerie Al Baraka",city:"Casablanca",addr:"Bd Moulay Youssef, imm. 44, rdc — face à la pharmacie",
+  local:"shop",surface:"90",rooms:"3",cams:"6",place:"both",net:"yes",exist:"no",delay:"week",budget:"10 000 – 15 000 DH",
+  chan:"wa",phone:"06 61 24 90 12",email:"",slot:"pm",fee:200,
+  desc:"Magasin sur deux niveaux. Je veux couvrir la caisse, l'entrée et la réserve à l'étage.",
+  tech:"Youssef Bennani",items:[],notes:[{at:"2026-09-26T11:40:00",txt:"Appelé, très intéressé. Visite calée jeudi 14 h, il sera sur place."}],
+  tl:[{at:"2026-09-26T09:12:00",k:"created"},{at:"2026-09-26T11:40:00",k:"status",v:"contacted"},{at:"2026-09-26T11:45:00",k:"status",v:"visit"}]},
+ {ref:"DEV-2026-0141",src:"cart",type:"prod",svc:"net",status:"new",created:"2026-09-27T08:05:00",
+  name:"Nadia Ouazzani",company:"Cabinet dentaire Ouazzani",city:"Rabat",addr:"Avenue Fal Ould Oumeir, rés. Yasmine, 2e étage",
+  local:"office",surface:"",rooms:"",cams:"",place:"",net:"yes",exist:"yes",delay:"month",budget:"",
+  chan:"mail",phone:"",email:"n.ouazzani@cabinet-ouazzani.ma",slot:"am",fee:350,
+  desc:"Le Wi-Fi ne passe pas dans la salle d'attente. Je pense avoir besoin d'un point d'accès en plus.",
+  tech:"",items:[{id:"p10",q:2,inst:true},{id:"p11",q:1,inst:true}],notes:[],
+  tl:[{at:"2026-09-27T08:05:00",k:"created"}]},
+ {ref:"DEV-2026-0140",src:"form",type:"fix",svc:"cam",status:"contacted",created:"2026-09-25T16:48:00",
+  name:"Rachid Amrani",company:"Café Le Patio",city:"Mohammedia",addr:"Rue Farhat Hachad, angle bd Hassan II",
+  local:"cafe",surface:"140",rooms:"4",cams:"8",place:"both",net:"yes",exist:"yes",delay:"urgent",budget:"",
+  chan:"phone",phone:"06 70 33 12 44",email:"",slot:"am",fee:250,
+  desc:"Trois caméras sur huit n'enregistrent plus depuis la coupure de courant de dimanche.",
+  tech:"Hamza Tazi",notes:[{at:"2026-09-25T17:30:00",txt:"Probablement l'alimentation du NVR. Passage prévu lundi matin."}],items:[],
+  tl:[{at:"2026-09-25T16:48:00",k:"created"},{at:"2026-09-25T17:30:00",k:"status",v:"contacted"}]},
+ {ref:"DEV-2026-0139",src:"form",type:"install",svc:"acc",status:"sent",created:"2026-09-23T10:20:00",
+  name:"Imane Fassi",company:"Résidence Les Oliviers",city:"Casablanca",addr:"Lotissement Al Fath, rue 12, syndic bloc C",
+  local:"other",surface:"",rooms:"2",cams:"4",place:"out",net:"no",exist:"no",delay:"month",budget:"25 000 DH",
+  chan:"wa",phone:"06 62 88 41 09",email:"syndic.oliviers@gmail.com",slot:"any",fee:200,
+  desc:"Interphone vidéo pour 18 appartements et deux caméras sur le portail.",
+  tech:"Salma Rachidi",notes:[{at:"2026-09-24T09:00:00",txt:"Devis 27 400 DH envoyé par WhatsApp. Le syndic doit passer en AG."}],items:[],
+  tl:[{at:"2026-09-23T10:20:00",k:"created"},{at:"2026-09-23T15:10:00",k:"status",v:"contacted"},{at:"2026-09-24T08:30:00",k:"status",v:"visit"},{at:"2026-09-24T09:00:00",k:"status",v:"sent"}]},
+ {ref:"DEV-2026-0138",src:"cart",type:"prod",svc:"cam",status:"won",created:"2026-09-22T13:02:00",
+  name:"Mehdi Sbai",company:"Sbai Électroménager",city:"Casablanca",addr:"Derb Omar, rue 7, magasin 22",
+  local:"shop",surface:"",rooms:"",cams:"",place:"",net:"yes",exist:"no",delay:"week",budget:"",
+  chan:"phone",phone:"06 55 19 77 30",email:"",slot:"pm",fee:200,
+  desc:"",tech:"Youssef Bennani",items:[{id:"p2",q:4,inst:true},{id:"p5",q:1,inst:true},{id:"p7",q:1,inst:false}],
+  notes:[{at:"2026-09-22T14:20:00",txt:"Commande confirmée au téléphone, pose samedi matin."}],
+  tl:[{at:"2026-09-22T13:02:00",k:"created"},{at:"2026-09-22T14:20:00",k:"status",v:"contacted"},{at:"2026-09-22T14:25:00",k:"status",v:"won"}]},
+ {ref:"DEV-2026-0137",src:"form",type:"maint",svc:"it",status:"done",created:"2026-09-18T11:15:00",
+  name:"Salma Idrissi",company:"Pharmacie Ennour",city:"Bouskoura",addr:"Route de Nouaceur, centre commercial Ennour, local 5",
+  local:"shop",surface:"60",rooms:"2",cams:"4",place:"in",net:"yes",exist:"yes",delay:"plan",budget:"",
+  chan:"mail",phone:"06 43 02 55 18",email:"pharmacie.ennour@menara.ma",slot:"any",fee:250,
+  desc:"Contrat de maintenance trimestriel pour les 4 caméras et les 2 postes de la pharmacie.",
+  tech:"Salma Rachidi",items:[],notes:[{at:"2026-09-20T10:00:00",txt:"Contrat signé : 1 200 DH / trimestre, première visite le 15/10."}],
+  tl:[{at:"2026-09-18T11:15:00",k:"created"},{at:"2026-09-18T14:00:00",k:"status",v:"contacted"},{at:"2026-09-19T09:30:00",k:"status",v:"sent"},{at:"2026-09-20T10:00:00",k:"status",v:"done"}]}
+];
+const SEED_INTERV=[
+ {id:"TCK-0451",ref:"DEV-2026-0142",client:"Karim Belhaj — Épicerie Al Baraka",city:"Casablanca",obj:{fr:"État des lieux — 6 caméras",ar:"معاينة — 6 كاميرات"},when:"2026-09-27T14:00:00",tech:"Youssef Bennani",state:"sched"},
+ {id:"TCK-0450",ref:"DEV-2026-0140",client:"Rachid Amrani — Café Le Patio",city:"Mohammedia",obj:{fr:"Dépannage NVR — 3 caméras muettes",ar:"إصلاح NVR — 3 كاميرات معطلة"},when:"2026-09-27T09:30:00",tech:"Hamza Tazi",state:"prog"},
+ {id:"TCK-0449",ref:"DEV-2026-0138",client:"Mehdi Sbai — Sbai Électroménager",city:"Casablanca",obj:{fr:"Pose 4 caméras + NVR 8 canaux",ar:"تركيب 4 كاميرات + NVR بـ 8 قنوات"},when:"2026-09-28T09:00:00",tech:"Youssef Bennani",state:"sched"},
+ {id:"TCK-0448",ref:"DEV-2026-0137",client:"Pharmacie Ennour",city:"Bouskoura",obj:{fr:"Visite trimestrielle de maintenance",ar:"زيارة صيانة فصلية"},when:"2026-09-25T15:00:00",tech:"Salma Rachidi",state:"done"}
+];
+const SEED_NOTIFS=[
+ {id:"n1",at:"2026-09-27T08:05:00",ref:"DEV-2026-0141",txt:{fr:"Nouvelle demande de Nadia Ouazzani — panier de 3 articles",ar:"طلب جديد من نادية وزاني — سلة من 3 منتجات"},read:false},
+ {id:"n2",at:"2026-09-26T09:12:00",ref:"DEV-2026-0142",txt:{fr:"Nouvelle demande de Karim Belhaj — installation caméras",ar:"طلب جديد من كريم بلحاج — تركيب كاميرات"},read:false}
+];
+
+/* ============================================================
+   4. État + persistance
+   ============================================================ */
+const KEY="oufi-maquette-v1";
+const fresh=()=>({
+ products:JSON.parse(JSON.stringify(SEED_PRODUCTS)),
+ requests:JSON.parse(JSON.stringify(SEED_REQUESTS)),
+ interv:JSON.parse(JSON.stringify(SEED_INTERV)),
+ notifs:JSON.parse(JSON.stringify(SEED_NOTIFS)),
+ settings:JSON.parse(JSON.stringify(SEED_SETTINGS)),
+ cart:[],seq:143
+});
+let db=fresh();
+const ui={mode:"client",page:"home",lang:"fr",aPage:"dash",
+ filters:{cat:"",brand:"",max:5000,inonly:false,q:"",sort:"pop"},
+ aFilters:{status:"",src:"",q:""},
+ step:1,form:{},errors:{},lastRef:null,track:"",trackRes:undefined,
+ openReq:null,openProd:null,editProd:null,delProd:null,notifOpen:false,copied:""};
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db));localStorage.setItem(KEY+"-lang",LANG);}catch(e){}}
+function load(){
+ try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&d.products&&d.requests)db=d;}
+     const l=localStorage.getItem(KEY+"-lang");if(l==="ar"||l==="fr")LANG=l;}catch(e){}
+}
+function resetDemo(){db=fresh();ui.cartOpen=false;ui.openReq=null;ui.page="home";ui.aPage="dash";ui.step=1;ui.form={};ui.lastRef=null;save();render();toast(t("demo_reset"),"");}
+
+/* helpers */
+const pad=n=>(n<10?"0":"")+n;
+const D=s=>new Date(s);
+const fmtD=s=>{const d=D(s);return pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear();};
+const fmtT=s=>{const d=D(s);return pad(d.getHours())+"h"+pad(d.getMinutes());};
+const fmtDT=s=>fmtD(s)+" · "+fmtT(s);
+const TODAY="2026-09-27";
+const isToday=s=>String(s).slice(0,10)===TODAY;
+const feeFor=city=>{const f=db.settings.fees.find(x=>x[0]===city);return f?f[1]:null;};
+const prod=id=>db.products.find(p=>p.id===id);
+const cartCount=()=>db.cart.reduce((a,l)=>a+l.q,0);
+const cartTotal=()=>db.cart.reduce((a,l)=>{const p=prod(l.id);return a+(p?p.price*l.q:0);},0);
+
+/* ============================================================
+   5. Fragments réutilisables
+   ============================================================ */
+function toast(title,msg){
+ const w=document.getElementById("toasts");const el=document.createElement("div");
+ el.className="toast";el.innerHTML='<span style="flex:0 0 auto;margin-top:1px">'+icon("check",17)+"</span><span><b>"+esc(title)+"</b>"+(msg?'<span class="m">'+esc(msg)+"</span>":"")+"</span>";
+ w.appendChild(el);setTimeout(()=>{el.style.opacity="0";el.style.transition="opacity .3s";setTimeout(()=>el.remove(),320);},3400);
+}
+function stockPill(p){
+ if(p.stock<=0)return '<span class="pill pill-mute">'+t("outstock")+"</span>";
+ if(p.stock<=5)return '<span class="pill pill-warn">'+t("lowstock")+"</span>";
+ return '<span class="pill pill-ok">'+t("instock")+"</span>";
+}
+function brandMark(sz){
+ return '<span class="mk" aria-hidden="true">'+icon("shield",sz||19)+"</span>";
+}
+function heroPlan(){
+ const wall='fill="none" stroke="var(--navy)" stroke-width="2.4" stroke-linejoin="round"';
+ const thin='fill="none" stroke="var(--line-2)" stroke-width="1.4"';
+ const cone='fill="var(--blue)" fill-opacity=".14" stroke="var(--blue)" stroke-width="1" stroke-dasharray="4 3"';
+ const lab='fill="var(--muted)" font-size="11" font-family="var(--ff)"';
+ const labD='fill="var(--ink-2)" font-size="11.5" font-weight="600" font-family="var(--ff)"';
+ const camDot='fill="var(--navy)"';
+ const P={ent:{fr:"Entrée",ar:"المدخل"},cash:{fr:"Caisse",ar:"الصندوق"},sale:{fr:"Surface de vente",ar:"قاعة البيع"},
+  res:{fr:"Réserve",ar:"المستودع"},nvr:{fr:"NVR + routeur",ar:"المسجل + الراوتر"}};
+ return '<svg class="plan" viewBox="0 0 520 330" role="img" aria-label="'+esc(t("h_planlabel"))+'">'+
+  '<rect x="0" y="0" width="520" height="330" fill="var(--surface)"/>'+
+  '<g opacity=".5">'+Array.from({length:12},(_,i)=>'<path d="M'+(20+i*40)+' 20V270" '+thin+' stroke-dasharray="2 6"/>').join("")+"</g>"+
+  '<path d="M20 270h40M140 270h360V20H20v250" '+wall+'/>'+
+  '<path d="M370 270V140h130" '+wall+'/>'+
+  '<rect x="52" y="58" width="104" height="44" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+  '<rect x="196" y="58" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+  '<rect x="196" y="108" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+  '<rect x="196" y="186" width="128" height="26" rx="3" '+thin+' fill="var(--surface-2)"/>'+
+  '<polygon points="30,30 268,132 96,262" '+cone+'/>'+
+  '<polygon points="490,30 258,112 430,236" '+cone+'/>'+
+  '<polygon points="384,154 500,244 386,262" '+cone+'/>'+
+  '<circle cx="30" cy="30" r="6" '+camDot+'/><circle cx="490" cy="30" r="6" '+camDot+'/><circle cx="384" cy="154" r="6" '+camDot+'/>'+
+  '<text x="42" y="26" '+labD+'>C1</text><text x="470" y="26" '+labD+' text-anchor="end">C2</text><text x="396" y="150" '+labD+'>C3</text>'+
+  '<rect x="404" y="42" width="72" height="30" rx="4" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.2"/>'+
+  '<text x="440" y="61" '+labD+' text-anchor="middle">'+esc(L(P.nvr))+"</text>"+
+  '<path d="M440 72v46" stroke="var(--blue)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>'+
+  '<text x="72" y="284" '+labD+'>'+esc(L(P.ent))+"</text>"+
+  '<text x="104" y="86" '+lab+' text-anchor="middle">'+esc(L(P.cash))+"</text>"+
+  '<text x="260" y="160" '+lab+' text-anchor="middle">'+esc(L(P.sale))+"</text>"+
+  '<text x="434" y="206" '+lab+' text-anchor="middle">'+esc(L(P.res))+"</text>"+
+  '<text x="20" y="312" '+lab+'>'+esc(t("h_planlabel"))+"</text>"+
+  "</svg>";
+}
+function productCard(p){
+ return '<article class="pcard"><div class="art">'+art(p.cat,110)+'</div><div class="bd">'+
+  '<span class="br">'+esc(p.brand)+'</span><span class="nm">'+esc(L(p.name))+'</span>'+
+  '<span class="xs mono muted">'+t("ref")+" "+esc(p.ref)+"</span>"+stockPill(p)+
+  '<span class="pr num">'+money(p.price)+'</span></div>'+
+  '<div class="acts"><button class="btn btn-sm btn-out" data-act="prod" data-id="'+p.id+'">'+t("details")+'</button>'+
+  '<button class="btn btn-sm btn-pri" data-act="add" data-id="'+p.id+'">'+t("add")+"</button></div></article>";
+}
+
+/* ============================================================
+   6. Site client
+   ============================================================ */
+function clientHeader(){
+ const nav=[["home","nav_home"],["services","nav_services"],["products","nav_products"],["quote","nav_quote"],["track","nav_track"],["contact","nav_contact"]];
+ const c=cartCount();
+ return '<header class="hdr"><div class="hdr-in">'+
+  '<a class="brand" href="#" data-act="go" data-page="home">'+brandMark()+
+   '<span><span class="nm">'+esc(db.settings.company)+'</span><br><span class="sl">'+esc(L(db.settings.tagline))+"</span></span></a>"+
+  '<nav class="nav">'+nav.map(n=>'<button data-act="go" data-page="'+n[0]+'"'+(ui.page===n[0]?' aria-current="page"':"")+">"+t(n[1])+"</button>").join("")+"</nav>"+
+  '<button class="btn btn-out btn-sm cartbtn" data-act="cart" aria-label="'+t("nav_cart")+'">'+icon("cart",18)+
+   (c?'<span class="cnt num">'+c+"</span>":"")+"</button>"+
+  '<button class="btn btn-pri btn-sm" data-act="go" data-page="quote">'+t("nav_quote")+"</button>"+
+  "</div></header>";
+}
+function clientFooter(){
+ const s=db.settings;
+ return '<footer class="footer"><div class="wrap"><div class="footer-g">'+
+  '<div><div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">'+brandMark(18)+'<b style="font-size:15px">'+esc(s.company)+"</b></div>"+
+   '<p class="li" style="max-width:34ch">'+esc(L(s.tagline))+" · "+esc(L(s.address))+"</p></div>"+
+  "<div><h4>"+t("ft_nav")+"</h4>"+[["services","nav_services"],["products","nav_products"],["quote","nav_quote"],["track","nav_track"]].map(n=>'<a class="li" href="#" data-act="go" data-page="'+n[0]+'">'+t(n[1])+"</a>").join("")+"</div>"+
+  "<div><h4>"+t("ft_svc")+"</h4>"+SVCS.map(v=>'<span class="li">'+t(v.k)+"</span>").join("")+"</div>"+
+  "<div><h4>"+t("ft_ct")+'</h4><span class="li mono">'+esc(s.phone)+'</span><span class="li">'+esc(s.email)+'</span><span class="li">'+esc(L(s.hours))+"</span></div>"+
+  '</div><div class="bot"><span>© 2026 '+esc(s.company)+"</span><span>"+t("ft_demo")+"</span></div></div></footer>";
+}
+function pageHome(){
+ const city=db.settings.fees[0][0],fee=db.settings.fees[0][1];
+ const feat=db.products.filter(p=>p.active).slice().sort((a,b)=>b.pop-a.pop).slice(0,4);
+ const sectors=[{fr:"Magasins & commerces",ar:"المحلات التجارية"},{fr:"Cafés & restaurants",ar:"المقاهي والمطاعم"},{fr:"Cabinets médicaux",ar:"العيادات الطبية"},{fr:"Dépôts & ateliers",ar:"المستودعات والورشات"},{fr:"Écoles privées",ar:"المدارس الخاصة"},{fr:"Syndics de résidence",ar:"نقابات الإقامات"}];
+ return '<section class="hero"><div class="wrap"><div class="hero-g">'+
+  '<div style="display:flex;flex-direction:column;gap:16px">'+
+   '<span class="eyebrow">'+t("h_eyebrow")+"</span><h1>"+t("h_title")+'</h1><p class="lead">'+t("h_lead")+"</p>"+
+   '<div class="cta"><button class="btn btn-pri btn-lg" data-act="go" data-page="quote">'+t("h_cta1")+" "+icon("arrow",17)+"</button>"+
+   '<button class="btn btn-out btn-lg" data-act="go" data-page="products">'+t("h_cta2")+"</button></div>"+
+   '<div class="feebar">'+icon("pin",18)+"<span>"+t("h_fee",{fee:money(fee),city:city})+"</span></div>"+
+  "</div><div>"+heroPlan()+"</div></div></div></section>"+
+
+  '<section class="sec"><div class="wrap"><div class="sec-h"><h2>'+t("s_title")+'</h2><p class="ink2">'+t("s_lead")+'</p></div><div class="svc">'+
+  SVCS.map(v=>'<div class="card"><span class="ic">'+icon(v.ic,21)+"</span><h3>"+t(v.k)+"</h3><ul>"+v.li.map(x=>"<li>"+t(x)+"</li>").join("")+
+   '</ul><div class="from">'+t("s_from")+' <b class="num">'+money(v.from)+"</b></div></div>").join("")+
+  "</div></div></section>"+
+
+  '<section class="sec" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap"><div class="sec-h"><h2>'+t("p_title")+'</h2><p class="ink2">'+t("p_lead")+'</p></div><div class="steps">'+
+  [1,2,3,4].map(i=>'<div class="step"><span class="n">'+i+"</span><h3>"+t("p"+i+"_t")+"</h3><p>"+t("p"+i+"_d")+"</p></div>").join("")+
+  "</div></div></section>"+
+
+  '<section class="sec"><div class="wrap"><div class="sec-h" style="flex-direction:row;align-items:flex-end;justify-content:space-between;max-width:none;flex-wrap:wrap;gap:12px">'+
+   '<div><h2>'+t("f_title")+'</h2><p class="ink2">'+t("f_lead")+'</p></div>'+
+   '<button class="btn btn-out" data-act="go" data-page="products">'+t("f_all")+" "+icon("chev",16)+'</button></div><div class="pgrid">'+
+  feat.map(productCard).join("")+"</div></div></section>"+
+
+  '<section class="sec" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">'+
+   '<div class="sec-h"><h2>'+t("sect_title")+'</h2><p class="ink2">'+t("sect_lead")+'</p></div>'+
+   '<div class="frow" style="margin-bottom:26px">'+sectors.map(s=>'<span class="chip" style="cursor:default">'+esc(L(s))+"</span>").join("")+"</div>"+
+   '<div class="stat"><div><span class="v num">240+</span><span class="l">'+t("st_1")+'</span></div><div><span class="v num">7</span><span class="l">'+t("st_2")+'</span></div><div><span class="v num">48 h</span><span class="l">'+t("st_3")+"</span></div></div>"+
+  "</div></section>"+
+
+  '<section class="sec"><div class="wrap"><div class="card pad" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-color:var(--blue);background:var(--blue-soft)">'+
+   '<div style="max-width:52ch"><h2 style="font-size:22px">'+t("cta_t")+'</h2><p class="ink2" style="margin-top:6px">'+t("cta_d")+"</p></div>"+
+   '<button class="btn btn-pri btn-lg" data-act="go" data-page="quote">'+t("h_cta1")+"</button></div></div></section>";
+}
+function pageServices(){
+ const s=db.settings;
+ return '<section class="sec"><div class="wrap"><div class="sec-h"><span class="eyebrow">'+t("nav_services")+"</span><h1>"+t("s_title")+'</h1><p class="ink2">'+t("s_lead")+"</p></div>"+
+  '<div style="display:flex;flex-direction:column;gap:16px">'+
+  SVCS.map(v=>'<div class="card pad" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px;align-items:center">'+
+    '<div style="display:flex;flex-direction:column;gap:10px"><span class="ic" style="width:40px;height:40px;border-radius:9px;background:var(--blue-soft);color:var(--blue-ink);display:grid;place-items:center">'+icon(v.ic,21)+"</span>"+
+    "<h3 style=\"font-size:20px\">"+t(v.k)+'</h3><div class="from" style="font-size:13px;color:var(--muted)">'+t("s_from")+' <b class="num" style="color:var(--ink);font-size:16px">'+money(v.from)+"</b></div>"+
+    '<button class="btn btn-pri btn-sm" data-act="quotesvc" data-svc="'+v.id+'" style="align-self:flex-start">'+t("h_cta1")+"</button></div>"+
+    '<ul style="margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:7px;color:var(--ink-2);font-size:14px">'+v.li.map(x=>"<li>"+t(x)+"</li>").join("")+"</ul></div>").join("")+
+  "</div>"+
+  '<div class="card pad" style="margin-top:22px"><h3>'+t("ct_fees")+'</h3><p class="sm ink2" style="margin:6px 0 14px;max-width:70ch">'+t("ct_feesd")+"</p>"+
+   '<div class="tw"><table><thead><tr><th>'+t("q_city")+"</th><th>"+t("q_feeline")+"</th></tr></thead><tbody>"+
+   s.fees.map(f=>"<tr><td>"+esc(f[0])+'</td><td class="num mono">'+money(f[1])+"</td></tr>").join("")+
+   "</tbody></table></div></div></div></section>";
+}
+function pageProducts(){
+ const f=ui.filters;
+ const brands=Array.from(new Set(db.products.filter(p=>p.active).map(p=>p.brand))).sort();
+ let list=db.products.filter(p=>p.active);
+ if(f.cat)list=list.filter(p=>p.cat===f.cat);
+ if(f.brand)list=list.filter(p=>p.brand===f.brand);
+ if(f.inonly)list=list.filter(p=>p.stock>0);
+ list=list.filter(p=>p.price<=f.max);
+ if(f.q){const q=f.q.toLowerCase();list=list.filter(p=>(L(p.name)+" "+p.ref+" "+p.brand).toLowerCase().indexOf(q)>=0);}
+ if(f.sort==="asc")list.sort((a,b)=>a.price-b.price);else if(f.sort==="desc")list.sort((a,b)=>b.price-a.price);else list.sort((a,b)=>b.pop-a.pop);
+ return '<section class="sec"><div class="wrap"><div class="sec-h"><span class="eyebrow">'+t("nav_products")+"</span><h1>"+t("cat_title")+'</h1><p class="ink2">'+t("cat_lead")+"</p></div>"+
+  '<div class="catalog"><aside class="filters">'+
+   '<div class="fbox"><h4>'+t("f_cat")+'</h4><div class="frow"><button class="chip" data-act="fcat" data-v="" aria-pressed="'+(!f.cat)+'">'+t("f_all2")+"</button>"+
+    CATS.map(c=>'<button class="chip" data-act="fcat" data-v="'+c.id+'" aria-pressed="'+(f.cat===c.id)+'">'+esc(L(c))+"</button>").join("")+"</div></div>"+
+   '<div class="fbox"><h4>'+t("f_brand")+'</h4><div class="frow"><button class="chip" data-act="fbrand" data-v="" aria-pressed="'+(!f.brand)+'">'+t("f_all2")+"</button>"+
+    brands.map(b=>'<button class="chip" data-act="fbrand" data-v="'+esc(b)+'" aria-pressed="'+(f.brand===b)+'">'+esc(b)+"</button>").join("")+"</div></div>"+
+   '<div class="fbox"><h4>'+t("f_price")+'</h4><input class="input" type="range" min="300" max="5000" step="100" value="'+f.max+'" data-act="fmax" style="padding:0"><div class="sm muted num" style="margin-top:6px">≤ '+money(f.max)+"</div></div>"+
+   '<div class="fbox"><h4>'+t("f_avail")+'</h4><label class="opt" data-on="'+(f.inonly?1:0)+'"><input type="checkbox" data-act="finstock"'+(f.inonly?" checked":"")+'><span class="t" style="font-weight:500;font-size:13.5px">'+t("f_instock")+"</span></label></div>"+
+   '<button class="btn btn-out btn-sm" data-act="fclear">'+t("f_clear")+"</button></aside>"+
+  "<div><div class=\"toolbar\" style=\"margin-bottom:16px\">"+
+   '<input class="input search" placeholder="'+t("f_search")+'" value="'+esc(f.q)+'" data-act="fq">'+
+   '<select class="select" data-act="fsort" style="width:auto"><option value="pop"'+(f.sort==="pop"?" selected":"")+">"+t("sort_new")+'</option><option value="asc"'+(f.sort==="asc"?" selected":"")+">"+t("sort_asc")+'</option><option value="desc"'+(f.sort==="desc"?" selected":"")+">"+t("sort_desc")+"</option></select>"+
+   '<span class="sm muted">'+t("n_found",{n:list.length})+"</span></div>"+
+   (list.length?'<div class="pgrid">'+list.map(productCard).join("")+"</div>":'<div class="card pad muted">'+t("none_found")+"</div>")+
+  "</div></div></div></section>";
+}
+function pageTrack(){
+ let out="";
+ if(ui.trackRes===null)out='<div class="card pad" style="border-color:var(--warn)">'+t("tr_none",{q:esc(ui.track)})+"</div>";
+ else if(ui.trackRes){
+  const r=ui.trackRes,st=statusOf(r.status);
+  const steps=["new","contacted","visit","sent","done"];
+  const reached=steps.indexOf(r.status)>=0?steps.indexOf(r.status):(r.status==="won"?3:4);
+  out='<div class="card pad" style="display:flex;flex-direction:column;gap:16px">'+
+   '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><b class="mono">'+esc(r.ref)+'</b><span class="pill '+st.p+'">'+t(st.k)+'</span><span class="sm muted">'+t("th_date")+" "+fmtD(r.created)+"</span></div>"+
+   '<dl class="kv"><dt>'+t("th_client")+"</dt><dd>"+esc(r.name)+(r.company?" — "+esc(r.company):"")+"</dd>"+
+    "<dt>"+t("th_type")+"</dt><dd>"+t(typeOf(r.type).k)+"</dd><dt>"+t("th_city")+"</dt><dd>"+esc(r.city)+"</dd>"+
+    (r.tech?"<dt>"+t("th_tech")+"</dt><dd>"+esc(r.tech)+"</dd>":"")+"</dl>"+
+   "<div><h3 style=\"font-size:14px;margin-bottom:10px\">"+t("tr_hist")+'</h3><ul class="tl">'+
+    steps.map((s,i)=>'<li data-on="'+(i<=reached?1:0)+'"><span class="dot"></span><span><span class="t">'+t(statusOf(s).k)+"</span>"+
+      (i<=reached?'<span class="m">'+(r.tl&&r.tl[i]?fmtDT(r.tl[i].at):fmtD(r.created))+"</span>":'<span class="m">—</span>')+"</span></li>").join("")+"</ul></div>"+
+   '<div class="note">'+t("tr_next")+" : "+esc(nextStepText(r))+"</div></div>";
+ }
+ return '<section class="sec"><div class="wrap" style="max-width:760px"><div class="sec-h"><span class="eyebrow">'+t("nav_track")+"</span><h1>"+t("tr_t")+'</h1><p class="ink2">'+t("tr_lead")+"</p></div>"+
+  '<div class="card pad" style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">'+
+   '<div class="toolbar"><input class="input search mono" id="trackq" placeholder="'+t("tr_ph")+'" value="'+esc(ui.track)+'">'+
+   '<button class="btn btn-pri" data-act="track">'+icon("search",17)+" "+t("tr_btn")+"</button></div>"+
+   '<p class="hint">'+t("tr_demo",{r:'<b class="mono">DEV-2026-0142</b>'})+"</p></div>"+out+"</div></section>";
+}
+function nextStepText(r){
+ const m={new:{fr:"Un conseiller vous appelle sous "+db.settings.sla+" h ouvrées.",ar:"سيتصل بكم مستشار خلال "+db.settings.sla+" ساعة عمل."},
+  contacted:{fr:"Nous fixons la date de l'état des lieux.",ar:"سنحدد موعد المعاينة."},
+  visit:{fr:"Visite technique planifiée, devis sous 48 h après la visite.",ar:"المعاينة مبرمجة، وعرض السعر خلال 48 ساعة بعدها."},
+  sent:{fr:"Devis envoyé — nous attendons votre retour.",ar:"تم إرسال عرض السعر — في انتظار جوابكم."},
+  won:{fr:"Installation à planifier avec notre technicien.",ar:"سيتم برمجة التركيب مع التقني."},
+  done:{fr:"Dossier clôturé. Garantie 12 mois active.",ar:"تم إغلاق الملف. الضمان 12 شهرا ساري."},
+  lost:{fr:"Demande annulée.",ar:"تم إلغاء الطلب."}};
+ return L(m[r.status]||m.new);
+}
+function pageContact(){
+ const s=db.settings,cp=ui.copied;
+ const row=(ic,lab,val,key)=>'<div style="display:flex;gap:11px;align-items:flex-start"><span style="color:var(--blue-ink);margin-top:2px">'+icon(ic,18)+'</span><div style="flex:1;min-width:0"><div class="lab">'+lab+'</div><div class="mono" style="word-break:break-word">'+esc(val)+"</div></div>"+
+  (key?'<button class="btn btn-sm btn-out" data-act="copy" data-v="'+esc(val)+'" data-k="'+key+'">'+(cp===key?t("ct_copied"):t("ct_copy"))+"</button>":"")+"</div>";
+ return '<section class="sec"><div class="wrap"><div class="sec-h"><span class="eyebrow">'+t("nav_contact")+"</span><h1>"+t("ct_t")+'</h1><p class="ink2">'+t("ct_lead")+"</p></div>"+
+  '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;align-items:start">'+
+   '<div class="card pad" style="display:flex;flex-direction:column;gap:16px">'+
+    row("phone",t("ch_phone"),s.phone,"ph")+row("wa",t("ch_wa"),s.whatsapp,"wa")+row("mail",t("ch_mail"),s.email,"ml")+
+    '<hr class="rule">'+
+    '<div><div class="lab">'+t("ct_addr")+'</div><div class="ink2">'+esc(L(s.address))+"</div></div>"+
+    '<div><div class="lab">'+t("ct_hours")+'</div><div class="ink2">'+esc(L(s.hours))+"</div></div>"+
+    '<div><div class="lab">'+t("ct_zone")+'</div><div class="frow" style="margin-top:6px">'+s.fees.map(f=>'<span class="tag-soft">'+esc(f[0])+"</span>").join("")+"</div></div>"+
+   "</div>"+
+   '<div class="card pad" style="display:flex;flex-direction:column;gap:12px">'+
+    "<h3>"+t("ct_msg")+'</h3><div class="field"><label for="cm_n">'+t("q_name")+'</label><input class="input" id="cm_n"></div>'+
+    '<div class="field"><label for="cm_c">'+t("q_phone")+" / "+t("q_mail")+'</label><input class="input" id="cm_c"></div>'+
+    '<div class="field"><label for="cm_m">'+t("ct_msg")+'</label><textarea class="textarea" id="cm_m"></textarea></div>'+
+    '<div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-pri" data-act="quickmsg">'+t("ct_send")+'</button>'+
+    '<button class="btn btn-out" data-act="go" data-page="quote">'+t("ct_quote")+"</button></div>"+
+    '<p class="hint">'+t("cart_note")+"</p></div>"+
+  "</div></div></section>";
+}
+
+/* ---------- formulaires ---------- */
+const fv=k=>ui.form[k]==null?"":ui.form[k];
+const errOf=k=>ui.errors[k]?'<span class="err">'+ui.errors[k]+"</span>":"";
+function fld(k,label,type,ph,hint){
+ const bad=ui.errors[k]?' data-bad="1"':"";
+ const ctl=type==="textarea"
+  ?'<textarea class="textarea" id="f_'+k+'" data-f="'+k+'" placeholder="'+esc(ph||"")+'"'+bad+">"+esc(fv(k))+"</textarea>"
+  :'<input class="input" id="f_'+k+'" data-f="'+k+'" type="'+(type||"text")+'" placeholder="'+esc(ph||"")+'" value="'+esc(fv(k))+'"'+bad+">";
+ return '<div class="field"><label for="f_'+k+'">'+label+"</label>"+ctl+(hint?'<span class="hint">'+hint+"</span>":"")+errOf(k)+"</div>";
+}
+function sel(k,label,items,hint){
+ const bad=ui.errors[k]?' data-bad="1"':"";
+ return '<div class="field"><label for="f_'+k+'">'+label+'</label><select class="select" id="f_'+k+'" data-f="'+k+'"'+bad+">"+
+  '<option value="">—</option>'+items.map(o=>'<option value="'+esc(o[0])+'"'+(fv(k)===o[0]?" selected":"")+">"+esc(o[1])+"</option>").join("")+
+  "</select>"+(hint?'<span class="hint">'+hint+"</span>":"")+errOf(k)+"</div>";
+}
+function cards(k,label,items,hint){
+ return '<div class="field"><span class="lab">'+label+'</span><div class="grid2">'+
+  items.map(o=>'<label class="opt" data-on="'+(fv(k)===o.v?1:0)+'"><input type="radio" name="'+k+'" value="'+esc(o.v)+'" data-f="'+k+'"'+(fv(k)===o.v?" checked":"")+
+   '><span>'+(o.ic?'<span style="display:inline-flex;gap:7px;align-items:center">'+icon(o.ic,17)+'<span class="t">'+esc(o.t)+"</span></span>":'<span class="t">'+esc(o.t)+"</span>")+
+   (o.d?'<br><span class="hint">'+esc(o.d)+"</span>":"")+"</span></label>").join("")+"</div>"+
+  (hint?'<span class="hint">'+hint+"</span>":"")+errOf(k)+"</div>";
+}
+function feeBox(){
+ const city=fv("city");if(!city)return "";
+ const f=feeFor(city);
+ return '<div class="feebar" id="feebox">'+icon("pin",18)+"<span><b>"+t("q_feeline")+" — "+esc(city)+" : "+(f?money(f):t("q_feeask"))+"</b><br>"+t("q_feenote")+"</span></div>";
+}
+function chanFields(){
+ const c=fv("chan");
+ if(c==="mail")return fld("email",t("q_mail"),"email","nom@exemple.ma");
+ if(c==="wa"||c==="phone")return fld("phone",t("q_phone"),"tel","06 12 34 56 78");
+ return "";
+}
+function pageQuote(){
+ const steps=[["q_s1",1],["q_s2",2],["q_s3",3]];
+ let body="";
+ if(ui.step===1){
+  body=cards("type",t("q_type"),TYPES.map(x=>({v:x.id,t:t(x.k),d:t(x.d)})))+
+   sel("svc",t("q_svc"),SVCS.map(v=>[v.id,t(v.k)]))+
+   fld("desc",t("q_desc"),"textarea",t("q_desc_ph"));
+ }else if(ui.step===2){
+  body=sel("city",t("q_city"),db.settings.fees.map(f=>[f[0],f[0]]).concat([["Autre",LANG==="fr"?"Autre ville":"مدينة أخرى"]]))+
+   feeBox()+
+   fld("addr",t("q_addr"),"text",t("q_addr_ph"),t("q_addr_h"))+
+   '<div class="grid2">'+sel("local",t("q_local"),LOCALS.map(l=>[l.id,L(l)]))+fld("surface",t("q_surf"),"number","90")+"</div>"+
+   '<div class="grid2">'+fld("rooms",t("q_rooms"),"number","3")+fld("cams",t("q_cams"),"number","6")+"</div>"+
+   cards("place",t("q_place"),[{v:"in",t:t("pl_in")},{v:"out",t:t("pl_out")},{v:"both",t:t("pl_both")}])+
+   '<div class="grid2">'+
+    cards("net",t("q_net"),[{v:"yes",t:t("yes")},{v:"no",t:t("no")},{v:"dunno",t:t("dunno")}])+
+    cards("exist",t("q_exist"),[{v:"yes",t:t("yes")},{v:"no",t:t("no")}])+"</div>"+
+   '<div class="grid2">'+sel("delay",t("q_delay"),[["urgent",t("dl_urgent")],["week",t("dl_week")],["month",t("dl_month")],["plan",t("dl_plan")]])+
+    fld("budget",t("q_budget"),"text","10 000 – 15 000 DH")+"</div>";
+ }else{
+  const av=CHANS.filter(c=>db.settings.channels[c.id]);
+  const fee=feeFor(fv("city"));
+  body='<div class="grid2">'+fld("name",t("q_name"),"text","")+fld("company",t("q_comp"),"text","")+"</div>"+
+   cards("chan",t("q_chan"),av.map(c=>({v:c.id,t:t(c.k),ic:c.ic})))+
+   '<div id="chanf">'+chanFields()+"</div>"+
+   sel("slot",t("q_slot"),[["am",t("sl_am")],["pm",t("sl_pm")],["any",t("sl_any")]])+
+   '<div class="recap"><b class="sm">'+t("q_recap")+"</b>"+
+    '<dl class="kv" style="margin-top:9px"><dt>'+t("q_type")+"</dt><dd>"+(fv("type")?t(typeOf(fv("type")).k):"—")+"</dd>"+
+    "<dt>"+t("q_city")+"</dt><dd>"+esc(fv("city")||"—")+"</dd>"+
+    "<dt>"+t("q_feeline")+'</dt><dd class="num">'+(fv("city")?(fee?money(fee):t("q_feeask")):"—")+"</dd>"+
+    "<dt>"+t("q_delay")+"</dt><dd>"+(fv("delay")?t("dl_"+fv("delay")):"—")+"</dd></dl></div>"+
+   '<label class="opt" data-on="'+(fv("ok")?1:0)+'"><input type="checkbox" data-f="ok"'+(fv("ok")?" checked":"")+
+    '><span class="t" style="font-weight:500;font-size:13.5px">'+t("q_ok")+"</span></label>"+errOf("ok");
+ }
+ return '<section class="sec"><div class="wrap" style="max-width:820px"><div class="sec-h"><span class="eyebrow">'+t("nav_quote")+"</span><h1>"+t("q_title")+'</h1><p class="ink2">'+t("q_lead")+"</p></div>"+
+  '<div class="stepper">'+steps.map(s=>'<span class="s" data-on="'+(ui.step===s[1]?1:0)+'" data-done="'+(ui.step>s[1]?1:0)+'"><b>'+(ui.step>s[1]?"✓":s[1])+"</b>"+t(s[0])+"</span>").join("")+"</div>"+
+  '<form class="card pad" data-form="quote" style="display:flex;flex-direction:column;gap:16px">'+body+
+   '<div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:4px">'+
+    (ui.step>1?'<button type="button" class="btn btn-out" data-act="qback">'+t("q_back")+"</button>":"")+
+    (ui.step<3?'<button type="button" class="btn btn-pri" data-act="qnext">'+t("q_next")+" "+icon("arrow",16)+"</button>"
+             :'<button type="button" class="btn btn-pri btn-lg" data-act="qsend">'+t("q_send")+"</button>")+
+   "</div></form></div></section>";
+}
+function pageCartReq(){
+ const av=CHANS.filter(c=>db.settings.channels[c.id]);
+ return '<section class="sec"><div class="wrap" style="max-width:820px"><div class="sec-h"><span class="eyebrow">'+t("src_cart")+"</span><h1>"+t("cart_req")+'</h1><p class="ink2">'+t("cart_note")+"</p></div>"+
+  '<div class="card pad" style="margin-bottom:16px"><b class="sm">'+t("cart_t")+" — "+cartCount()+" "+t("items")+"</b>"+
+   '<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">'+db.cart.map(l=>{const p=prod(l.id);if(!p)return "";
+    return '<div style="display:flex;gap:10px;align-items:center;font-size:13.5px"><span class="mono muted">×'+l.q+"</span><span style=\"flex:1\">"+esc(L(p.name))+(l.inst?' <span class="tag-soft">'+t("cart_inst")+"</span>":"")+'</span><span class="num mono">'+money(p.price*l.q)+"</span></div>";}).join("")+"</div>"+
+   '<hr class="rule"><div style="display:flex;justify-content:space-between;padding-top:10px"><b>'+t("cart_sub")+'</b><b class="num">'+money(cartTotal())+"</b></div></div>"+
+  '<form class="card pad" data-form="cartreq" style="display:flex;flex-direction:column;gap:16px">'+
+   '<div class="grid2">'+fld("name",t("q_name"),"text","")+fld("company",t("q_comp"),"text","")+"</div>"+
+   sel("city",t("q_city"),db.settings.fees.map(f=>[f[0],f[0]]).concat([["Autre",LANG==="fr"?"Autre ville":"مدينة أخرى"]]))+
+   cards("chan",t("q_chan"),av.map(c=>({v:c.id,t:t(c.k),ic:c.ic})))+
+   '<div id="chanf">'+chanFields()+"</div>"+
+   sel("slot",t("q_slot"),[["am",t("sl_am")],["pm",t("sl_pm")],["any",t("sl_any")]])+
+   fld("desc",t("q_desc"),"textarea",LANG==="fr"?"Une précision sur la livraison, la pose, le délai…":"توضيح حول التوصيل أو التركيب أو الأجل…")+
+   '<label class="opt" data-on="'+(fv("ok")?1:0)+'"><input type="checkbox" data-f="ok"'+(fv("ok")?" checked":"")+'><span class="t" style="font-weight:500;font-size:13.5px">'+t("q_ok")+"</span></label>"+errOf("ok")+
+   '<div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn btn-out" data-act="go" data-page="cartpage">'+t("q_back")+'</button>'+
+   '<button type="button" class="btn btn-pri btn-lg" data-act="csend">'+t("q_send")+"</button></div></form></div></section>";
+}
+function pageConfirm(){
+ const r=db.requests.find(x=>x.ref===ui.lastRef);if(!r)return pageHome();
+ const ch=chanOf(r.chan),contact=r.chan==="mail"?r.email:r.phone;
+ const fee=r.fee;
+ return '<section class="sec"><div class="wrap" style="max-width:720px"><div class="ok-box">'+
+  '<div style="display:flex;gap:12px;align-items:center"><span style="width:42px;height:42px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;flex:0 0 auto">'+icon("check",22)+"</span>"+
+  "<div><h1 style=\"font-size:24px\">"+t("cf_t")+'</h1><p class="ink2">'+t("cf_24",{chan:t(ch.k),contact:esc(contact||"—")})+"</p></div></div>"+
+  '<div class="card pad" style="display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center">'+
+   '<div><div class="lab">'+t("cf_ref")+'</div><b class="mono" style="font-size:20px">'+esc(r.ref)+"</b></div>"+
+   (fee?'<div><div class="lab">'+t("q_feeline")+'</div><b class="num" style="font-size:18px">'+money(fee)+"</b></div>":"")+
+   '<div><div class="lab">'+t("th_chan")+'</div><b>'+t(ch.k)+"</b></div></div>"+
+  '<p class="sm ink2">'+t("cf_keep")+"</p>"+
+  (fee?'<p class="sm ink2">'+t("q_feenote")+"</p>":"")+
+  '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-pri" data-act="gotrack" data-v="'+esc(r.ref)+'">'+t("cf_track")+'</button>'+
+   '<button class="btn btn-out" data-act="go" data-page="home">'+t("cf_home")+"</button></div>"+
+  '<div class="note" style="display:flex;gap:9px"><span style="flex:0 0 auto">'+icon("arrow",17)+"</span><span>"+t("cf_demo")+"</span></div>"+
+  "</div></div></section>";
+}
+function pageCart(){
+ if(!db.cart.length)return '<section class="sec"><div class="wrap" style="max-width:620px"><div class="card pad" style="text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center">'+
+  '<span style="color:var(--muted)">'+icon("cart",34)+"</span><h2>"+t("cart_empty")+'</h2><p class="ink2">'+t("cart_empty_d")+"</p>"+
+  '<button class="btn btn-pri" data-act="go" data-page="products">'+t("cart_go")+"</button></div></div></section>";
+ return '<section class="sec"><div class="wrap" style="max-width:820px"><div class="sec-h"><h1>'+t("cart_t")+'</h1><p class="ink2">'+t("cart_note")+"</p></div>"+
+  '<div style="display:flex;flex-direction:column;gap:10px">'+db.cart.map(cartLine).join("")+"</div>"+
+  '<div class="card pad" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center">'+
+   '<div><div class="lab">'+t("cart_sub")+'</div><b class="num" style="font-size:24px">'+money(cartTotal())+"</b></div>"+
+   '<div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-out" data-act="cartclear">'+t("cart_clear")+'</button>'+
+   '<button class="btn btn-pri btn-lg" data-act="go" data-page="cartreq">'+t("cart_req")+"</button></div></div></div></section>";
+}
+function cartLine(l){
+ const p=prod(l.id);if(!p)return "";
+ return '<div class="line"><span class="art">'+art(p.cat,46)+'</span><div style="flex:1;min-width:0">'+
+  '<div style="font-weight:600;font-size:14px">'+esc(L(p.name))+'</div><div class="xs muted mono">'+esc(p.ref)+" · "+esc(p.brand)+"</div>"+
+  '<label class="xs" style="display:inline-flex;gap:6px;align-items:center;margin-top:5px;color:var(--ink-2);cursor:pointer"><input type="checkbox" data-act="cinst" data-id="'+l.id+'"'+(l.inst?" checked":"")+">"+t("withinstall")+"</label></div>"+
+  '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">'+
+   '<span class="num" style="font-weight:600">'+money(p.price*l.q)+"</span>"+
+   '<span class="qty"><button data-act="qm" data-id="'+l.id+'" aria-label="-">−</button><span class="num">'+l.q+'</span><button data-act="qp" data-id="'+l.id+'" aria-label="+">+</button></span>'+
+   '<button class="btn btn-sm btn-dan" data-act="crm" data-id="'+l.id+'">'+icon("trash",15)+"</button></div></div>";
+}
+function cartDrawer(){
+ return '<div class="scrim" data-act="closelayer"><aside class="drawer" role="dialog" aria-label="'+t("cart_t")+'" data-stop="1">'+
+  '<div class="dhead">'+icon("cart",19)+"<h3>"+t("cart_t")+" · "+cartCount()+" "+t("items")+'</h3><button class="x" data-act="closelayer" aria-label="'+t("a_close")+'">×</button></div>'+
+  '<div class="dbody">'+(db.cart.length?db.cart.map(cartLine).join(""):'<p class="muted">'+t("cart_empty")+"</p>")+
+   (db.cart.length?'<div class="note">'+t("cart_note")+"</div>":"")+"</div>"+
+  '<div class="dfoot" style="flex-direction:column;align-items:stretch;gap:9px">'+
+   '<div style="display:flex;justify-content:space-between"><span class="lab">'+t("cart_sub")+'</span><b class="num">'+money(cartTotal())+"</b></div>"+
+   '<button class="btn btn-pri" data-act="go" data-page="cartreq"'+(db.cart.length?"":" disabled")+">"+t("cart_req")+"</button>"+
+   '<button class="btn btn-out btn-sm" data-act="go" data-page="cartpage"'+(db.cart.length?"":" disabled")+">"+t("cart_t")+"</button></div></aside></div>";
+}
+function productModal(){
+ const p=prod(ui.openProd);if(!p)return "";
+ return '<div class="scrim center" data-act="closelayer"><div class="modal" role="dialog" data-stop="1">'+
+  '<div class="dhead"><h3>'+esc(L(p.name))+'</h3><button class="x" data-act="closelayer">×</button></div>'+
+  '<div class="dbody"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;align-items:start">'+
+   '<div class="card" style="display:grid;place-items:center;padding:16px;background:var(--surface-2)">'+art(p.cat,180)+"</div>"+
+   '<div style="display:flex;flex-direction:column;gap:10px">'+
+    '<span class="xs muted" style="letter-spacing:.08em;text-transform:uppercase">'+esc(p.brand)+" · "+esc(L(catOf(p.cat)))+"</span>"+
+    '<span class="mono sm muted">'+t("ref")+" "+esc(p.ref)+"</span>"+stockPill(p)+
+    '<b class="num" style="font-size:26px">'+money(p.price)+"</b>"+
+    (p.warr?'<span class="sm muted">'+(LANG==="fr"?"Garantie ":"ضمان ")+p.warr+(LANG==="fr"?" mois":" شهرا")+"</span>":"")+
+   "</div></div>"+
+   '<div><h4 class="lab" style="margin-bottom:8px">'+t("specs")+'</h4><div class="tw"><table><tbody>'+
+    p.specs.map(s=>"<tr><td style=\"color:var(--muted);width:45%\">"+esc(SPECK[s[0]]?L(SPECK[s[0]]):s[0])+"</td><td>"+esc(s[1])+"</td></tr>").join("")+
+   "</tbody></table></div></div>"+
+   '<label class="opt" data-on="'+(ui.modInst?1:0)+'"><input type="checkbox" data-act="modinst"'+(ui.modInst?" checked":"")+
+    '><span><span class="t">'+t("withinstall")+'</span><br><span class="hint">'+t("withinstall_h")+"</span></span></label></div>"+
+  '<div class="dfoot"><button class="btn btn-out" data-act="closelayer">'+t("a_close")+'</button>'+
+   '<button class="btn btn-pri" data-act="add" data-id="'+p.id+'" style="flex:1">'+icon("cart",17)+" "+t("addcart")+"</button></div></div></div>";
+}
+
+/* ============================================================
+   7. Back-office
+   ============================================================ */
+function adminShell(inner,title){
+ const nav=[["dash","a_dash","grid"],["requests","a_req","doc"],["catalog","a_cat","box"],["interv","a_int","cal"],["settings","a_set","gear"]];
+ const unread=db.notifs.filter(n=>!n.read).length;
+ const newCount=db.requests.filter(r=>r.status==="new").length;
+ return '<div class="admin"><aside class="side">'+
+  '<div class="bd"><span class="mk">'+icon("shield",18)+'</span><span><span class="nm">'+esc(db.settings.company)+'</span><br><span class="sl">'+t("demo_admin")+"</span></span></div>"+
+  "<nav>"+nav.map(n=>'<button data-act="ago" data-p="'+n[0]+'"'+(ui.aPage===n[0]?' aria-current="page"':"")+">"+icon(n[2],18)+"<span>"+t(n[1])+"</span>"+
+   (n[0]==="requests"&&newCount?'<span class="b num">'+newCount+"</span>":"")+"</button>").join("")+"</nav>"+
+  '<div class="ft">'+t("a_role")+" · "+esc(db.settings.company)+"</div></aside>"+
+  '<div class="main"><div class="topbar"><h2>'+title+'</h2><span class="sp"></span>'+
+   '<div class="bellwrap"><button class="bell" data-act="notif" aria-label="'+t("a_notifs")+'">'+icon("bell",18)+
+    (unread?'<span class="cnt num">'+unread+"</span>":"")+"</button>"+(ui.notifOpen?notifPanel():"")+"</div>"+
+   '<div class="who"><span class="av">AD</span><span><b>'+t("a_role")+'</b><br><span class="xs muted">'+esc(db.settings.email)+"</span></span></div>"+
+  '</div><div class="content">'+inner+"</div></div></div>";
+}
+function notifPanel(){
+ const ns=db.notifs.slice().sort((a,b)=>b.at.localeCompare(a.at)).slice(0,8);
+ return '<div class="notif" data-stop="1"><div style="padding:10px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px">'+
+  '<b class="sm" style="flex:1">'+t("a_notifs")+'</b><button class="btn btn-sm btn-out" data-act="readall">'+t("a_markread")+"</button></div>"+
+  (ns.length?ns.map(n=>'<button class="it" data-act="opennotif" data-ref="'+esc(n.ref)+'" data-id="'+n.id+'" data-unread="'+(n.read?0:1)+'">'+
+   '<b class="sm">'+esc(L(n.txt))+'</b><span class="xs muted mono">'+esc(n.ref)+" · "+fmtDT(n.at)+"</span></button>").join("")
+  :'<p class="muted sm" style="padding:14px">'+t("a_nonotif")+"</p>")+"</div>";
+}
+function aDash(){
+ const nw=db.requests.filter(r=>r.status==="new").length;
+ const sent=db.requests.filter(r=>r.status==="sent").length;
+ const today=db.interv.filter(i=>isToday(i.when)&&i.state!=="done").length;
+ const low=db.products.filter(p=>p.active&&p.stock<=5).length;
+ const days=[];for(let i=6;i>=0;i--){const d=new Date(2026,8,27-i);days.push(d);}
+ const counts=days.map(d=>{const k=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());return db.requests.filter(r=>String(r.created).slice(0,10)===k).length;});
+ const mx=Math.max(1,...counts);
+ const dn=LANG==="fr"?["dim","lun","mar","mer","jeu","ven","sam"]:["أحد","إثن","ثلا","أرب","خمي","جمع","سبت"];
+ const byType=TYPES.map(ty=>({k:ty.k,n:db.requests.filter(r=>r.type===ty.id).length}));
+ const mxT=Math.max(1,...byType.map(x=>x.n));
+ const recent=db.requests.slice().sort((a,b)=>b.created.localeCompare(a.created)).slice(0,6);
+ const planning=db.interv.filter(i=>isToday(i.when)).sort((a,b)=>a.when.localeCompare(b.when));
+ return '<div class="kpis">'+
+  kpi(nw,t("a_new"),t("a_new_d"),"k-dan")+kpi(sent,t("a_pend"),t("a_pend_d"),"")+
+  kpi(today,t("a_today"),t("a_today_d"),"k-ok")+kpi(low,t("a_low"),t("a_low_d"),"k-warn")+"</div>"+
+ '<div class="panes"><section class="pane"><header><h3>'+t("a_recent")+'</h3><button class="btn btn-sm btn-out" data-act="ago" data-p="requests">'+t("a_seeall")+"</button></header>"+
+  '<div class="tw" style="border:0;border-radius:0"><table><thead><tr><th>'+t("th_ref")+"</th><th>"+t("th_client")+"</th><th>"+t("th_type")+"</th><th>"+t("th_chan")+"</th><th>"+t("th_status")+"</th></tr></thead><tbody>"+
+  recent.map(r=>'<tr data-click="1" data-act="areq" data-ref="'+esc(r.ref)+'"><td class="mono">'+esc(r.ref)+"</td><td><b>"+esc(r.name)+'</b><br><span class="xs muted">'+esc(r.city)+" · "+fmtD(r.created)+"</span></td>"+
+   "<td>"+t(typeOf(r.type).k)+'</td><td><span style="display:inline-flex;gap:5px;align-items:center;color:var(--ink-2)">'+icon(chanOf(r.chan).ic,15)+t(chanOf(r.chan).k)+"</span></td>"+
+   '<td><span class="pill '+statusOf(r.status).p+'">'+t(statusOf(r.status).k)+"</span></td></tr>").join("")+"</tbody></table></div></section>"+
+ '<div style="display:flex;flex-direction:column;gap:16px">'+
+  '<section class="pane"><header><h3>'+t("a_week")+'</h3></header><div class="bd"><div class="bars">'+
+   counts.map((c,i)=>'<span class="b"><b class="num">'+c+'</b><i style="height:'+Math.round(6+c/mx*94)+'px"></i><em>'+dn[days[i].getDay()]+"</em></span>").join("")+"</div></div></section>"+
+  '<section class="pane"><header><h3>'+t("a_bytype")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:10px">'+
+   byType.map(x=>'<div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>'+t(x.k)+'</span><b class="num">'+x.n+"</b></div>"+
+    '<div style="height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.round(x.n/mxT*100)+'%;background:var(--navy);border-radius:4px"></i></div></div>').join("")+"</div></section>"+
+  '<section class="pane"><header><h3>'+t("a_planning")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:10px">'+
+   (planning.length?planning.map(i=>'<div style="display:flex;gap:10px;align-items:flex-start"><b class="mono sm" style="color:var(--blue-ink);min-width:44px">'+fmtT(i.when)+"</b>"+
+    '<div style="flex:1;min-width:0"><div class="sm" style="font-weight:600">'+esc(L(i.obj))+'</div><div class="xs muted">'+esc(i.client)+" · "+esc(i.tech)+"</div></div>"+
+    ivPill(i.state)+"</div>").join(""):'<p class="muted sm">'+t("a_nores")+"</p>")+"</div></section>"+
+ "</div></div>";
+}
+function kpi(v,l,d,cls){return '<div class="kpi '+cls+'"><span class="l">'+l+'</span><span class="v">'+v+'</span><span class="d">'+d+"</span></div>";}
+function ivPill(s){const m={sched:["pill-new","i_sched"],prog:["pill-warn","i_prog"],done:["pill-ok","i_done"]}[s]||["pill-mute","i_sched"];return '<span class="pill '+m[0]+'">'+t(m[1])+"</span>";}
+function aRequests(){
+ const f=ui.aFilters;
+ let list=db.requests.slice().sort((a,b)=>b.created.localeCompare(a.created));
+ if(f.status)list=list.filter(r=>r.status===f.status);
+ if(f.src)list=list.filter(r=>r.src===f.src);
+ if(f.q){const q=f.q.toLowerCase();list=list.filter(r=>(r.ref+" "+r.name+" "+(r.company||"")+" "+r.city+" "+(r.phone||"")+" "+(r.email||"")).toLowerCase().indexOf(q)>=0);}
+ return '<div class="toolbar"><input class="input search" placeholder="'+t("a_search_req")+'" value="'+esc(f.q)+'" data-act="aq">'+
+  '<select class="select" data-act="asrc" style="width:auto"><option value="">'+t("th_source")+" — "+t("a_all")+'</option><option value="form"'+(f.src==="form"?" selected":"")+">"+t("src_form")+'</option><option value="cart"'+(f.src==="cart"?" selected":"")+">"+t("src_cart")+"</option></select></div>"+
+ '<div class="frow"><button class="chip" data-act="ast" data-v="" aria-pressed="'+(!f.status)+'">'+t("a_all")+" ("+db.requests.length+")</button>"+
+  STATUSES.map(s=>{const n=db.requests.filter(r=>r.status===s.id).length;return '<button class="chip" data-act="ast" data-v="'+s.id+'" aria-pressed="'+(f.status===s.id)+'">'+t(s.k)+" ("+n+")</button>";}).join("")+"</div>"+
+ '<div class="tw"><table><thead><tr><th>'+t("th_ref")+"</th><th>"+t("th_client")+"</th><th>"+t("th_type")+"</th><th>"+t("th_city")+"</th><th>"+t("th_chan")+"</th><th>"+t("th_source")+"</th><th>"+t("th_date")+"</th><th>"+t("th_status")+"</th></tr></thead><tbody>"+
+ (list.length?list.map(r=>'<tr data-click="1" data-act="areq" data-ref="'+esc(r.ref)+'"><td class="mono">'+esc(r.ref)+"</td>"+
+  "<td><b>"+esc(r.name)+"</b>"+(r.company?'<br><span class="xs muted">'+esc(r.company)+"</span>":"")+"</td>"+
+  "<td>"+t(typeOf(r.type).k)+"</td><td>"+esc(r.city)+"</td>"+
+  '<td><span style="display:inline-flex;gap:5px;align-items:center;color:var(--ink-2)">'+icon(chanOf(r.chan).ic,15)+t(chanOf(r.chan).k)+"</span></td>"+
+  '<td><span class="tag-soft">'+t(r.src==="cart"?"src_cart":"src_form")+"</span></td>"+
+  '<td class="num">'+fmtD(r.created)+'</td><td><span class="pill '+statusOf(r.status).p+'">'+t(statusOf(r.status).k)+"</span></td></tr>").join("")
+  :'<tr><td colspan="8" class="muted">'+t("a_nores")+"</td></tr>")+"</tbody></table></div>";
+}
+function reqModal(){
+ const r=db.requests.find(x=>x.ref===ui.openReq);if(!r)return "";
+ const ch=chanOf(r.chan),loc=LOCALS.find(l=>l.id===r.local);
+ const items=(r.items||[]).map(l=>{const p=prod(l.id);return p?'<div style="display:flex;gap:9px;align-items:center;font-size:13px"><span class="mono muted">×'+l.q+"</span><span style=\"flex:1\">"+esc(L(p.name))+(l.inst?' <span class="tag-soft">'+t("cart_inst")+"</span>":"")+'</span><span class="num mono">'+money(p.price*l.q)+"</span></div>":"";}).join("");
+ const total=(r.items||[]).reduce((a,l)=>{const p=prod(l.id);return a+(p?p.price*l.q:0);},0);
+ return '<div class="scrim center" data-act="closelayer"><div class="modal" role="dialog" data-stop="1">'+
+  '<div class="dhead">'+icon("doc",19)+"<h3>"+t("a_reqof",{ref:esc(r.ref)})+'</h3><span class="pill '+statusOf(r.status).p+'">'+t(statusOf(r.status).k)+'</span><button class="x" data-act="closelayer">×</button></div>'+
+  '<div class="dbody">'+
+   '<div class="card pad" style="display:flex;flex-direction:column;gap:12px;border-color:var(--blue)">'+
+    '<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><div style="flex:1;min-width:150px"><b style="font-size:16px">'+esc(r.name)+"</b>"+(r.company?'<br><span class="sm muted">'+esc(r.company)+"</span>":"")+"</div>"+
+     '<span class="pill pill-new">'+t("a_prefers",{chan:t(ch.k)})+"</span></div>"+
+    '<div style="display:flex;flex-wrap:wrap;gap:8px">'+
+     (r.phone?'<button class="btn btn-sm btn-out" data-act="copy" data-v="'+esc(r.phone)+'" data-k="rp">'+icon("phone",15)+" "+esc(r.phone)+(ui.copied==="rp"?" ✓":"")+"</button>":"")+
+     (r.phone?'<button class="btn btn-sm btn-out" data-act="copy" data-v="'+esc(r.phone)+'" data-k="rw">'+icon("wa",15)+" "+t("a_openwa")+(ui.copied==="rw"?" ✓":"")+"</button>":"")+
+     (r.email?'<button class="btn btn-sm btn-out" data-act="copy" data-v="'+esc(r.email)+'" data-k="rm">'+icon("mail",15)+" "+esc(r.email)+(ui.copied==="rm"?" ✓":"")+"</button>":"")+
+     '<span class="tag-soft" style="align-self:center">'+t("q_slot")+" : "+(r.slot?t("sl_"+r.slot):"—")+"</span></div></div>"+
+   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">'+
+    '<div class="card pad"><h4 class="lab" style="margin-bottom:9px">'+t("a_site")+'</h4><dl class="kv">'+
+     "<dt>"+t("q_city")+"</dt><dd>"+esc(r.city)+"</dd><dt>"+t("q_addr")+"</dt><dd>"+esc(r.addr||"—")+"</dd>"+
+     "<dt>"+t("q_local")+"</dt><dd>"+(loc?esc(L(loc)):"—")+"</dd>"+
+     (r.surface?"<dt>"+t("q_surf")+"</dt><dd>"+esc(r.surface)+" m²</dd>":"")+
+     (r.rooms?"<dt>"+t("q_rooms")+"</dt><dd>"+esc(r.rooms)+"</dd>":"")+
+     (r.cams?"<dt>"+t("q_cams")+"</dt><dd>"+esc(r.cams)+"</dd>":"")+
+     (r.place?"<dt>"+t("q_place")+"</dt><dd>"+t("pl_"+r.place)+"</dd>":"")+
+     (r.net?"<dt>"+t("q_net")+"</dt><dd>"+t(r.net==="yes"?"yes":r.net==="no"?"no":"dunno")+"</dd>":"")+
+     (r.exist?"<dt>"+t("q_exist")+"</dt><dd>"+t(r.exist==="yes"?"yes":"no")+"</dd>":"")+
+     '<dt>'+t("q_feeline")+'</dt><dd class="num"><b>'+(r.fee?money(r.fee):t("q_feeask"))+"</b></dd></dl></div>"+
+    '<div class="card pad"><h4 class="lab" style="margin-bottom:9px">'+t("a_needs")+'</h4><dl class="kv">'+
+     "<dt>"+t("q_type")+"</dt><dd>"+t(typeOf(r.type).k)+"</dd>"+
+     (r.svc?"<dt>"+t("q_svc")+"</dt><dd>"+t((SVCS.find(s=>s.id===r.svc)||SVCS[0]).k)+"</dd>":"")+
+     (r.delay?"<dt>"+t("q_delay")+"</dt><dd>"+t("dl_"+r.delay)+"</dd>":"")+
+     (r.budget?"<dt>"+t("q_budget")+"</dt><dd>"+esc(r.budget)+"</dd>":"")+
+     "<dt>"+t("th_source")+"</dt><dd>"+t(r.src==="cart"?"src_cart":"src_form")+"</dd></dl>"+
+     (r.desc?'<p class="sm ink2" style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)">«&nbsp;'+esc(r.desc)+"&nbsp;»</p>":"")+"</div></div>"+
+   (items?'<div class="card pad"><h4 class="lab" style="margin-bottom:9px">'+t("a_cartof")+"</h4>"+items+
+     '<hr class="rule" style="margin:10px 0"><div style="display:flex;justify-content:space-between"><b class="sm">'+t("a_est")+'</b><b class="num">'+money(total)+"</b></div></div>":"")+
+   '<div class="card pad" style="display:flex;flex-direction:column;gap:12px">'+
+    '<div class="grid2"><div class="field"><label for="rst">'+t("a_setstatus")+'</label><select class="select" id="rst" data-act="setstatus" data-ref="'+esc(r.ref)+'">'+
+      STATUSES.map(s=>'<option value="'+s.id+'"'+(r.status===s.id?" selected":"")+">"+t(s.k)+"</option>").join("")+"</select></div>"+
+     '<div class="field"><label for="rtec">'+t("a_assign")+'</label><select class="select" id="rtec" data-act="settech" data-ref="'+esc(r.ref)+'">'+
+      '<option value="">'+t("a_unassigned")+"</option>"+db.settings.techs.map(x=>'<option value="'+esc(x)+'"'+(r.tech===x?" selected":"")+">"+esc(x)+"</option>").join("")+"</select></div></div>"+
+    '<div class="field"><label for="rnote">'+t("a_notes")+'</label><textarea class="textarea" id="rnote" placeholder="'+t("a_notes_ph")+'"></textarea>'+
+     '<button class="btn btn-sm btn-out" data-act="addnote" data-ref="'+esc(r.ref)+'" style="align-self:flex-start">'+t("a_addnote")+"</button></div>"+
+    ((r.notes||[]).length?'<div style="display:flex;flex-direction:column;gap:8px">'+r.notes.slice().reverse().map(n=>'<div style="background:var(--surface-2);border-radius:7px;padding:9px 11px"><div class="xs muted mono">'+fmtDT(n.at)+'</div><div class="sm">'+esc(n.txt)+"</div></div>").join("")+"</div>":"")+"</div>"+
+   '<div class="card pad"><h4 class="lab" style="margin-bottom:10px">'+t("a_hist")+'</h4><ul class="tl">'+
+    (r.tl||[]).slice().reverse().map(e=>'<li data-on="1"><span class="dot"></span><span><span class="t">'+(e.k==="created"?t("st_new"):t(statusOf(e.v).k))+'</span><span class="m">'+fmtDT(e.at)+"</span></span></li>").join("")+"</ul></div>"+
+  "</div>"+
+  '<div class="dfoot"><button class="btn btn-out" data-act="closelayer">'+t("a_close")+'</button>'+
+   '<button class="btn btn-navy" data-act="planiv" data-ref="'+esc(r.ref)+'">'+icon("cal",16)+" "+t("a_plan")+"</button></div></div></div>";
+}
+function aCatalog(){
+ const q=(ui.aFilters.q||"").toLowerCase();
+ let list=db.products.slice();
+ if(q)list=list.filter(p=>(L(p.name)+" "+p.ref+" "+p.brand).toLowerCase().indexOf(q)>=0);
+ return '<div class="toolbar"><input class="input search" placeholder="'+t("a_search_prod")+'" value="'+esc(ui.aFilters.q)+'" data-act="aq">'+
+  '<button class="btn btn-pri" data-act="newprod">'+icon("plus",17)+" "+t("a_newprod")+"</button></div>"+
+ '<div class="tw"><table><thead><tr><th>'+t("th_prod")+"</th><th>"+t("th_cat")+"</th><th>"+t("th_brand")+"</th><th>"+t("th_price")+"</th><th>"+t("th_stock")+"</th><th>"+t("th_state")+"</th><th>"+t("th_act")+"</th></tr></thead><tbody>"+
+ (list.length?list.map(p=>"<tr><td><div style=\"display:flex;gap:10px;align-items:center\"><span style=\"width:34px;flex:0 0 auto\">"+art(p.cat,34)+"</span><span><b>"+esc(L(p.name))+'</b><br><span class="xs muted mono">'+esc(p.ref)+"</span></span></div></td>"+
+  "<td>"+esc(L(catOf(p.cat)))+"</td><td>"+esc(p.brand)+'</td><td class="num mono">'+money(p.price)+"</td>"+
+  '<td><input class="input num" style="width:74px;padding:5px 8px" type="number" min="0" value="'+p.stock+'" data-act="stock" data-id="'+p.id+'"> '+(p.stock<=5?'<span class="pill pill-warn" style="margin-inline-start:4px">'+t("a_low")+"</span>":"")+"</td>"+
+  '<td><label style="display:inline-flex;gap:6px;align-items:center;cursor:pointer" class="sm"><input type="checkbox" data-act="pub" data-id="'+p.id+'"'+(p.active?" checked":"")+">"+(p.active?t("yes"):t("no"))+"</label></td>"+
+  '<td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-out" data-act="editprod" data-id="'+p.id+'">'+t("a_edit")+'</button>'+
+   '<button class="btn btn-sm btn-dan" data-act="askdel" data-id="'+p.id+'">'+icon("trash",15)+"</button></div></td></tr>").join("")
+  :'<tr><td colspan="7" class="muted">'+t("a_nores")+"</td></tr>")+"</tbody></table></div>";
+}
+function prodModal(){
+ const isNew=ui.editProd==="new";
+ const p=isNew?{id:"",ref:"",cat:"cam",brand:"",name:{fr:"",ar:""},price:"",stock:0,warr:12,specs:[],active:true}:prod(ui.editProd);
+ if(!p)return "";
+ const e=ui.errors;
+ const row=(id,lab,val,type,ph)=>'<div class="field"><label for="'+id+'">'+lab+'</label><input class="input" id="'+id+'" type="'+(type||"text")+'" value="'+esc(val)+'" placeholder="'+esc(ph||"")+'"'+(e[id]?' data-bad="1"':"")+">"+(e[id]?'<span class="err">'+e[id]+"</span>":"")+"</div>";
+ return '<div class="scrim center" data-act="closelayer"><div class="modal" role="dialog" data-stop="1">'+
+  '<div class="dhead">'+icon("box",19)+"<h3>"+(isNew?t("a_newprod"):t("a_editprod"))+'</h3><button class="x" data-act="closelayer">×</button></div>'+
+  '<div class="dbody">'+
+   '<div class="grid2">'+row("pf_ref",t("a_refh"),p.ref,"text","OF-CAM-D4")+
+    '<div class="field"><label for="pf_cat">'+t("th_cat")+'</label><select class="select" id="pf_cat">'+CATS.map(c=>'<option value="'+c.id+'"'+(p.cat===c.id?" selected":"")+">"+esc(L(c))+"</option>").join("")+"</select></div></div>"+
+   '<div class="grid2">'+row("pf_nfr",t("a_namefr"),p.name.fr)+row("pf_nar",t("a_namear"),p.name.ar)+"</div>"+
+   '<div class="grid2">'+row("pf_brand",t("th_brand"),p.brand,"text","Hikvision")+row("pf_price",t("a_pricedh"),p.price,"number","690")+"</div>"+
+   '<div class="grid2">'+row("pf_stock",t("a_stockq"),p.stock,"number")+row("pf_warr",t("a_warr"),p.warr,"number")+"</div>"+
+   '<div class="field"><label for="pf_specs">'+t("a_specs")+'</label><textarea class="textarea" id="pf_specs" placeholder="Résolution : 4 MP\nVision nocturne : 30 m">'+
+    esc(p.specs.map(s=>(SPECK[s[0]]?L(SPECK[s[0]]):s[0])+" : "+s[1]).join("\n"))+"</textarea></div>"+
+   '<label class="opt" data-on="'+(p.active?1:0)+'"><input type="checkbox" id="pf_pub"'+(p.active?" checked":"")+'><span class="t" style="font-weight:500;font-size:13.5px">'+t("a_pub")+"</span></label>"+
+  "</div>"+
+  '<div class="dfoot"><button class="btn btn-out" data-act="closelayer">'+t("a_cancel")+'</button>'+
+   '<button class="btn btn-pri" data-act="saveprod" data-id="'+esc(p.id)+'" style="flex:1">'+t("a_save")+"</button></div></div></div>";
+}
+function delModal(){
+ const p=prod(ui.delProd);if(!p)return "";
+ return '<div class="scrim center" data-act="closelayer"><div class="modal" style="max-width:420px" data-stop="1">'+
+  '<div class="dhead"><h3>'+t("a_del")+'</h3><button class="x" data-act="closelayer">×</button></div>'+
+  '<div class="dbody"><p>'+t("a_delq",{n:esc(L(p.name))})+"</p></div>"+
+  '<div class="dfoot"><button class="btn btn-out" data-act="closelayer" style="flex:1">'+t("a_cancel")+'</button>'+
+   '<button class="btn btn-pri" style="background:var(--dan);flex:1" data-act="dodel" data-id="'+p.id+'">'+t("a_delok")+"</button></div></div></div>";
+}
+function aInterv(){
+ const list=db.interv.slice().sort((a,b)=>b.when.localeCompare(a.when));
+ return '<div class="tw"><table><thead><tr><th>'+t("th_ref")+"</th><th>"+t("th_when")+"</th><th>"+t("th_obj")+"</th><th>"+t("th_client")+"</th><th>"+t("th_tech")+"</th><th>"+t("th_status")+"</th><th>"+t("th_act")+"</th></tr></thead><tbody>"+
+ (list.length?list.map(i=>'<tr><td class="mono">'+esc(i.id)+'<br><span class="xs muted">'+esc(i.ref)+"</span></td>"+
+  '<td class="num"><b>'+(isToday(i.when)?t("today"):fmtD(i.when))+"</b><br>"+fmtT(i.when)+"</td>"+
+  "<td>"+esc(L(i.obj))+"</td><td>"+esc(i.client)+'<br><span class="xs muted">'+esc(i.city)+"</span></td><td>"+esc(i.tech||"—")+"</td>"+
+  "<td>"+ivPill(i.state)+"</td>"+
+  '<td>'+(i.state!=="done"?'<button class="btn btn-sm btn-out" data-act="ivdone" data-id="'+esc(i.id)+'">'+t("a_int_done")+"</button>":"—")+"</td></tr>").join("")
+  :'<tr><td colspan="7" class="muted">'+t("a_nores")+"</td></tr>")+"</tbody></table></div>";
+}
+function aSettings(){
+ const s=db.settings;
+ return '<div class="panes" style="grid-template-columns:repeat(auto-fit,minmax(310px,1fr))">'+
+ '<section class="pane"><header><h3>'+t("a_company")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:13px">'+
+  '<div class="field"><label for="s_company">'+t("a_cname")+'</label><input class="input" id="s_company" data-s="company" value="'+esc(s.company)+'"><span class="hint">'+t("a_cname_h")+"</span></div>"+
+  '<div class="field"><label for="s_tag">'+t("a_ctag")+'</label><input class="input" id="s_tag" data-s="tagline" value="'+esc(L(s.tagline))+'"></div>'+
+  '<div class="grid2"><div class="field"><label for="s_phone">'+t("ch_phone")+'</label><input class="input" id="s_phone" data-s="phone" value="'+esc(s.phone)+'"></div>'+
+  '<div class="field"><label for="s_wa">'+t("ch_wa")+'</label><input class="input" id="s_wa" data-s="whatsapp" value="'+esc(s.whatsapp)+'"></div></div>'+
+  '<div class="field"><label for="s_mail">'+t("ch_mail")+'</label><input class="input" id="s_mail" data-s="email" value="'+esc(s.email)+'"></div>'+
+  '<div class="field"><label for="s_addr">'+t("ct_addr")+'</label><input class="input" id="s_addr" data-s="address" value="'+esc(L(s.address))+'"></div>'+
+  '<div class="field"><label for="s_hours">'+t("ct_hours")+'</label><input class="input" id="s_hours" data-s="hours" value="'+esc(L(s.hours))+'"></div>'+
+  '<button class="btn btn-pri" data-act="savesettings" style="align-self:flex-start">'+t("a_save")+"</button></div></section>"+
+ '<section class="pane"><header><h3>'+t("a_fees")+'</h3></header><div class="bd" style="display:flex;flex-direction:column;gap:12px">'+
+  '<p class="hint">'+t("a_fees_h")+"</p>"+
+  '<div class="tw"><table><thead><tr><th>'+t("q_city")+"</th><th>"+t("th_price")+"</th><th></th></tr></thead><tbody>"+
+   s.fees.map((f,i)=>"<tr><td>"+esc(f[0])+'</td><td><input class="input num" style="width:100px;padding:5px 8px" type="number" min="0" step="50" value="'+f[1]+'" data-act="fee" data-i="'+i+'"></td>'+
+    '<td><button class="btn btn-sm btn-dan" data-act="rmfee" data-i="'+i+'">'+icon("trash",14)+"</button></td></tr>").join("")+"</tbody></table></div>"+
+  '<div class="toolbar"><input class="input" id="nf_city" placeholder="'+t("q_city")+'" style="flex:1 1 120px"><input class="input num" id="nf_fee" type="number" placeholder="200" style="width:100px">'+
+   '<button class="btn btn-out" data-act="addfee">'+icon("plus",15)+" "+t("a_addcity")+"</button></div>"+
+  '<hr class="rule">'+
+  '<div class="field"><span class="lab">'+t("a_channels")+'</span><div class="grid3">'+
+   CHANS.map(c=>'<label class="opt" data-on="'+(s.channels[c.id]?1:0)+'"><input type="checkbox" data-act="chan" data-id="'+c.id+'"'+(s.channels[c.id]?" checked":"")+'><span class="t" style="font-weight:500;font-size:13.5px">'+t(c.k)+"</span></label>").join("")+"</div></div>"+
+  '<div class="field"><label for="s_sla">'+t("a_sla")+'</label><input class="input num" id="s_sla" data-s="sla" type="number" value="'+s.sla+'" style="width:110px"></div>'+
+  '<div class="field"><span class="lab">'+t("a_techs")+'</span><div class="frow">'+s.techs.map(x=>'<span class="tag-soft">'+esc(x)+"</span>").join("")+"</div></div>"+
+  '<button class="btn btn-pri" data-act="savesettings" style="align-self:flex-start">'+t("a_save")+"</button></div></section></div>";
+}
+
+/* ============================================================
+   8. Jeu de données complémentaire (volume réaliste)
+   ============================================================ */
+(function(){
+ const rows=[
+  ["DEV-2026-0136","2026-09-26T17:20:00","install","net","new","Hicham Loukili","Librairie Al Manar","Casablanca","shop","phone","06 68 21 44 90","","form"],
+  ["DEV-2026-0135","2026-09-26T14:02:00","fix","it","contacted","Fatima Zahra Guessous","Cabinet comptable FZG","Rabat","office","mail","","fz.guessous@cabinet-fzg.ma","form"],
+  ["DEV-2026-0134","2026-09-25T10:41:00","prod","cam","sent","Anas Berrada","Snack Berrada","Mohammedia","cafe","wa","06 77 05 63 21","","cart"],
+  ["DEV-2026-0133","2026-09-24T16:10:00","install","cam","won","Latifa Bennis","Crèche Les Petits Pas","Casablanca","other","phone","06 61 90 12 76","","form"],
+  ["DEV-2026-0132","2026-09-24T09:55:00","maint","it","sent","Youssef Kettani","Garage Kettani","Bouskoura","depot","wa","06 50 38 27 14","","form"],
+  ["DEV-2026-0131","2026-09-22T11:30:00","prod","net","lost","Sanae Alaoui","Salon Sanae","Casablanca","shop","mail","","sanae.alaoui@gmail.com","cart"],
+  ["DEV-2026-0130","2026-09-21T15:45:00","install","acc","done","Abdellah Naciri","Résidence Al Firdaous","Rabat","other","phone","06 62 47 80 33","","form"],
+  ["DEV-2026-0129","2026-09-21T09:18:00","fix","cam","done","Meryem Tahiri","Pressing Tahiri","Casablanca","shop","wa","06 73 66 21 08","","form"],
+  ["DEV-2026-0128","2026-09-18T14:25:00","install","net","done","Réda Squalli","Agence Squalli Voyages","Marrakech","office","mail","","contact@squalli-voyages.ma","form"],
+  ["DEV-2026-0127","2026-09-17T10:05:00","prod","it","done","Nabil Cherkaoui","Cyber Cherkaoui","Casablanca","shop","phone","06 41 55 09 92","","cart"],
+  ["DEV-2026-0126","2026-09-15T16:50:00","install","cam","lost","Khadija Mansouri","Boutique Khadija","Mohammedia","shop","wa","06 69 14 72 55","","form"],
+  ["DEV-2026-0125","2026-09-14T11:12:00","maint","cam","done","Tarik Lahlou","Dépôt Lahlou Matériaux","Bouskoura","depot","phone","06 60 83 41 27","","form"],
+  ["DEV-2026-0124","2026-09-10T09:40:00","install","acc","done","Souad Benjelloun","École Al Amal","Casablanca","other","mail","","direction@ecole-alamal.ma","form"],
+  ["DEV-2026-0123","2026-09-09T15:30:00","fix","net","done","Ilyas Hakimi","Café Hakimi","Casablanca","cafe","phone","06 54 27 66 03","","form"],
+  ["DEV-2026-0122","2026-09-08T10:15:00","prod","cam","done","Ghita Filali","Parapharmacie Filali","Rabat","shop","wa","06 78 33 52 40","","cart"]
+ ];
+ const chain={new:["new"],contacted:["new","contacted"],visit:["new","contacted","visit"],sent:["new","contacted","visit","sent"],
+  won:["new","contacted","won"],done:["new","contacted","sent","done"],lost:["new","contacted","lost"]};
+ const descs={install:"Installation à prévoir après visite technique.",prod:"Sélection de matériel à confirmer avec le client.",
+  maint:"Suivi régulier demandé sur l'installation en place.",fix:"Panne signalée, intervention à planifier."};
+ const carts={cart:[[{id:"p1",q:2,inst:true}],[{id:"p9",q:1,inst:false},{id:"p16",q:1,inst:true}],[{id:"p4",q:3,inst:false}]]};
+ let ci=0;
+ rows.forEach(function(x){
+  const steps=chain[x[4]]||["new"];const base=new Date(x[1]);
+  const tl=steps.map(function(s,i){const d=new Date(base.getTime()+i*5400000);
+   return {at:d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes())+":00",k:i===0?"created":"status",v:s};});
+  SEED_REQUESTS.push({ref:x[0],src:x[12],type:x[2],svc:x[3],status:x[4],created:x[1],
+   name:x[5],company:x[6],city:x[7],addr:"Adresse communiquée par le client",local:x[8],
+   surface:"",rooms:"",cams:"",place:"",net:"yes",exist:x[2]==="fix"?"yes":"no",delay:"month",budget:"",
+   chan:x[9],phone:x[10],email:x[11],slot:"any",fee:feeFor(x[7]),desc:descs[x[2]],
+   tech:x[4]==="new"?"":SEED_SETTINGS.techs[rows.indexOf(x)%3],
+   items:x[12]==="cart"?carts.cart[(ci++)%3]:[],notes:[],tl:tl});
+ });
+})();
+
+/* ============================================================
+   9. Rendu général
+   ============================================================ */
+function demoBar(){
+ return '<div class="demobar"><span class="tag">'+t("demo_tag")+'</span>'+
+  '<span class="seg" role="group"><button data-act="mode" data-v="client" aria-pressed="'+(ui.mode==="client")+'">'+t("demo_client")+'</button>'+
+  '<button data-act="mode" data-v="admin" aria-pressed="'+(ui.mode==="admin")+'">'+t("demo_admin")+"</button></span>"+
+  '<span class="grow" style="min-width:0;opacity:.85">'+t("demo_note")+"</span>"+
+  '<button class="lnk" data-act="lang">'+t("lang_switch")+"</button>"+
+  '<button class="lnk" data-act="reset">'+t("demo_reset")+"</button></div>";
+}
+function clientPage(){
+ switch(ui.page){
+  case "services":return pageServices();
+  case "products":return pageProducts();
+  case "quote":return pageQuote();
+  case "track":return pageTrack();
+  case "contact":return pageContact();
+  case "cartpage":return pageCart();
+  case "cartreq":return db.cart.length?pageCartReq():pageCart();
+  case "confirm":return pageConfirm();
+  default:return pageHome();
+ }
+}
+function adminBody(){
+ switch(ui.aPage){
+  case "requests":return aRequests();
+  case "catalog":return aCatalog();
+  case "interv":return aInterv();
+  case "settings":return aSettings();
+  default:return aDash();
+ }
+}
+const adminTitle=()=>t({dash:"a_dash",requests:"a_req",catalog:"a_cat",interv:"a_int",settings:"a_set"}[ui.aPage]||"a_dash");
+function harvest(){
+ document.querySelectorAll("[data-f]").forEach(function(el){
+  const k=el.getAttribute("data-f");
+  if(el.type==="checkbox")ui.form[k]=el.checked;
+  else if(el.type==="radio"){if(el.checked)ui.form[k]=el.value;}
+  else ui.form[k]=el.value;
+ });
+}
+function render(){
+ harvest();
+ document.documentElement.setAttribute("lang",LANG);
+ document.documentElement.setAttribute("dir",LANG==="ar"?"rtl":"ltr");
+ const app=document.getElementById("app");
+ app.innerHTML=demoBar()+(ui.mode==="client"
+  ?'<div class="site">'+clientHeader()+"<main>"+clientPage()+"</main>"+clientFooter()+"</div>"
+  :adminShell(adminBody(),adminTitle()));
+ document.getElementById("layer").innerHTML=
+  ui.cartOpen?cartDrawer():ui.openProd?productModal():ui.openReq?reqModal():ui.editProd?prodModal():ui.delProd?delModal():"";
+ if(ui.focus){const el=document.querySelector(ui.focus);if(el){el.focus();try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}}}
+}
+
+/* ============================================================
+   10. Actions
+   ============================================================ */
+const nowStamp=()=>{const d=new Date();return TODAY+"T"+pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());};
+function newRef(){const n=db.seq++;return "DEV-2026-"+("000"+n).slice(-4);}
+function validate(step){
+ ui.errors={};
+ const need=k=>{const v=fv(k);if(v===""||v==null||v===false)ui.errors[k]=t("err_req");};
+ if(step===1){need("type");need("desc");}
+ if(step===2){need("city");need("addr");}
+ if(step===3||step==="cart"){
+  need("name");need("chan");
+  if(step==="cart")need("city");
+  if(fv("chan")==="mail"){if(!/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(fv("email")))ui.errors.email=t("err_mail");}
+  else if(fv("chan")){if(!/^[\d\s+().-]{9,}$/.test(fv("phone")))ui.errors.phone=t("err_phone");}
+  if(!fv("ok"))ui.errors.ok=t("err_req");
+ }
+ return Object.keys(ui.errors).length===0;
+}
+function submit(src){
+ const now=nowStamp(),f=ui.form;
+ const r={ref:newRef(),src:src,type:src==="cart"?"prod":(f.type||"install"),svc:f.svc||"",status:"new",created:now,
+  name:f.name||"",company:f.company||"",city:f.city||"",addr:f.addr||"",local:f.local||"",surface:f.surface||"",
+  rooms:f.rooms||"",cams:f.cams||"",place:f.place||"",net:f.net||"",exist:f.exist||"",delay:f.delay||"",budget:f.budget||"",
+  chan:f.chan||"phone",phone:f.phone||"",email:f.email||"",slot:f.slot||"any",fee:feeFor(f.city),
+  desc:f.desc||"",tech:"",items:src==="cart"?db.cart.slice():[],notes:[],tl:[{at:now,k:"created"}]};
+ const n=src==="cart"?cartCount():0;
+ db.requests.unshift(r);
+ db.notifs.unshift({id:"n"+Date.now(),at:now,ref:r.ref,read:false,
+  txt:{fr:"Nouvelle demande de "+r.name+(src==="cart"?" — panier de "+n+" article(s)":" — "+t("nav_quote")),
+       ar:"طلب جديد من "+r.name+(src==="cart"?" — سلة من "+n+" منتج":"")}});
+ if(src==="cart")db.cart=[];
+ ui.lastRef=r.ref;ui.form={};ui.errors={};ui.step=1;ui.page="confirm";
+ save();render();toast(t("cf_t"),r.ref);
+}
+function addToCart(id,inst){
+ const l=db.cart.find(x=>x.id===id);
+ if(l)l.q++;else db.cart.push({id:id,q:1,inst:!!inst});
+ const p=prod(id);ui.openProd=null;ui.modInst=false;save();render();toast(t("added"),p?L(p.name):"");
+}
+function doTrack(){
+ const el=document.getElementById("trackq");
+ const q=(el?el.value:ui.track).trim();ui.track=q;
+ if(!q){ui.trackRes=undefined;return render();}
+ const n=q.toLowerCase().replace(/[\s().-]/g,"");
+ ui.trackRes=db.requests.find(r=>r.ref.toLowerCase()===q.toLowerCase()||(r.phone&&r.phone.replace(/[\s().-]/g,"")===n))||null;
+ render();
+}
+function copyText(v,k){
+ const done=()=>{ui.copied=k;render();setTimeout(()=>{ui.copied="";render();},1800);};
+ try{navigator.clipboard.writeText(v).then(done).catch(done);}catch(e){done();}
+}
+function setStatus(ref,st){
+ const r=db.requests.find(x=>x.ref===ref);if(!r||r.status===st)return;
+ r.status=st;(r.tl=r.tl||[]).push({at:nowStamp(),k:"status",v:st});
+ save();render();toast(t("a_statusup"),ref+" · "+t(statusOf(st).k));
+}
+function readSpecs(txt){
+ return txt.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{
+  const i=l.indexOf(":");return i<0?[l,""]:[l.slice(0,i).trim(),l.slice(i+1).trim()];});
+}
+function saveProduct(id){
+ const g=x=>{const e=document.getElementById(x);return e?e.value.trim():"";};
+ ui.errors={};
+ if(!g("pf_ref"))ui.errors.pf_ref=t("err_req");
+ if(!g("pf_nfr"))ui.errors.pf_nfr=t("err_req");
+ if(!g("pf_price")||isNaN(+g("pf_price")))ui.errors.pf_price=t("err_req");
+ if(Object.keys(ui.errors).length)return render();
+ const data={ref:g("pf_ref"),cat:g("pf_cat"),brand:g("pf_brand")||"—",
+  name:{fr:g("pf_nfr"),ar:g("pf_nar")||g("pf_nfr")},price:+g("pf_price"),stock:+g("pf_stock")||0,
+  warr:+g("pf_warr")||0,specs:readSpecs(g("pf_specs")),active:document.getElementById("pf_pub").checked};
+ if(id&&id!=="new"&&prod(id))Object.assign(prod(id),data);
+ else db.products.unshift(Object.assign({id:"p"+Date.now(),pop:50},data));
+ ui.editProd=null;ui.errors={};save();render();toast(t("a_saved"),data.name.fr);
+}
+function saveSettings(){
+ const g=x=>{const e=document.getElementById(x);return e?e.value.trim():"";};
+ const s=db.settings;
+ s.company=g("s_company")||s.company;
+ if(LANG==="ar")s.tagline.ar=g("s_tag");else s.tagline.fr=g("s_tag");
+ s.phone=g("s_phone");s.whatsapp=g("s_wa");s.email=g("s_mail");
+ if(LANG==="ar")s.address.ar=g("s_addr");else s.address.fr=g("s_addr");
+ if(LANG==="ar")s.hours.ar=g("s_hours");else s.hours.fr=g("s_hours");
+ s.sla=+g("s_sla")||24;
+ save();render();toast(t("a_settings_saved"),s.company);
+}
+
+/* ============================================================
+   11. Événements
+   ============================================================ */
+document.addEventListener("click",function(ev){
+ const stop=ev.target.closest("[data-stop]");
+ const el=ev.target.closest("[data-act]");
+ if(!el){if(ui.notifOpen&&!stop){ui.notifOpen=false;render();}return;}
+ const a=el.getAttribute("data-act"),id=el.getAttribute("data-id"),v=el.getAttribute("data-v"),ref=el.getAttribute("data-ref");
+ const nav=["go","cart","prod","add","closelayer","mode","lang","reset","ago","areq"];
+ if(el.tagName==="A"||nav.indexOf(a)>=0)ev.preventDefault();
+ ui.focus=null;
+ switch(a){
+  case "mode":ui.mode=v;ui.notifOpen=false;window.scrollTo(0,0);render();break;
+  case "lang":LANG=LANG==="ar"?"fr":"ar";save();render();break;
+  case "reset":resetDemo();break;
+  case "go":ui.page=el.getAttribute("data-page");ui.cartOpen=false;ui.errors={};if(ui.page==="quote")ui.step=1;window.scrollTo(0,0);render();break;
+  case "quotesvc":ui.form.svc=el.getAttribute("data-svc");ui.form.type="install";ui.page="quote";ui.step=1;window.scrollTo(0,0);render();break;
+  case "cart":ui.cartOpen=!ui.cartOpen;render();break;
+  case "closelayer":if(ev.target.closest("[data-stop]")&&ev.target!==el&&el.className!=="x"&&!el.classList.contains("btn"))return;
+    ui.cartOpen=false;ui.openProd=null;ui.openReq=null;ui.editProd=null;ui.delProd=null;ui.errors={};render();break;
+  case "prod":ui.openProd=id;ui.modInst=false;render();break;
+  case "add":addToCart(id,ui.modInst);break;
+  case "qp":{const l=db.cart.find(x=>x.id===id);if(l)l.q++;save();render();break;}
+  case "qm":{const l=db.cart.find(x=>x.id===id);if(l){l.q--;if(l.q<1)db.cart=db.cart.filter(x=>x.id!==id);}save();render();break;}
+  case "crm":db.cart=db.cart.filter(x=>x.id!==id);save();render();break;
+  case "cartclear":db.cart=[];save();render();break;
+  case "qnext":if(validate(ui.step)){ui.step++;window.scrollTo(0,0);}else toast(t("err_fix"),"");render();break;
+  case "qback":ui.step--;ui.errors={};render();break;
+  case "qsend":if(validate(3))submit("form");else{toast(t("err_fix"),"");render();}break;
+  case "csend":if(validate("cart"))submit("cart");else{toast(t("err_fix"),"");render();}break;
+  case "track":doTrack();break;
+  case "gotrack":ui.page="track";ui.track=v;window.scrollTo(0,0);doTrack();break;
+  case "copy":copyText(v,el.getAttribute("data-k"));break;
+  case "quickmsg":toast(t("cf_t"),t("cf_24",{chan:t("ch_phone"),contact:db.settings.phone}));break;
+  case "fcat":ui.filters.cat=v;render();break;
+  case "fbrand":ui.filters.brand=v;render();break;
+  case "fclear":ui.filters={cat:"",brand:"",max:5000,inonly:false,q:"",sort:"pop"};render();break;
+  case "ago":ui.aPage=el.getAttribute("data-p");ui.notifOpen=false;ui.aFilters.q="";window.scrollTo(0,0);render();break;
+  case "ast":ui.aFilters.status=v;render();break;
+  case "areq":ui.openReq=ref;render();break;
+  case "notif":ui.notifOpen=!ui.notifOpen;render();break;
+  case "readall":db.notifs.forEach(n=>n.read=true);save();render();break;
+  case "opennotif":{const n=db.notifs.find(x=>x.id===id);if(n)n.read=true;ui.notifOpen=false;ui.mode="admin";ui.aPage="requests";ui.openReq=ref;save();render();break;}
+  case "newprod":ui.editProd="new";ui.errors={};render();break;
+  case "editprod":ui.editProd=id;ui.errors={};render();break;
+  case "askdel":ui.delProd=id;render();break;
+  case "dodel":{const p=prod(id);db.products=db.products.filter(x=>x.id!==id);ui.delProd=null;save();render();toast(t("a_deleted"),p?L(p.name):"");break;}
+  case "saveprod":saveProduct(id);break;
+  case "addnote":{const r=db.requests.find(x=>x.ref===ref),el2=document.getElementById("rnote");
+    if(r&&el2&&el2.value.trim()){(r.notes=r.notes||[]).push({at:nowStamp(),txt:el2.value.trim()});save();render();toast(t("a_noteadded"),ref);}break;}
+  case "planiv":{const r=db.requests.find(x=>x.ref===ref);if(!r)break;
+    const d=new Date();const when=TODAY+"T"+pad((d.getHours()+1)%24)+":00:00";
+    db.interv.unshift({id:"TCK-0"+(452+db.interv.length),ref:r.ref,client:r.name+(r.company?" — "+r.company:""),city:r.city,
+     obj:{fr:t(typeOf(r.type).k)+" — "+r.city,ar:t(typeOf(r.type).k)+" — "+r.city},when:when,tech:r.tech||db.settings.techs[0],state:"sched"});
+    if(r.status==="new"||r.status==="contacted")setStatus(r.ref,"visit");
+    ui.openReq=null;ui.aPage="interv";save();render();toast(t("a_plan"),r.ref);break;}
+  case "ivdone":{const i=db.interv.find(x=>x.id===id);if(i)i.state="done";save();render();break;}
+  case "addfee":{const c=document.getElementById("nf_city"),f=document.getElementById("nf_fee");
+    if(c&&c.value.trim()){db.settings.fees.push([c.value.trim(),+((f&&f.value)||0)]);save();render();}break;}
+  case "rmfee":db.settings.fees.splice(+el.getAttribute("data-i"),1);save();render();break;
+  case "savesettings":saveSettings();break;
+ }
+});
+document.addEventListener("input",function(ev){
+ const el=ev.target,a=el.getAttribute&&el.getAttribute("data-act");
+ if(a==="fq"){ui.filters.q=el.value;ui.focus='[data-act="fq"]';render();}
+ else if(a==="aq"){ui.aFilters.q=el.value;ui.focus='[data-act="aq"]';render();}
+ else if(a==="fmax"){ui.filters.max=+el.value;ui.focus='[data-act="fmax"]';render();}
+});
+document.addEventListener("change",function(ev){
+ const el=ev.target,a=el.getAttribute&&el.getAttribute("data-act");
+ if(a==="fsort"){ui.filters.sort=el.value;render();return;}
+ if(a==="finstock"){ui.filters.inonly=el.checked;render();return;}
+ if(a==="asrc"){ui.aFilters.src=el.value;render();return;}
+ if(a==="modinst"){ui.modInst=el.checked;return;}
+ if(a==="cinst"){const l=db.cart.find(x=>x.id===el.getAttribute("data-id"));if(l)l.inst=el.checked;save();return;}
+ if(a==="stock"){const p=prod(el.getAttribute("data-id"));if(p)p.stock=Math.max(0,+el.value||0);save();render();return;}
+ if(a==="pub"){const p=prod(el.getAttribute("data-id"));if(p)p.active=el.checked;save();render();return;}
+ if(a==="fee"){db.settings.fees[+el.getAttribute("data-i")][1]=+el.value||0;save();return;}
+ if(a==="chan"){db.settings.channels[el.getAttribute("data-id")]=el.checked;save();render();return;}
+ if(a==="setstatus"){setStatus(el.getAttribute("data-ref"),el.value);return;}
+ if(a==="settech"){const r=db.requests.find(x=>x.ref===el.getAttribute("data-ref"));if(r){r.tech=el.value;save();render();}return;}
+ if(el.hasAttribute&&el.hasAttribute("data-f")){
+  harvest();
+  const k=el.getAttribute("data-f");
+  if(el.type==="radio"||el.type==="checkbox"||k==="city"||k==="chan"){ui.errors={};render();}
+ }
+});
+document.addEventListener("keydown",function(ev){
+ if(ev.key==="Escape"){if(ui.cartOpen||ui.openProd||ui.openReq||ui.editProd||ui.delProd||ui.notifOpen){
+  ui.cartOpen=false;ui.openProd=null;ui.openReq=null;ui.editProd=null;ui.delProd=null;ui.notifOpen=false;render();}}
+ if(ev.key==="Enter"&&ev.target.id==="trackq"){ev.preventDefault();doTrack();}
+});
+
+/* ============================================================
+   12. Démarrage
+   ============================================================ */
+db=fresh();
+load();
+render();
+})();
+</script>
