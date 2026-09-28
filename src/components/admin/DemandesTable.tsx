@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import type { Request } from "@/lib/types";
 import { chanOf, fmtD, statusOf, typeOf } from "@/lib/utils";
+import {
+  listClientNotifs,
+  listClientRequests,
+  mergeRequests,
+} from "@/lib/client/demo-client-store";
 import { Icon } from "@/components/ui/Icon";
 
 const labels: Record<string, string> = {
@@ -28,6 +34,24 @@ const labels: Record<string, string> = {
 
 export function DemandesTable({ list }: { list: Request[] }) {
   const router = useRouter();
+  const [rows, setRows] = useState(list);
+
+  useEffect(() => {
+    const local = listClientRequests();
+    setRows(mergeRequests(list, local));
+
+    // Push browser-saved demandes into cookie/demo store so SSR refresh keeps them
+    if (local.length) {
+      void fetch("/api/admin/demo-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requests: local,
+          notifs: listClientNotifs(),
+        }),
+      });
+    }
+  }, [list]);
 
   return (
     <div className="tw">
@@ -47,8 +71,8 @@ export function DemandesTable({ list }: { list: Request[] }) {
           </tr>
         </thead>
         <tbody>
-          {list.length ? (
-            list.map((r) => {
+          {rows.length ? (
+            rows.map((r) => {
               const href = `/admin/demandes/${encodeURIComponent(r.ref)}`;
               const itemCount = (r.items || []).reduce((a, l) => a + (l.q || 0), 0);
               return (
@@ -101,8 +125,8 @@ export function DemandesTable({ list }: { list: Request[] }) {
           ) : (
             <tr>
               <td colSpan={10} className="muted">
-                Aucune demande. Les nouvelles arrivent depuis le formulaire devis, le panier
-                catalogue ou le contact.
+                Aucune demande. Envoyez un devis depuis le site (même navigateur en mode démo),
+                puis revenez ici.
               </td>
             </tr>
           )}

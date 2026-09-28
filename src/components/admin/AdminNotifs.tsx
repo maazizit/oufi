@@ -6,6 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import type { Notif } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
 import { fmtDT } from "@/lib/utils";
+import {
+  listClientNotifs,
+  listClientRequests,
+  markClientNotifsRead,
+} from "@/lib/client/demo-client-store";
 
 export function AdminNotifs({
   initial,
@@ -20,7 +25,23 @@ export function AdminNotifs({
   const unread = notifs.filter((n) => !n.read).length;
 
   useEffect(() => {
-    setNotifs(initial);
+    const local = listClientNotifs();
+    const map = new Map<string, Notif>();
+    for (const n of initial) map.set(n.id, n);
+    for (const n of local) map.set(n.id, n);
+    setNotifs(
+      [...map.values()].sort((a, b) => String(b.at).localeCompare(String(a.at))),
+    );
+    if (listClientRequests().length) {
+      void fetch("/api/admin/demo-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requests: listClientRequests(),
+          notifs: local,
+        }),
+      });
+    }
   }, [initial]);
 
   useEffect(() => {
@@ -32,6 +53,7 @@ export function AdminNotifs({
   }, []);
 
   async function markAllRead() {
+    markClientNotifsRead();
     const res = await fetch("/api/admin/notifications", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -39,8 +61,14 @@ export function AdminNotifs({
     });
     if (res.ok) {
       const data = await res.json();
-      setNotifs(data.notifs || []);
+      const local = listClientNotifs();
+      const map = new Map<string, Notif>();
+      for (const n of data.notifs || []) map.set(n.id, n);
+      for (const n of local) map.set(n.id, n);
+      setNotifs([...map.values()]);
       router.refresh();
+    } else {
+      setNotifs(listClientNotifs());
     }
   }
 

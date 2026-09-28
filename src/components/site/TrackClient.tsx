@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Request, RequestStatus } from "@/lib/types";
 import { statusOf, fmtDT } from "@/lib/utils";
+import { getClientRequest, listClientRequests } from "@/lib/client/demo-client-store";
 import { useLang } from "./LangProvider";
 
 const FLOW: { id: RequestStatus | "install"; k: string }[] = [
@@ -39,7 +40,18 @@ export function TrackClient() {
     try {
       const r = await fetch(`/api/track?q=${encodeURIComponent(query)}`);
       const data = await r.json();
-      setRes(data.request ?? null);
+      if (data.request) {
+        setRes(data.request);
+        return;
+      }
+      const local =
+        getClientRequest(query) ||
+        listClientRequests().find(
+          (x) =>
+            x.ref.toLowerCase() === query.toLowerCase() ||
+            (x.phone && x.phone.replace(/[\s().-]/g, "") === query.replace(/[\s().-]/g, "")),
+        );
+      setRes(local ?? null);
     } finally {
       setBusy(false);
     }

@@ -6,7 +6,7 @@ import type { Product, Settings } from "@/lib/types";
 import { CHANS, LOCALS, SVCS, TYPES } from "@/lib/data/constants";
 import { money } from "@/lib/data/i18n";
 import { feeFor, isMoroccanPhone } from "@/lib/utils";
-import { saveLastRequest } from "@/lib/client/last-request";
+import { saveLastRequest } from "@/lib/client/demo-client-store";
 import { Icon } from "@/components/ui/Icon";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
@@ -138,7 +138,15 @@ export function QuoteForm({
       });
       const data = await res.json();
       if (!res.ok || !data.ref) throw new Error(data.error || "error");
-      if (data.request) saveLastRequest(data.request);
+      if (data.request) {
+        saveLastRequest(data.request);
+        // Reinforce persistence in this browser (demo mode has no DB)
+        void fetch("/api/admin/demo-import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ requests: [data.request] }),
+        });
+      }
       if (mode === "cart") clear();
       router.push(`/confirmation?ref=${encodeURIComponent(data.ref)}`);
     } catch {

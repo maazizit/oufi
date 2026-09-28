@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type { Request, Settings } from "@/lib/types";
 import { chanOf } from "@/lib/utils";
 import { money } from "@/lib/data/i18n";
-import { readLastRequest } from "@/lib/client/last-request";
+import { getClientRequest, readLastRequest } from "@/lib/client/demo-client-store";
 import { useLang } from "./LangProvider";
 
 export function ConfirmClient({
@@ -25,7 +25,9 @@ export function ConfirmClient({
       setRequest(initial);
       return;
     }
-    const local = readLastRequest(refParam || undefined);
+    const local =
+      readLastRequest(refParam || undefined) ||
+      (refParam ? getClientRequest(refParam) : null);
     if (local) setRequest(local);
   }, [initial, refParam]);
 
