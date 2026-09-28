@@ -1,24 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import type { Request, Settings } from "@/lib/types";
 import { chanOf } from "@/lib/utils";
 import { money } from "@/lib/data/i18n";
+import { getClientRequest, readLastRequest } from "@/lib/client/demo-client-store";
 import { useLang } from "./LangProvider";
 
 export function ConfirmClient({
   settings,
-  request,
+  request: initial,
+  refParam,
 }: {
   settings: Settings;
   request: Request | null;
+  refParam?: string;
 }) {
   const { lang, t } = useLang();
+  const [request, setRequest] = useState<Request | null>(initial);
+
+  useEffect(() => {
+    if (initial) {
+      setRequest(initial);
+      return;
+    }
+    const local =
+      readLastRequest(refParam || undefined) ||
+      (refParam ? getClientRequest(refParam) : null);
+    if (local) setRequest(local);
+  }, [initial, refParam]);
+
   if (!request) {
     return (
       <section className="sec wrap">
         <div className="card pad">
-          <p className="muted">{t("tr_none", { q: "—" })}</p>
+          <p className="muted">
+            {t("tr_none", { q: refParam || "—" })}
+          </p>
+          <Link href="/devis" className="btn btn-pri" style={{ marginTop: 12, marginInlineEnd: 8 }}>
+            {t("q_title")}
+          </Link>
           <Link href="/" className="btn btn-out" style={{ marginTop: 12 }}>
             {t("cf_home")}
           </Link>
@@ -26,6 +48,7 @@ export function ConfirmClient({
       </section>
     );
   }
+
   const ch = chanOf(request.chan);
   const contact = request.chan === "mail" ? request.email : request.phone;
 
@@ -58,7 +81,7 @@ export function ConfirmClient({
           </div>
         ) : null}
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href={`/suivi`} className="btn btn-pri">
+          <Link href={`/suivi?q=${encodeURIComponent(request.ref)}`} className="btn btn-pri">
             {t("cf_track")}
           </Link>
           <Link href="/" className="btn btn-out">

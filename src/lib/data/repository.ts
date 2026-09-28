@@ -3,6 +3,7 @@ import type {
   CartItem,
   ContactChannel,
   Intervention,
+  Notif,
   Product,
   Request,
   RequestSource,
@@ -12,6 +13,7 @@ import type {
   TeamMember,
 } from "@/lib/types";
 import * as demo from "./demo-store";
+import { syncDemoFromCookies } from "./demo-sync";
 
 type DbProduct = {
   id: string;
@@ -161,9 +163,15 @@ export async function getTeam(activeOnly = true): Promise<TeamMember[]> {
 }
 
 export async function getRequests(): Promise<Request[]> {
-  if (!isSupabaseConfigured()) return demo.demoGetRequests();
+  if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
+    return demo.demoGetRequests();
+  }
   const supabase = await createClient();
-  if (!supabase) return demo.demoGetRequests();
+  if (!supabase) {
+    await syncDemoFromCookies();
+    return demo.demoGetRequests();
+  }
   const { data } = await supabase
     .from("requests")
     .select("*")
@@ -172,17 +180,29 @@ export async function getRequests(): Promise<Request[]> {
 }
 
 export async function getRequest(ref: string): Promise<Request | null> {
-  if (!isSupabaseConfigured()) return demo.demoGetRequest(ref);
+  if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
+    return demo.demoGetRequest(ref);
+  }
   const supabase = await createClient();
-  if (!supabase) return demo.demoGetRequest(ref);
+  if (!supabase) {
+    await syncDemoFromCookies();
+    return demo.demoGetRequest(ref);
+  }
   const { data } = await supabase.from("requests").select("*").eq("ref", ref).maybeSingle();
   return data ? mapRequest(data) : null;
 }
 
 export async function trackRequest(q: string): Promise<Request | null> {
-  if (!isSupabaseConfigured()) return demo.demoTrack(q);
+  if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
+    return demo.demoTrack(q);
+  }
   const supabase = await createClient();
-  if (!supabase) return demo.demoTrack(q);
+  if (!supabase) {
+    await syncDemoFromCookies();
+    return demo.demoTrack(q);
+  }
   const { data } = await supabase.rpc("track_request", { q });
   const row = Array.isArray(data) ? data[0] : data;
   return row ? mapRequest(row) : null;
@@ -217,6 +237,7 @@ export type CreateRequestInput = {
 
 export async function createRequest(input: CreateRequestInput): Promise<Request> {
   if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
     return demo.demoCreateRequest({
       src: input.src,
       type: input.type,
@@ -315,6 +336,55 @@ export async function getInterventions(): Promise<Intervention[]> {
     by: i.by_id || "",
     state: i.state,
   }));
+}
+
+export async function getNotifs(): Promise<Notif[]> {
+  if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
+    return demo.demoGetNotifs();
+  }
+  const supabase = await createClient();
+  if (!supabase) {
+    await syncDemoFromCookies();
+    return demo.demoGetNotifs();
+  }
+  const { data } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("at", { ascending: false })
+    .limit(40);
+  return (data || []).map((n) => ({
+    id: String(n.id),
+    at: n.at,
+    ref: n.request_ref || "",
+    read: Boolean(n.read),
+    txt: { fr: n.txt_fr || "", ar: n.txt_ar || "" },
+  }));
+}
+
+export async function markNotifsRead(ids?: string[]): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
+    demo.demoMarkNotifsRead();
+    return;
+  }
+  const supabase = await createClient();
+  if (!supabase) {
+    await syncDemoFromCookies();
+    demo.demoMarkNotifsRead();
+    return;
+  }
+  let q = supabase.from("notifications").update({ read: true });
+  if (ids?.length) q = q.in("id", ids);
+  else q = q.eq("read", false);
+  await q;
+}
+
+/** Snapshot for persisting demo mode across serverless instances. */
+export async function exportDemoOverlayIfNeeded() {
+  if (isSupabaseConfigured()) return null;
+  await syncDemoFromCookies();
+  return demo.demoExportOverlay();
 }
 
 export { isSupabaseConfigured };

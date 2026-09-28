@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { createRequest, getSettings } from "@/lib/data/repository";
+import {
+  createRequest,
+  exportDemoOverlayIfNeeded,
+  getSettings,
+} from "@/lib/data/repository";
+import { overlaySetCookieHeader } from "@/lib/data/demo-sync";
 import { feeFor } from "@/lib/utils";
 
 export async function POST(req: Request) {
@@ -41,7 +46,13 @@ export async function POST(req: Request) {
       items: Array.isArray(body.items) ? body.items : [],
     });
 
-    return NextResponse.json({ ref: created.ref, request: created });
+    const res = NextResponse.json({ ref: created.ref, request: created });
+    const overlay = await exportDemoOverlayIfNeeded();
+    if (overlay) {
+      const c = overlaySetCookieHeader(overlay);
+      res.cookies.set(c.name, c.value, c.options);
+    }
+    return res;
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "server_error" }, { status: 500 });

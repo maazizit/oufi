@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getSettings } from "@/lib/data/repository";
+import { getProducts, getSettings } from "@/lib/data/repository";
 import { QuoteForm } from "@/components/site/QuoteForm";
 import { pageMeta } from "@/lib/seo";
 
@@ -23,7 +23,7 @@ function DevisShell() {
 }
 
 export default async function DevisPage() {
-  const settings = await getSettings();
+  const [settings, products] = await Promise.all([getSettings(), getProducts(true)]);
   return (
     <>
       <DevisShell />
@@ -34,7 +34,7 @@ export default async function DevisPage() {
           </section>
         }
       >
-        <QuoteForm settings={settings} mode="form" />
+        <QuoteForm settings={settings} mode="form" products={products} />
       </Suspense>
     </>
   );
