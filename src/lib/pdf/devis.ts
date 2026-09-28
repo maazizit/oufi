@@ -8,13 +8,20 @@ export type DevisLine = {
   inst: boolean;
 };
 
-function money(n: number) {
+/** Compact amount for table cells (avoids overlap). */
+function moneyShort(n: number) {
   return (
-    new Intl.NumberFormat("fr-MA", {
-      style: "currency",
-      currency: "MAD",
+    new Intl.NumberFormat("fr-FR", {
       maximumFractionDigits: 0,
-    }).format(n) + " TTC"
+    }).format(n) + " DH"
+  );
+}
+
+function moneyTotal(n: number) {
+  return (
+    new Intl.NumberFormat("fr-FR", {
+      maximumFractionDigits: 0,
+    }).format(n) + " DH TTC"
   );
 }
 
@@ -34,6 +41,17 @@ async function loadLogoDataUrl(): Promise<string | null> {
   }
 }
 
+function clientPlace(request: Request): string {
+  const addr = (request.addr || "").trim();
+  const city = (request.city || "").trim();
+  if (addr && city) {
+    // Avoid "Maarif — Casablanca" noise when quartier already implies the city
+    if (addr.toLowerCase().includes(city.toLowerCase())) return addr;
+    return addr;
+  }
+  return addr || city;
+}
+
 export async function buildDevisPdf(opts: {
   request: Request;
   settings: Settings;
@@ -43,95 +61,110 @@ export async function buildDevisPdf(opts: {
   const { request, settings, lines } = opts;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
-  const margin = 16;
-  let y = 16;
+  const margin = 14;
+  const contentW = pageW - margin * 2;
+
+  // Column layout (mm from left margin)
+  const colName = margin;
+  const colQty = margin + contentW - 78; // qty center zone
+  const colPu = margin + contentW - 52; // PU right edge
+  const colTotal = margin + contentW; // total right edge
+  const nameWidth = contentW - 82;
+
+  let y = 14;
 
   const logo = await loadLogoDataUrl();
   if (logo) {
     try {
-      doc.addImage(logo, "PNG", margin, y - 2, 18, 18);
+      doc.addImage(logo, "PNG", margin, y - 2, 16, 16);
     } catch {
       /* ignore logo failures */
     }
   }
 
+  const leftX = margin + (logo ? 20 : 0);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
+  doc.setFontSize(15);
   doc.setTextColor(10, 37, 64);
-  doc.text(settings.company || "AMANPLANET", margin + (logo ? 22 : 0), y + 4);
+  doc.text(settings.company || "AMANPLANET", leftX, y + 4);
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setTextColor(80, 90, 100);
-  doc.text("C.I.S. — Conseil • Installation • Suivi", margin + (logo ? 22 : 0), y + 10);
-  doc.text(settings.phone || "", pageW - margin, y + 4, { align: "right" });
-  doc.text(settings.email || "", pageW - margin, y + 9, { align: "right" });
-  y += 24;
+  doc.text("C.I.S. — Conseil • Installation • Suivi", leftX, y + 9);
+  doc.text(settings.phone || "", pageW - margin, y + 3, { align: "right" });
+  doc.text(settings.email || "", pageW - margin, y + 8, { align: "right" });
+  y += 20;
 
   doc.setDrawColor(0, 120, 180);
-  doc.setLineWidth(0.6);
+  doc.setLineWidth(0.5);
   doc.line(margin, y, pageW - margin, y);
-  y += 10;
+  y += 9;
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(10, 37, 64);
   doc.text("DEVIS", margin, y);
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(60, 70, 80);
-  doc.text(`Réf. demande : ${request.ref}`, pageW - margin, y, { align: "right" });
-  y += 7;
-  doc.text(
-    `Date : ${new Date().toLocaleDateString("fr-MA")}`,
-    pageW - margin,
-    y,
-    { align: "right" },
-  );
-  y += 10;
+  doc.text(`Réf. : ${request.ref}`, pageW - margin, y, { align: "right" });
+  y += 5;
+  doc.text(`Date : ${new Date().toLocaleDateString("fr-MA")}`, pageW - margin, y, {
+    align: "right",
+  });
+  y += 9;
 
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
   doc.setTextColor(10, 37, 64);
   doc.text("Client", margin, y);
   y += 5;
   doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
   doc.setTextColor(40, 50, 60);
   const clientLines = [
     request.name,
     request.company,
-    [request.addr, request.city].filter(Boolean).join(" — "),
+    clientPlace(request),
     request.phone,
     request.email,
   ].filter(Boolean);
   for (const line of clientLines) {
     doc.text(String(line), margin, y);
-    y += 5;
+    y += 4.5;
   }
-  y += 4;
+  y += 3;
 
   if (request.desc) {
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(10, 37, 64);
     doc.text("Objet", margin, y);
     y += 5;
     doc.setFont("helvetica", "normal");
-    const split = doc.splitTextToSize(request.desc, pageW - margin * 2);
+    doc.setFontSize(9);
+    doc.setTextColor(40, 50, 60);
+    const split = doc.splitTextToSize(request.desc, contentW);
     doc.text(split, margin, y);
-    y += split.length * 5 + 4;
+    y += split.length * 4.5 + 4;
   }
 
+  const rowH = 8;
   const tableTop = y;
   doc.setFillColor(10, 37, 64);
-  doc.rect(margin, tableTop, pageW - margin * 2, 8, "F");
+  doc.rect(margin, tableTop, contentW, rowH, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.text("Désignation", margin + 2, tableTop + 5.5);
-  doc.text("Qté", pageW - margin - 55, tableTop + 5.5);
-  doc.text("P.U.", pageW - margin - 35, tableTop + 5.5);
-  doc.text("Total", pageW - margin - 2, tableTop + 5.5, { align: "right" });
-  y = tableTop + 12;
+  doc.setFontSize(8.5);
+  doc.text("Désignation", colName + 2, tableTop + 5.2);
+  doc.text("Qté", colQty + 8, tableTop + 5.2, { align: "center" });
+  doc.text("P.U.", colPu, tableTop + 5.2, { align: "right" });
+  doc.text("Total", colTotal, tableTop + 5.2, { align: "right" });
+  y = tableTop + rowH + 4;
 
   doc.setFont("helvetica", "normal");
   doc.setTextColor(30, 40, 50);
+  doc.setFontSize(8.5);
   let total = 0;
 
   const rows =
@@ -149,55 +182,66 @@ export async function buildDevisPdf(opts: {
         ];
 
   for (const row of rows) {
-    if (y > 260) {
+    if (y > 255) {
       doc.addPage();
       y = 20;
     }
     const lineTotal = row.price * row.q;
     total += lineTotal;
     const label = row.inst ? `${row.name} (+ pose)` : row.name;
-    const nameLines = doc.splitTextToSize(label, pageW - margin * 2 - 70);
-    doc.text(nameLines, margin + 2, y);
-    doc.text(String(row.q), pageW - margin - 55, y);
-    doc.text(row.price ? money(row.price) : "—", pageW - margin - 35, y);
-    doc.text(row.price ? money(lineTotal) : "Sur devis", pageW - margin - 2, y, {
+    const nameLines = doc.splitTextToSize(label, nameWidth);
+    const blockH = Math.max(6, nameLines.length * 4);
+
+    doc.text(nameLines, colName + 2, y);
+    doc.text(String(row.q), colQty + 8, y, { align: "center" });
+    doc.text(row.price ? moneyShort(row.price) : "—", colPu, y, { align: "right" });
+    doc.text(row.price ? moneyShort(lineTotal) : "Sur devis", colTotal, y, {
       align: "right",
     });
-    y += Math.max(7, nameLines.length * 5);
+    y += blockH + 2;
   }
 
   if (request.fee != null && request.fee > 0) {
-    y += 2;
-    doc.text("Frais d'état des lieux (déductibles si travaux confirmés)", margin + 2, y);
-    doc.text(money(request.fee), pageW - margin - 2, y, { align: "right" });
+    if (y > 255) {
+      doc.addPage();
+      y = 20;
+    }
+    y += 1;
+    const feeLabel = doc.splitTextToSize(
+      "Frais d'état des lieux (déductibles si travaux confirmés)",
+      nameWidth,
+    );
+    doc.text(feeLabel, colName + 2, y);
+    doc.text(moneyShort(request.fee), colTotal, y, { align: "right" });
     total += request.fee;
-    y += 7;
+    y += Math.max(6, feeLabel.length * 4) + 2;
   }
 
-  y += 4;
+  y += 3;
   doc.setDrawColor(200, 210, 220);
   doc.line(margin, y, pageW - margin, y);
-  y += 8;
+  y += 7;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.setTextColor(10, 37, 64);
   doc.text("Total indicatif", margin, y);
-  doc.text(total > 0 ? money(total) : "Sur devis après visite", pageW - margin, y, {
+  doc.text(total > 0 ? moneyTotal(total) : "Sur devis après visite", pageW - margin, y, {
     align: "right",
   });
-  y += 10;
+  y += 9;
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(100, 110, 120);
   const notes = [
-    "Devis indicatif — prix hors installation sauf mention contraire. Aucun paiement en ligne.",
+    "Devis indicatif — prix hors installation sauf mention « + pose ». Aucun paiement en ligne.",
     "Validité : 15 jours. Confirmation après état des lieux sur site.",
     "C.I.S. = Conseil • Installation • Suivi.",
   ];
   for (const n of notes) {
-    doc.text(n, margin, y);
-    y += 4;
+    const linesN = doc.splitTextToSize(n, contentW);
+    doc.text(linesN, margin, y);
+    y += linesN.length * 3.6 + 1;
   }
 
   return doc.output("blob");
