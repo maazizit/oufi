@@ -38,7 +38,7 @@ export function SiteHeader({
             <span className="sl">{tagline}</span>
           </span>
         </Link>
-        <nav className="nav">
+        <nav className="nav" aria-label="Navigation principale">
           {NAV.map(([href, key]) => (
             <Link
               key={href}
@@ -52,9 +52,18 @@ export function SiteHeader({
         <button type="button" className="btn btn-out btn-sm" onClick={toggle}>
           {t("lang_switch")}
         </button>
-        <Link href="/panier" className="btn btn-out btn-sm cartbtn" aria-label={t("nav_cart")}>
+        <Link
+          href="/panier"
+          className="btn btn-out btn-sm cartbtn"
+          aria-label={t("nav_cart")}
+        >
           <Icon name="cart" size={17} />
-          {count > 0 ? <span className="cnt num">{count}</span> : null}
+          <span className="sr-only">{t("nav_cart")}</span>
+          {count > 0 ? (
+            <span className="cnt num" aria-label={`${count}`}>
+              {count}
+            </span>
+          ) : null}
         </Link>
         <Link href="/devis" className="btn btn-pri btn-sm">
           {t("nav_quote")}

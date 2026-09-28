@@ -5,9 +5,8 @@ import Link from "next/link";
 import type { Product, Settings, TeamMember, Localized } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
 import { PILLARS } from "@/lib/data/constants";
-import { initials, roleOf } from "@/lib/utils";
+import { roleOf } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
-import { BrandMark } from "./BrandMark";
 import { ProductCard } from "./ProductCard";
 import { useLang } from "./LangProvider";
 
@@ -17,6 +16,14 @@ type Svc = {
   ic: "cam" | "router" | "pc" | "badge";
   from: number;
   li: string[];
+  anchor: string;
+};
+
+const SVC_ANCHORS: Record<string, string> = {
+  cam: "videosurveillance",
+  net: "reseau",
+  it: "informatique",
+  acc: "controle-acces",
 };
 
 export function HomeClient({
@@ -40,16 +47,18 @@ export function HomeClient({
   const boss = team.find((m) => m.role === "manager") || {
     name: settings.manager,
     role: "manager" as const,
+    id: "t1",
   };
   const field = team.filter((m) => m.active && m.role !== "manager");
   const brandLoop = [...brands, ...brands];
+  const tel = settings.phone.replace(/\s/g, "");
 
   return (
     <>
       <section className="hero-ap">
         <div className="hero-ap-media" aria-hidden="true">
           <Image
-            src="https://images.unsplash.com/photo-1557597774-9c82bde7d697?auto=format&fit=crop&w=2400&q=80"
+            src="/brand/hero-install.jpg"
             alt=""
             fill
             priority
@@ -61,16 +70,14 @@ export function HomeClient({
         </div>
         <div className="wrap hero-ap-in">
           <div className="hero-ap-brand rise d1">
-            <BrandMark size={88} />
-            <h1 className="hero-ap-name">
-              <span className="hero-ap-grad">{t("h_brand")}</span>
-            </h1>
             <p className="hero-ap-cis">{t("h_cis")}</p>
             <p className="hero-ap-ar" dir="rtl" lang="ar">
               {t("h_ar_line")}
             </p>
+            <h1 className="hero-ap-title">{t("h_title")}</h1>
           </div>
           <p className="hero-ap-lead rise d2">{t("h_lead")}</p>
+          <p className="hero-ap-note rise d2">{t("h_callback")}</p>
           <div className="cta rise d3">
             <Link href="/devis" className="btn btn-pri btn-lg">
               {t("h_cta1")} <Icon name="arrow" size={17} />
@@ -78,6 +85,9 @@ export function HomeClient({
             <Link href="/catalogue" className="btn btn-ghost btn-lg">
               {t("h_cta2")}
             </Link>
+            <a href={`tel:${tel}`} className="btn btn-ghost btn-lg">
+              <Icon name="phone" size={16} /> {settings.phone}
+            </a>
           </div>
         </div>
       </section>
@@ -129,9 +139,17 @@ export function HomeClient({
               <div className="from">
                 {t("s_from")} <b className="num">{money(lang, s.from)}</b>
               </div>
-              <Link href={`/devis?svc=${s.id}`} className="btn btn-sm btn-out">
-                {t("s_more")}
-              </Link>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <Link
+                  href={`/services#${SVC_ANCHORS[s.id] || s.id}`}
+                  className="btn btn-sm btn-out"
+                >
+                  {t("s_more")}
+                </Link>
+                <Link href={`/devis?svc=${s.id}`} className="btn btn-sm btn-pri">
+                  {t("s_quote")}
+                </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -197,7 +215,13 @@ export function HomeClient({
             </p>
             <p className="ink2">{t("ab_p2")}</p>
             <div className="person" style={{ marginTop: 18 }}>
-              <span className="avl">{initials(boss.name)}</span>
+              <Image
+                className="avl-img"
+                src={`/team/${"id" in boss ? boss.id : "t1"}.jpg`}
+                alt={boss.name}
+                width={48}
+                height={48}
+              />
               <div>
                 <b>{boss.name}</b>
                 <div className="xs muted">{t("ab_manager")}</div>
@@ -221,12 +245,19 @@ export function HomeClient({
           <div className="people">
             {field.map((m, i) => (
               <div key={m.id} className={`person rev r${(i % 4) + 1}`}>
-                <span className="avl" style={{ width: 40, height: 40, fontSize: 13 }}>
-                  {initials(m.name)}
-                </span>
+                <Image
+                  className="avl-img"
+                  src={`/team/${m.id}.jpg`}
+                  alt={m.name}
+                  width={40}
+                  height={40}
+                />
                 <div>
                   <b className="sm">{m.name}</b>
                   <div className="xs muted">{L(roleOf(m.role))}</div>
+                  <a className="xs" href={`tel:${m.phone.replace(/\s/g, "")}`}>
+                    {m.phone}
+                  </a>
                 </div>
               </div>
             ))}
@@ -280,25 +311,25 @@ export function HomeClient({
         <div className="stat rev">
           <div>
             <span className="v num">
-              <span data-count="180">0</span>+
+              <span data-count="180">180</span>+
             </span>
             <span className="l">{t("st_1")}</span>
           </div>
           <div>
             <span className="v num">
-              <span data-count="7">0</span>
+              <span data-count="7">7</span>
             </span>
             <span className="l">{t("st_2")}</span>
           </div>
           <div>
             <span className="v num">
-              <span data-count="48">0</span> h
+              <span data-count="48">48</span> h
             </span>
             <span className="l">{t("st_3")}</span>
           </div>
           <div>
             <span className="v num">
-              <span data-count="12">0</span>
+              <span data-count="12">12</span>
             </span>
             <span className="l">{t("st_4")}</span>
           </div>

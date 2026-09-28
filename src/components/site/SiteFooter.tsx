@@ -6,6 +6,7 @@ import type { Settings } from "@/lib/types";
 
 export function SiteFooter({ settings }: { settings: Settings }) {
   const { t, L } = useLang();
+  const tel = settings.phone.replace(/\s/g, "");
   return (
     <footer className="footer">
       <div className="wrap">
@@ -15,43 +16,54 @@ export function SiteFooter({ settings }: { settings: Settings }) {
             C.I.S. — {L(settings.tagline)}
           </p>
           <p className="sm" dir="rtl" lang="ar" style={{ opacity: 0.85, marginTop: 6 }}>
-            معك من الإختيار الى التركيب و المتابعة
+            {t("h_ar_line")}
           </p>
         </div>
         <div>
           <h4>{t("ft_nav")}</h4>
-          {(
-            [
-              ["/services", "nav_services"],
-              ["/catalogue", "nav_products"],
-              ["/devis", "nav_quote"],
-              ["/suivi", "nav_track"],
-            ] as const
-          ).map(([href, key]) => (
-            <Link key={href} className="li" href={href}>
-              {t(key)}
-            </Link>
-          ))}
+          <Link className="li" href="/">
+            {t("nav_home")}
+          </Link>
+          <Link className="li" href="/contact">
+            {t("nav_contact")}
+          </Link>
+          <Link className="li" href="/mentions-legales">
+            {t("ft_mentions")}
+          </Link>
+          <Link className="li" href="/confidentialite">
+            {t("ft_privacy")}
+          </Link>
+          <Link className="li" href="/conditions">
+            {t("ft_terms")}
+          </Link>
         </div>
         <div>
           <h4>{t("ft_svc")}</h4>
           <Link className="li" href="/catalogue">
             {t("pill_shop_t")}
           </Link>
-          <Link className="li" href="/devis">
-            {t("pill_install_t")}
+          <Link className="li" href="/services#videosurveillance">
+            {t("s_cam_t")}
+          </Link>
+          <Link className="li" href="/services#reseau">
+            {t("s_net_t")}
           </Link>
           <Link className="li" href="/devis?type=maint">
             {t("pill_maint_t")}
           </Link>
-          <Link className="li" href="/services">
-            {t("s_cam_t")}
-          </Link>
         </div>
         <div>
           <h4>{t("ft_ct")}</h4>
-          <p className="sm mono">{settings.phone}</p>
-          <p className="sm mono">{settings.email}</p>
+          <p className="sm">
+            <a className="li" href={`tel:${tel}`}>
+              {settings.phone}
+            </a>
+          </p>
+          <p className="sm">
+            <a className="li" href={`mailto:${settings.email}`}>
+              {settings.email}
+            </a>
+          </p>
           <p className="sm" style={{ marginTop: 6 }}>
             {L(settings.address)}
           </p>

@@ -10,10 +10,12 @@ export function RevealObserver() {
       el.querySelectorAll<HTMLElement>("[data-count]").forEach((node) => {
         const to = Number(node.getAttribute("data-count") || 0);
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduce) {
+        if (reduce || node.dataset.animated === "1") {
           node.textContent = String(to);
           return;
         }
+        node.dataset.animated = "1";
+        node.textContent = "0";
         const t0 = performance.now();
         const dur = 900;
         const step = (n: number) => {
