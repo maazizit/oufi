@@ -24,7 +24,7 @@ export const T: Dict = {
   },
   h_title: {
     fr: "Installation de caméras, réseau et contrôle d’accès à Casablanca",
-    ar: "تركيب كاميرات المراقبة والشبكات وأنظمة التحكم بالوصول في الدار البيضاء",
+    ar: "تركيب كاميرات المراقبة والشبكات وأنظمة التحكم بالوصول",
   },
   h_lead: {
     fr: "Caméras, routeurs, domotique et alarmes — vendus, posés et suivis par la même équipe. Rappel sous 24 h ouvrées.",
