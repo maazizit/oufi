@@ -559,6 +559,12 @@ tbody tr[data-click]:hover {
   font-weight: 600;
   background: var(--blue-soft);
 }
+.lang-switch {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
 .cartbtn {
   position: relative;
 }

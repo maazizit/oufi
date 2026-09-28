@@ -58,7 +58,16 @@ export function SiteHeader({
             );
           })}
         </nav>
-        <button type="button" className="btn btn-out btn-sm" onClick={toggle}>
+        <button
+          type="button"
+          id="lang-switch"
+          className="btn btn-out btn-sm lang-switch"
+          onClick={(e) => {
+            e.preventDefault();
+            toggle();
+          }}
+          aria-label={t("lang_switch")}
+        >
           {t("lang_switch")}
         </button>
         <Link
