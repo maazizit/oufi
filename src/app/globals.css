@@ -496,14 +496,20 @@ tbody tr[data-click]:hover {
 }
 .brand-mark-img {
   object-fit: cover;
-  object-position: 50% 8%;
+  object-position: 50% 0%;
   display: block;
+  transform: scale(1.72);
+  transform-origin: 50% 12%;
 }
 .hero-ap .brand-mark {
   box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.35),
     0 16px 40px rgba(0, 168, 232, 0.35);
   animation: mark-in 900ms var(--ease-out) both;
+}
+.hero-ap .brand-mark-img {
+  transform: scale(1.85);
+  transform-origin: 50% 10%;
 }
 @keyframes mark-in {
   from {
