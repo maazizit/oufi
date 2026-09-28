@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProducts, getRequest, getTeam } from "@/lib/data/repository";
+import { getProducts, getRequest, getSettings, getTeam } from "@/lib/data/repository";
 import { LOCALS } from "@/lib/data/constants";
 import { chanOf, fmtDT, statusOf, typeOf } from "@/lib/utils";
 import { money as moneyI18n } from "@/lib/data/i18n";
@@ -13,10 +13,11 @@ export default async function DemandeDetailPage({
   params: Promise<{ ref: string }>;
 }) {
   const { ref } = await params;
-  const [request, products, team] = await Promise.all([
+  const [request, products, team, settings] = await Promise.all([
     getRequest(ref),
     getProducts(false),
     getTeam(false),
+    getSettings(),
   ]);
   if (!request) notFound();
 
@@ -189,7 +190,17 @@ export default async function DemandeDetailPage({
           </div>
         ) : null}
 
-        <RequestActions request={request} team={team} />
+        <RequestActions
+          request={request}
+          team={team}
+          settings={settings}
+          lines={items.map((l) => ({
+            name: l.name,
+            q: l.q,
+            price: l.price,
+            inst: l.inst,
+          }))}
+        />
 
         <div className="card pad">
           <h4 className="lab" style={{ marginBottom: 10 }}>

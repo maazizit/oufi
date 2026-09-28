@@ -82,7 +82,18 @@ function db(): DemoDb {
           state: "sched",
         },
       ],
-      notifs: [],
+      notifs: [
+        {
+          id: "n-seed-1",
+          at: "2026-09-26T09:12:00",
+          ref: "AMP-2026-0142",
+          read: false,
+          txt: {
+            fr: "Nouvelle demande de Karim Belhaj",
+            ar: "طلب جديد من كريم بلحاج",
+          },
+        },
+      ],
       settings: structuredClone(SEED_SETTINGS),
       seq: 143,
     };

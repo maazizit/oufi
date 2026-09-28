@@ -3,6 +3,7 @@ import type {
   CartItem,
   ContactChannel,
   Intervention,
+  Notif,
   Product,
   Request,
   RequestSource,
@@ -315,6 +316,47 @@ export async function getInterventions(): Promise<Intervention[]> {
     by: i.by_id || "",
     state: i.state,
   }));
+}
+
+export async function getNotifs(): Promise<Notif[]> {
+  if (!isSupabaseConfigured()) return demo.demoGetNotifs();
+  const supabase = await createClient();
+  if (!supabase) return demo.demoGetNotifs();
+  const { data } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("at", { ascending: false })
+    .limit(40);
+  return (data || []).map((n) => ({
+    id: String(n.id),
+    at: n.at,
+    ref: n.request_ref || "",
+    read: Boolean(n.read),
+    txt: { fr: n.txt_fr || "", ar: n.txt_ar || "" },
+  }));
+}
+
+export async function markNotifsRead(ids?: string[]): Promise<void> {
+  if (!isSupabaseConfigured()) {
+    if (ids?.length) {
+      const all = demo.demoGetNotifs();
+      // mark selected in demo store via full mark if matching ids
+      demo.demoMarkNotifsRead();
+      void all;
+    } else {
+      demo.demoMarkNotifsRead();
+    }
+    return;
+  }
+  const supabase = await createClient();
+  if (!supabase) {
+    demo.demoMarkNotifsRead();
+    return;
+  }
+  let q = supabase.from("notifications").update({ read: true });
+  if (ids?.length) q = q.in("id", ids);
+  else q = q.eq("read", false);
+  await q;
 }
 
 export { isSupabaseConfigured };
