@@ -1,0 +1,4 @@
+# Archives d'historique generees pour transferer le travail hors du conteneur.
+# Elles contiennent les commits du depot lui-meme : les versionner reviendrait a
+# embarquer une copie perimee de l'historique a chaque nouveau commit.
+*.bundle
