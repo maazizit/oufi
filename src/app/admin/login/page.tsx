@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
           </span>
           <div>
             <h1 style={{ fontSize: 20 }}>Connexion back-office</h1>
-            <p className="xs muted">Réservé à l&apos;équipe Oufi Sécurité</p>
+            <p className="xs muted">Réservé à l&apos;équipe AMANPLANET</p>
           </div>
         </div>
         {!configured ? (

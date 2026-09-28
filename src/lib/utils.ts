@@ -95,4 +95,14 @@ export function normalizePhone(v: string) {
   return v.replace(/[\s().-]/g, "");
 }
 
+/** Moroccan mobile: +2126/7… or 06/07… (9 digits after 0). */
+export function isMoroccanPhone(v: string) {
+  const n = normalizePhone(v);
+  if (/^\+212[5-7]\d{8}$/.test(n)) return true;
+  if (/^0[5-7]\d{8}$/.test(n)) return true;
+  return false;
+}
+
+export { productSlug } from "./seo";
+
 export type { Localized };
