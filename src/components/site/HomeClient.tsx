@@ -203,7 +203,7 @@ export function HomeClient({
         </div>
       </section>
 
-      <section className="sec wrap">
+      <section id="about" className="sec wrap" style={{ scrollMarginTop: 88 }}>
         <div className="sec-h rev">
           <p className="eyebrow">{t("ab_eye")}</p>
           <h2>{t("ab_title")}</h2>

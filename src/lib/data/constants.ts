@@ -4,9 +4,9 @@ export const CATS: { id: ProductCategory; fr: string; ar: string }[] = [
   { id: "cam", fr: "Caméras de surveillance", ar: "كاميرات المراقبة" },
   { id: "nvr", fr: "Enregistreurs & stockage", ar: "أجهزة التسجيل والتخزين" },
   { id: "net", fr: "Routeurs & réseau", ar: "الراوترات والشبكات" },
-  { id: "acc", fr: "Contrôle d'accès", ar: "التحكم في الولوج" },
-  { id: "it", fr: "Informatique & bureautique", ar: "المعلوميات والمكتبيات" },
-  { id: "cbl", fr: "Câblage & énergie", ar: "الكابلاج والطاقة" },
+  { id: "acc", fr: "Contrôle d'accès", ar: "التحكم بالوصول" },
+  { id: "it", fr: "Informatique & bureautique", ar: "تقنية المعلومات والمكتبيات" },
+  { id: "cbl", fr: "Câblage & énergie", ar: "الكابلات والطاقة" },
 ];
 
 export const SPECK: Record<string, Localized> = {
@@ -144,9 +144,9 @@ export const SECTORS: Localized[] = [
   { fr: "Magasins & commerces", ar: "المحلات التجارية" },
   { fr: "Cafés & restaurants", ar: "المقاهي والمطاعم" },
   { fr: "Cabinets médicaux", ar: "العيادات الطبية" },
-  { fr: "Dépôts & ateliers", ar: "المستودعات والورشات" },
+  { fr: "Dépôts & ateliers", ar: "المستودعات والورش" },
   { fr: "Écoles privées", ar: "المدارس الخاصة" },
-  { fr: "Syndics de résidence", ar: "نقابات الإقامات" },
+  { fr: "Syndics de résidence", ar: "إدارات الإقامات السكنية" },
 ];
 
 export function P(
@@ -201,7 +201,7 @@ export const SEED_SETTINGS = {
   company: "AMANPLANET",
   tagline: {
     fr: "Conseil • Installation • Suivi",
-    ar: "معك من الإختيار الى التركيب و المتابعة",
+    ar: "معك من الاختيار إلى التركيب والمتابعة",
   },
   phone: "+212 6 61 24 18 05",
   whatsapp: "+212 6 61 24 18 05",

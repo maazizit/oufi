@@ -24,6 +24,9 @@ export function SiteFooter({ settings }: { settings: Settings }) {
           <Link className="li" href="/">
             {t("nav_home")}
           </Link>
+          <Link className="li" href="/#about">
+            {t("nav_about")}
+          </Link>
           <Link className="li" href="/contact">
             {t("nav_contact")}
           </Link>

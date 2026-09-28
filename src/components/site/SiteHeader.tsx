@@ -9,6 +9,7 @@ import { useLang } from "./LangProvider";
 
 const NAV = [
   ["/", "nav_home"],
+  ["/#about", "nav_about"],
   ["/services", "nav_services"],
   ["/catalogue", "nav_products"],
   ["/devis", "nav_quote"],
@@ -38,16 +39,24 @@ export function SiteHeader({
             <span className="sl">{tagline}</span>
           </span>
         </Link>
-        <nav className="nav" aria-label="Navigation principale">
-          {NAV.map(([href, key]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={pathname === href ? "page" : undefined}
-            >
-              {t(key)}
-            </Link>
-          ))}
+        <nav className="nav" aria-label={t("nav_home") === "الرئيسية" ? "القائمة الرئيسية" : "Navigation principale"}>
+          {NAV.map(([href, key]) => {
+            const current =
+              href === "/#about"
+                ? false
+                : href === "/"
+                  ? pathname === "/"
+                  : pathname === href || pathname.startsWith(href + "/");
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={current ? "page" : undefined}
+              >
+                {t(key)}
+              </Link>
+            );
+          })}
         </nav>
         <button type="button" className="btn btn-out btn-sm" onClick={toggle}>
           {t("lang_switch")}
