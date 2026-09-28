@@ -12,7 +12,10 @@ export function SiteFooter({ settings }: { settings: Settings }) {
         <div>
           <h4>{settings.company}</h4>
           <p className="sm" style={{ opacity: 0.9, maxWidth: "36ch" }}>
-            {L(settings.tagline)}
+            C.I.S. — {L(settings.tagline)}
+          </p>
+          <p className="sm" dir="rtl" lang="ar" style={{ opacity: 0.85, marginTop: 6 }}>
+            معك من الإختيار الى التركيب و المتابعة
           </p>
         </div>
         <div>
@@ -32,17 +35,17 @@ export function SiteFooter({ settings }: { settings: Settings }) {
         </div>
         <div>
           <h4>{t("ft_svc")}</h4>
+          <Link className="li" href="/catalogue">
+            {t("pill_shop_t")}
+          </Link>
+          <Link className="li" href="/devis">
+            {t("pill_install_t")}
+          </Link>
+          <Link className="li" href="/devis?type=maint">
+            {t("pill_maint_t")}
+          </Link>
           <Link className="li" href="/services">
             {t("s_cam_t")}
-          </Link>
-          <Link className="li" href="/services">
-            {t("s_net_t")}
-          </Link>
-          <Link className="li" href="/services">
-            {t("s_it_t")}
-          </Link>
-          <Link className="li" href="/services">
-            {t("s_acc_t")}
           </Link>
         </div>
         <div>

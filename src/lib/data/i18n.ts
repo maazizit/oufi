@@ -12,32 +12,62 @@ export const T: Dict = {
   nav_cart: { fr: "Panier", ar: "السلة" },
 
   h_eyebrow: {
-    fr: "Installation & maintenance — Casablanca et région",
-    ar: "التركيب والصيانة — الدار البيضاء والنواحي",
+    fr: "C.I.S. — Conseil • Installation • Suivi",
+    ar: "C.I.S. — استشارة • تركيب • متابعة",
+  },
+  h_brand: { fr: "AMANPLANET", ar: "AMANPLANET" },
+  h_cis: { fr: "Conseil • Installation • Suivi", ar: "استشارة • تركيب • متابعة" },
+  h_ar_line: {
+    fr: "معك من الإختيار الى متابعة إلى تركيب و المتابعة",
+    ar: "معك من الإختيار الى متابعة إلى تركيب و المتابعة",
   },
   h_title: {
-    fr: "Vidéosurveillance, réseau et informatique pour votre local",
-    ar: "المراقبة بالكاميرات والشبكات والمعلوميات لمحلكم",
+    fr: "Sécurité connectée pour entreprises, magasins et villas",
+    ar: "أمن متصل للشركات والمحلات والفيلات",
   },
   h_lead: {
-    fr: "Nous installons et entretenons les caméras, les routeurs et le parc informatique des magasins, cafés, cabinets et entreprises. Étude sur site, devis détaillé, garantie 12 mois.",
-    ar: "نقوم بتركيب وصيانة الكاميرات والراوترات وأجهزة المعلوميات للمحلات والمقاهي والمكاتب والشركات. دراسة في عين المكان، عرض سعر مفصل، وضمان 12 شهرا.",
+    fr: "Caméras, routeurs, domotique et alarmes — vendus, posés et suivis par la même équipe. Devis sous 24 h.",
+    ar: "كاميرات وراوترات ومنزل ذكي وإنذارات — نبيعها ونركّبها ونتابعها بنفس الفريق. عرض سعر خلال 24 ساعة.",
   },
   h_cta1: { fr: "Demander un devis", ar: "اطلب عرض سعر" },
   h_cta2: { fr: "Voir le catalogue", ar: "تصفح المنتجات" },
   h_fee: {
-    fr: "Déplacement pour l'état des lieux : {fee} à {city}. Ce montant est déduit du devis si les travaux sont confirmés.",
-    ar: "مصاريف التنقل لمعاينة المكان: {fee} في {city}. يُخصم هذا المبلغ من عرض السعر عند تأكيد الأشغال.",
+    fr: "Déplacement pour l'état des lieux : {fee} à {city}. Déduit du devis si les travaux sont confirmés.",
+    ar: "مصاريف التنقل لمعاينة المكان: {fee} في {city}. يُخصم من عرض السعر عند تأكيد الأشغال.",
   },
   h_planlabel: {
     fr: "Plan de couverture type — magasin 120 m²",
     ar: "مثال لخطة التغطية — محل 120 م²",
   },
 
-  s_title: { fr: "Ce que nous faisons", ar: "ما الذي نقوم به" },
+  pill_title: { fr: "Trois piliers, un seul partenaire", ar: "ثلاث ركائز، شريك واحد" },
+  pill_lead: {
+    fr: "Du matériel à la pose, jusqu’au contrat de suivi — tout le parcours C.I.S. sous un même toit.",
+    ar: "من المعدات إلى التركيب ثم عقد المتابعة — مسار C.I.S. كامل تحت سقف واحد.",
+  },
+  pill_shop_t: { fr: "E-commerce / Vente", ar: "التجارة الإلكترونية / البيع" },
+  pill_shop_d: {
+    fr: "Caméras, routeurs, matériel domotique et alarmes — catalogue pro, prix indicatifs, panier sans paiement en ligne.",
+    ar: "كاميرات وراوترات ومنزل ذكي وإنذارات — كتالوج احترافي، أثمنة إرشادية، سلة بدون أداء عبر الإنترنت.",
+  },
+  pill_shop_cta: { fr: "Parcourir le catalogue", ar: "تصفح الكتالوج" },
+  pill_install_t: { fr: "Services & Installation", ar: "الخدمات والتركيب" },
+  pill_install_d: {
+    fr: "Devis en ligne pour entreprises, magasins et villas. Étude sur site, pose certifiée, mise en service.",
+    ar: "طلب عرض سعر أونلاين للشركات والمحلات والفيلات. معاينة في المكان، تركيب محترف، وتشغيل.",
+  },
+  pill_install_cta: { fr: "Demander une installation", ar: "اطلب تركيبا" },
+  pill_maint_t: { fr: "Maintenance & Support", ar: "الصيانة والدعم" },
+  pill_maint_d: {
+    fr: "Contrats de suivi, dépannage rapide et ligne directe — on reste après la pose.",
+    ar: "عقود متابعة، إصلاح سريع وخط مباشر — نبقى معكم بعد التركيب.",
+  },
+  pill_maint_cta: { fr: "Parler maintenance", ar: "تحدث عن الصيانة" },
+
+  s_title: { fr: "Métiers techniques", ar: "التخصصات التقنية" },
   s_lead: {
-    fr: "Quatre métiers, une seule équipe : de l'étude au dépannage.",
-    ar: "أربعة تخصصات وفريق واحد: من الدراسة إلى الإصلاح.",
+    fr: "Sous les trois piliers : vidéosurveillance, réseau, informatique et contrôle d’accès.",
+    ar: "تحت الركائز الثلاث: المراقبة والشبكات والمعلوميات والتحكم في الولوج.",
   },
   s_cam_t: { fr: "Vidéosurveillance", ar: "المراقبة بالكاميرات" },
   s_cam_1: { fr: "Étude des angles et du nombre de caméras", ar: "دراسة الزوايا وعدد الكاميرات" },
@@ -259,10 +289,13 @@ export const T: Dict = {
   ft_ct: { fr: "Contact", ar: "الاتصال" },
 
   ab_eye: { fr: "Qui sommes-nous", ar: "من نحن" },
-  ab_title: { fr: "Une équipe de terrain, pas un centre d'appels", ar: "فريق ميداني، لا مركز اتصالات" },
+  ab_title: {
+    fr: "AMANPLANET — la planète de votre sécurité",
+    ar: "AMANPLANET — كوكب أمنكم",
+  },
   ab_p1: {
-    fr: "{company} est née d'un atelier de Casablanca. Nous posons nous-mêmes ce que nous vendons : pas de sous-traitance, pas d'installateur que vous ne reverrez jamais.",
-    ar: "{company} انطلقت من ورشة بالدار البيضاء. نركّب بأنفسنا ما نبيعه: لا مناولة، ولا تقني تروْنه مرة واحدة ولا يعود.",
+    fr: "{company} accompagne les entreprises, magasins et villas de Casablanca et région. Nous vendons, installons et suivons : C.I.S. n’est pas un slogan, c’est le métier.",
+    ar: "{company} ترافق الشركات والمحلات والفيلات بالدار البيضاء والنواحي. نبيع ونركّب ونتابع: C.I.S. ليس شعارا، إنه المهنة.",
   },
   ab_p2: {
     fr: "Chaque chantier commence par une visite et finit par une démonstration : nous ne partons pas avant que vous sachiez consulter vos caméras depuis votre téléphone.",
@@ -302,7 +335,7 @@ export const T: Dict = {
   a_team: { fr: "Équipe", ar: "الفريق" },
   a_role: { fr: "Administrateur", ar: "مدير" },
   a_login: { fr: "Connexion back-office", ar: "دخول لوحة التحكم" },
-  a_login_d: { fr: "Réservé à l'équipe Oufi Sécurité.", ar: "مخصص لفريق أوفي سيكيوريتي." },
+  a_login_d: { fr: "Réservé à l'équipe AMANPLANET.", ar: "مخصص لفريق AMANPLANET." },
   a_email: { fr: "E-mail", ar: "البريد" },
   a_password: { fr: "Mot de passe", ar: "كلمة المرور" },
   a_signin: { fr: "Se connecter", ar: "تسجيل الدخول" },

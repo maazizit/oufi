@@ -3,16 +3,16 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Oufi Sécurité — Vidéosurveillance & réseaux",
-    template: "%s · Oufi Sécurité",
+    default: "AMANPLANET — Conseil • Installation • Suivi",
+    template: "%s · AMANPLANET",
   },
   description:
-    "Installation et maintenance de caméras, réseau et informatique à Casablanca et région. Devis sur site, sans paiement en ligne.",
+    "AMANPLANET C.I.S. — caméras, routeurs, domotique et alarmes. Vente, installation et maintenance pour entreprises, magasins et villas.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" data-theme="light" suppressHydrationWarning>
       <body className="antialiased">{children}</body>
     </html>
   );

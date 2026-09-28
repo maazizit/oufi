@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
+import { BrandMark } from "./BrandMark";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 
@@ -29,12 +30,10 @@ export function SiteHeader({
   return (
     <header className="hdr">
       <div className="hdr-in">
-        <Link href="/" className="brand">
-          <span className="mk">
-            <Icon name="shield" size={18} />
-          </span>
+        <Link href="/" className="brand" aria-label={company}>
+          <BrandMark size={42} />
           <span>
-            <span className="nm">{company}</span>
+            <span className="nm brand-word">{company}</span>
             <br />
             <span className="sl">{tagline}</span>
           </span>

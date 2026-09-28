@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { Product, Settings, TeamMember, Localized } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
+import { PILLARS } from "@/lib/data/constants";
 import { initials, roleOf } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
-import { HeroPlan } from "./HeroPlan";
+import { BrandMark } from "./BrandMark";
 import { ProductCard } from "./ProductCard";
 import { useLang } from "./LangProvider";
 
@@ -44,39 +46,66 @@ export function HomeClient({
 
   return (
     <>
-      <section className="hero">
-        <div className="wrap hero-g">
-          <div>
-            <p className="eyebrow rise d1">{t("h_eyebrow")}</p>
-            <h1 className="rise d2" style={{ marginTop: 10 }}>
-              {t("h_title")}
+      <section className="hero-ap">
+        <div className="hero-ap-media" aria-hidden="true">
+          <Image
+            src="https://images.unsplash.com/photo-1557597774-9c82bde7d697?auto=format&fit=crop&w=2400&q=80"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="hero-ap-img"
+          />
+          <div className="hero-ap-veil" />
+          <div className="hero-ap-grid" />
+        </div>
+        <div className="wrap hero-ap-in">
+          <div className="hero-ap-brand rise d1">
+            <BrandMark size={88} />
+            <h1 className="hero-ap-name">
+              <span className="hero-ap-grad">{t("h_brand")}</span>
             </h1>
-            <p className="lead rise d3" style={{ marginTop: 14 }}>
-              {t("h_lead")}
+            <p className="hero-ap-cis">{t("h_cis")}</p>
+            <p className="hero-ap-ar" dir="rtl" lang="ar">
+              {t("h_ar_line")}
             </p>
-            <div className="cta rise d4" style={{ marginTop: 22 }}>
-              <Link href="/devis" className="btn btn-pri btn-lg">
-                {t("h_cta1")} <Icon name="arrow" size={17} />
-              </Link>
-              <Link href="/catalogue" className="btn btn-out btn-lg">
-                {t("h_cta2")}
-              </Link>
-            </div>
-            <div className="feebar rise d5" style={{ marginTop: 22 }}>
-              <Icon name="pin" size={18} />
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("h_fee", {
-                    fee: `<b>${money(lang, fee)}</b>`,
-                    city,
-                  }),
-                }}
-              />
-            </div>
           </div>
-          <div className="rise d3">
-            <HeroPlan />
+          <p className="hero-ap-lead rise d2">{t("h_lead")}</p>
+          <div className="cta rise d3">
+            <Link href="/devis" className="btn btn-pri btn-lg">
+              {t("h_cta1")} <Icon name="arrow" size={17} />
+            </Link>
+            <Link href="/catalogue" className="btn btn-ghost btn-lg">
+              {t("h_cta2")}
+            </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="sec wrap pillars-sec">
+        <div className="sec-h rev">
+          <h2>{t("pill_title")}</h2>
+          <p className="ink2">{t("pill_lead")}</p>
+        </div>
+        <div className="pillars">
+          {PILLARS.map((p, i) => (
+            <Link
+              key={p.id}
+              href={p.href}
+              className={`pillar rev r${i + 1}`}
+              data-pill={p.id}
+            >
+              <span className="pillar-ic">
+                <Icon name={p.ic} size={22} />
+              </span>
+              <span className="pillar-k">C.I.S.</span>
+              <h3>{t(p.k)}</h3>
+              <p>{t(p.d)}</p>
+              <span className="pillar-cta">
+                {t(p.cta)} <Icon name="arrow" size={15} />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -87,7 +116,7 @@ export function HomeClient({
         </div>
         <div className="svc">
           {services.map((s, i) => (
-            <div key={s.id} className={`card rev r${(i % 4) + 1}`}>
+            <div key={s.id} className={`svc-row rev r${(i % 4) + 1}`}>
               <span className="ic">
                 <Icon name={s.ic} size={20} />
               </span>
@@ -122,11 +151,22 @@ export function HomeClient({
             </div>
           ))}
         </div>
+        <div className="feebar rise" style={{ marginTop: 22 }}>
+          <Icon name="pin" size={18} />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: t("h_fee", {
+                fee: `<b>${money(lang, fee)}</b>`,
+                city,
+              }),
+            }}
+          />
+        </div>
       </section>
 
-      <section className="sec" style={{ background: "var(--surface)", borderBlock: "1px solid var(--line)" }}>
+      <section className="sec catalog-band">
         <div className="wrap">
-          <div className="sec-h rev" style={{ flexDirection: "row", alignItems: "end", maxWidth: "none", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+          <div className="sec-h rev sec-h-row">
             <div>
               <h2>{t("f_title")}</h2>
               <p className="ink2">{t("f_lead")}</p>
@@ -150,7 +190,7 @@ export function HomeClient({
           <p className="eyebrow">{t("ab_eye")}</p>
           <h2>{t("ab_title")}</h2>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 22 }}>
+        <div className="about-g">
           <div className="rev">
             <p className="ink2" style={{ marginBottom: 12 }}>
               {t("ab_p1", { company: settings.company })}
@@ -194,7 +234,7 @@ export function HomeClient({
         </div>
       </section>
 
-      <section className="sec" style={{ background: "var(--surface-2)" }}>
+      <section className="sec brands-band">
         <div className="wrap">
           <p className="eyebrow rev" style={{ textAlign: "center", marginBottom: 14 }}>
             {t("br_title")}
@@ -214,7 +254,7 @@ export function HomeClient({
           <h2>{t("te_title")}</h2>
           <p className="ink2">{t("te_lead")}</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 14 }}>
+        <div className="quotes">
           {[1, 2, 3].map((n) => (
             <blockquote key={n} className={`quote rev r${n}`}>
               <span className="qm">“</span>
@@ -266,22 +306,10 @@ export function HomeClient({
       </section>
 
       <section className="sec wrap">
-        <div
-          className="card pad rev"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 18,
-            alignItems: "center",
-            justifyContent: "space-between",
-            background: "linear-gradient(135deg, var(--navy), var(--navy-2))",
-            color: "var(--on-navy)",
-            border: 0,
-          }}
-        >
-          <div style={{ maxWidth: "48ch" }}>
-            <h2 style={{ color: "inherit" }}>{t("cta_t")}</h2>
-            <p style={{ opacity: 0.9, marginTop: 8 }}>{t("cta_d")}</p>
+        <div className="cta-band rev">
+          <div>
+            <h2>{t("cta_t")}</h2>
+            <p>{t("cta_d")}</p>
           </div>
           <Link href="/devis" className="btn btn-pri btn-lg">
             {t("h_cta1")}

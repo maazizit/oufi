@@ -40,6 +40,33 @@ export const LOCALS = [
   { id: "other", fr: "Autre", ar: "آخر" },
 ];
 
+export const PILLARS = [
+  {
+    id: "shop",
+    k: "pill_shop_t",
+    d: "pill_shop_d",
+    href: "/catalogue",
+    cta: "pill_shop_cta",
+    ic: "cart" as const,
+  },
+  {
+    id: "install",
+    k: "pill_install_t",
+    d: "pill_install_d",
+    href: "/devis",
+    cta: "pill_install_cta",
+    ic: "cam" as const,
+  },
+  {
+    id: "maint",
+    k: "pill_maint_t",
+    d: "pill_maint_d",
+    href: "/devis?type=maint",
+    cta: "pill_maint_cta",
+    ic: "badge" as const,
+  },
+];
+
 export const SVCS = [
   {
     id: "cam",
@@ -151,34 +178,34 @@ export function P(
 }
 
 export const SEED_PRODUCTS: Product[] = [
-  P("p1", "OF-CAM-D4", "cam", "Hikvision", "Caméra dôme IP 4 MP — intérieure", "كاميرا قبة IP بدقة 4 ميغابكسل — داخلية", 690, 24, 24, [["res", "4 MP (2560×1440)"], ["lens", "2,8 mm"], ["ir", "30 m"], ["poe", "802.3af"]], 98),
-  P("p2", "OF-CAM-B4", "cam", "Hikvision", "Caméra bullet IP 4 MP — extérieure", "كاميرا بوليت IP بدقة 4 ميغابكسل — خارجية", 850, 16, 24, [["res", "4 MP"], ["prot", "IP67"], ["ir", "50 m"], ["poe", "802.3af"]], 91),
-  P("p3", "OF-CAM-P25", "cam", "Dahua", "Caméra PTZ motorisée — zoom ×25", "كاميرا PTZ متحركة — تقريب ×25", 4200, 3, 24, [["res", "2 MP"], ["zoom", "×25 optique"], ["ir", "100 m"], ["prot", "IP66"]], 44),
-  P("p4", "OF-CAM-W2", "cam", "Ezviz", "Caméra Wi-Fi intérieure 2 MP", "كاميرا واي فاي داخلية بدقة 2 ميغابكسل", 390, 41, 12, [["res", "2 MP"], ["wifi", "2,4 GHz"], ["ir", "10 m"], ["cap", "microSD 256 Go"]], 87),
-  P("p5", "OF-NVR-8P", "nvr", "Hikvision", "Enregistreur NVR 8 canaux PoE", "مسجل NVR بـ 8 قنوات PoE", 1950, 9, 24, [["ch", "8"], ["poe", "8 ports"], ["hdd", "2 × 8 To"], ["res", "jusqu'à 8 MP"]], 76),
-  P("p6", "OF-XVR-16", "nvr", "Dahua", "Enregistreur XVR 16 canaux", "مسجل XVR بـ 16 قناة", 2400, 4, 24, [["ch", "16"], ["hdd", "2 × 10 To"], ["res", "5 MP Lite"]], 52),
-  P("p7", "OF-HDD-2T", "nvr", "Seagate", "Disque dur surveillance 2 To", "قرص صلب للمراقبة سعة 2 تيرابايت", 780, 12, 36, [["cap", "2 To"], ["aut", "24/7"]], 69),
-  P("p8", "OF-RTR-HEX", "net", "MikroTik", "Routeur hEX RB750Gr3", "راوتر hEX RB750Gr3", 1150, 7, 12, [["ports", "5 × Gigabit"], ["thr", "1 Gb/s"]], 58),
-  P("p9", "OF-RTR-AX18", "net", "TP-Link", "Routeur Wi-Fi 6 AX1800", "راوتر واي فاي 6 بسرعة AX1800", 890, 15, 24, [["wifi", "Wi-Fi 6"], ["thr", "1 800 Mb/s"], ["ports", "4 × Gigabit"]], 83),
-  P("p10", "OF-AP-U6L", "net", "Ubiquiti", "Point d'accès UniFi U6 Lite", "نقطة ولوج UniFi U6 Lite", 1450, 6, 24, [["wifi", "Wi-Fi 6"], ["users", "≈ 150"], ["poe", "802.3af"]], 61),
-  P("p11", "OF-SW-8P", "net", "TP-Link", "Switch PoE+ 8 ports — 120 W", "سويتش PoE+ بـ 8 منافذ — 120 واط", 1090, 5, 36, [["ports", "8 × PoE+"], ["pow", "120 W"]], 64),
-  P("p12", "OF-ACC-BIO", "acc", "ZKTeco", "Pointeuse biométrique empreinte + badge", "جهاز بصمة وبطاقة للحضور والانصراف", 1690, 4, 12, [["users", "3 000 empreintes"], ["ports", "TCP/IP, USB"]], 47),
-  P("p13", "OF-ACC-INT", "acc", "Dahua", "Interphone vidéo IP — 2 fils", "إنتركوم فيديو IP بسلكين", 2250, 2, 24, [["res", "2 MP"], ["prot", "IP65"]], 33),
-  P("p14", "OF-PC-I5", "it", "HP", "PC de bureau i5 — 8 Go / SSD 256 Go", "حاسوب مكتبي i5 — 8 غيغا / SSD 256 غيغا", 4900, 3, 12, [["cpu", "Intel Core i5"], ["ram", "8 Go"], ["disk", "SSD 256 Go"]], 40),
-  P("p15", "OF-IMP-MF", "it", "Epson", "Imprimante multifonction Wi-Fi", "طابعة متعددة الوظائف بالواي فاي", 1350, 6, 12, [["wifi", "Wi-Fi"], ["ports", "USB, réseau"]], 38),
-  P("p16", "OF-CBL-C6", "cbl", "Générique", "Câble réseau Cat6 UTP — rouleau 305 m", "كابل شبكة Cat6 UTP — بكرة 305 متر", 1250, 8, 0, [["len", "305 m"], ["thr", "1 Gb/s"]], 55),
-  P("p17", "OF-UPS-1K", "cbl", "Eaton", "Onduleur 1000 VA", "جهاز إمداد بالطاقة 1000 فولت أمبير", 950, 10, 24, [["pow", "1000 VA / 600 W"], ["aut", "≈ 20 min"]], 49),
+  P("p1", "AP-CAM-D4", "cam", "Hikvision", "Caméra dôme IP 4 MP — intérieure", "كاميرا قبة IP بدقة 4 ميغابكسل — داخلية", 690, 24, 24, [["res", "4 MP (2560×1440)"], ["lens", "2,8 mm"], ["ir", "30 m"], ["poe", "802.3af"]], 98),
+  P("p2", "AP-CAM-B4", "cam", "Hikvision", "Caméra bullet IP 4 MP — extérieure", "كاميرا بوليت IP بدقة 4 ميغابكسل — خارجية", 850, 16, 24, [["res", "4 MP"], ["prot", "IP67"], ["ir", "50 m"], ["poe", "802.3af"]], 91),
+  P("p3", "AP-CAM-P25", "cam", "Dahua", "Caméra PTZ motorisée — zoom ×25", "كاميرا PTZ متحركة — تقريب ×25", 4200, 3, 24, [["res", "2 MP"], ["zoom", "×25 optique"], ["ir", "100 m"], ["prot", "IP66"]], 44),
+  P("p4", "AP-CAM-W2", "cam", "Ezviz", "Caméra Wi-Fi intérieure 2 MP", "كاميرا واي فاي داخلية بدقة 2 ميغابكسل", 390, 41, 12, [["res", "2 MP"], ["wifi", "2,4 GHz"], ["ir", "10 m"], ["cap", "microSD 256 Go"]], 87),
+  P("p5", "AP-NVR-8P", "nvr", "Hikvision", "Enregistreur NVR 8 canaux PoE", "مسجل NVR بـ 8 قنوات PoE", 1950, 9, 24, [["ch", "8"], ["poe", "8 ports"], ["hdd", "2 × 8 To"], ["res", "jusqu'à 8 MP"]], 76),
+  P("p6", "AP-XVR-16", "nvr", "Dahua", "Enregistreur XVR 16 canaux", "مسجل XVR بـ 16 قناة", 2400, 4, 24, [["ch", "16"], ["hdd", "2 × 10 To"], ["res", "5 MP Lite"]], 52),
+  P("p7", "AP-HDD-2T", "nvr", "Seagate", "Disque dur surveillance 2 To", "قرص صلب للمراقبة سعة 2 تيرابايت", 780, 12, 36, [["cap", "2 To"], ["aut", "24/7"]], 69),
+  P("p8", "AP-RTR-HEX", "net", "MikroTik", "Routeur hEX RB750Gr3", "راوتر hEX RB750Gr3", 1150, 7, 12, [["ports", "5 × Gigabit"], ["thr", "1 Gb/s"]], 58),
+  P("p9", "AP-RTR-AX18", "net", "TP-Link", "Routeur Wi-Fi 6 AX1800", "راوتر واي فاي 6 بسرعة AX1800", 890, 15, 24, [["wifi", "Wi-Fi 6"], ["thr", "1 800 Mb/s"], ["ports", "4 × Gigabit"]], 83),
+  P("p10", "AP-AP-U6L", "net", "Ubiquiti", "Point d'accès UniFi U6 Lite", "نقطة ولوج UniFi U6 Lite", 1450, 6, 24, [["wifi", "Wi-Fi 6"], ["users", "≈ 150"], ["poe", "802.3af"]], 61),
+  P("p11", "AP-SW-8P", "net", "TP-Link", "Switch PoE+ 8 ports — 120 W", "سويتش PoE+ بـ 8 منافذ — 120 واط", 1090, 5, 36, [["ports", "8 × PoE+"], ["pow", "120 W"]], 64),
+  P("p12", "AP-ACC-BIO", "acc", "ZKTeco", "Pointeuse biométrique empreinte + badge", "جهاز بصمة وبطاقة للحضور والانصراف", 1690, 4, 12, [["users", "3 000 empreintes"], ["ports", "TCP/IP, USB"]], 47),
+  P("p13", "AP-ACC-INT", "acc", "Dahua", "Interphone vidéo IP — 2 fils", "إنتركوم فيديو IP بسلكين", 2250, 2, 24, [["res", "2 MP"], ["prot", "IP65"]], 33),
+  P("p14", "AP-PC-I5", "it", "HP", "PC de bureau i5 — 8 Go / SSD 256 Go", "حاسوب مكتبي i5 — 8 غيغا / SSD 256 غيغا", 4900, 3, 12, [["cpu", "Intel Core i5"], ["ram", "8 Go"], ["disk", "SSD 256 Go"]], 40),
+  P("p15", "AP-IMP-MF", "it", "Epson", "Imprimante multifonction Wi-Fi", "طابعة متعددة الوظائف بالواي فاي", 1350, 6, 12, [["wifi", "Wi-Fi"], ["ports", "USB, réseau"]], 38),
+  P("p16", "AP-CBL-C6", "cbl", "Générique", "Câble réseau Cat6 UTP — rouleau 305 m", "كابل شبكة Cat6 UTP — بكرة 305 متر", 1250, 8, 0, [["len", "305 m"], ["thr", "1 Gb/s"]], 55),
+  P("p17", "AP-UPS-1K", "cbl", "Eaton", "Onduleur 1000 VA", "جهاز إمداد بالطاقة 1000 فولت أمبير", 950, 10, 24, [["pow", "1000 VA / 600 W"], ["aut", "≈ 20 min"]], 49),
 ];
 
 export const SEED_SETTINGS = {
-  company: "Oufi Sécurité",
+  company: "AMANPLANET",
   tagline: {
-    fr: "Vidéosurveillance & réseaux",
-    ar: "المراقبة والشبكات",
+    fr: "Conseil • Installation • Suivi",
+    ar: "معك من الإختيار الى التركيب و المتابعة",
   },
   phone: "+212 6 61 24 18 05",
   whatsapp: "+212 6 61 24 18 05",
-  email: "contact@oufi-securite.ma",
+  email: "contact@amanplanet.ma",
   address: {
     fr: "14, rue Ibn Battouta — Quartier Belvédère, Casablanca",
     ar: "14، زنقة ابن بطوطة — حي بلفيدير، الدار البيضاء",
@@ -198,9 +225,9 @@ export const SEED_SETTINGS = {
     ["Tanger", 600],
     ["Agadir", 700],
   ] as [string, number][],
-  manager: "Ibrahim Oufi",
+  manager: "Karim Aman",
   team: [
-    { id: "t1", name: "Ibrahim Oufi", role: "manager" as const, phone: "+212 6 61 24 18 05", active: true },
+    { id: "t1", name: "Karim Aman", role: "manager" as const, phone: "+212 6 61 24 18 05", active: true },
     { id: "t2", name: "Youssef Bennani", role: "tech" as const, phone: "06 61 55 20 14", active: true },
     { id: "t3", name: "Hamza Tazi", role: "tech" as const, phone: "06 62 18 74 03", active: true },
     { id: "t4", name: "Salma Rachidi", role: "tech" as const, phone: "06 70 41 09 88", active: true },
