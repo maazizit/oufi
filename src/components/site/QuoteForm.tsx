@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Settings } from "@/lib/types";
+import type { Product, Settings } from "@/lib/types";
 import { CHANS, LOCALS, SVCS, TYPES } from "@/lib/data/constants";
 import { money } from "@/lib/data/i18n";
 import { feeFor, isMoroccanPhone } from "@/lib/utils";
+import { saveLastRequest } from "@/lib/client/last-request";
 import { Icon } from "@/components/ui/Icon";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
@@ -13,11 +14,13 @@ import { useLang } from "./LangProvider";
 export function QuoteForm({
   settings,
   mode,
+  products = [],
 }: {
   settings: Settings;
   mode: "form" | "cart";
+  products?: Product[];
 }) {
-  const { t } = useLang();
+  const { t, L, lang } = useLang();
   const router = useRouter();
   const sp = useSearchParams();
   const { items, clear } = useCart();
@@ -31,6 +34,7 @@ export function QuoteForm({
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
+  const [picked, setPicked] = useState<Record<string, number>>({});
   const [form, setForm] = useState<Record<string, string | boolean>>({
     type: initialType,
     svc: sp.get("svc") || (mode === "cart" ? "cam" : "cam"),
@@ -38,6 +42,18 @@ export function QuoteForm({
     slot: "any",
     ok: false,
   });
+
+  const catalogForSvc = useMemo(() => {
+    const svc = String(form.svc || "");
+    const catMap: Record<string, string[]> = {
+      cam: ["cam", "nvr"],
+      net: ["net", "cbl"],
+      it: ["it"],
+      acc: ["acc"],
+    };
+    const cats = catMap[svc] || [];
+    return products.filter((p) => p.active && (cats.length === 0 || cats.includes(p.cat))).slice(0, 12);
+  }, [products, form.svc]);
 
   const set = (k: string, v: string | boolean) =>
     setForm((f) => ({ ...f, [k]: v }));
@@ -83,6 +99,13 @@ export function QuoteForm({
   async function submit() {
     setBusy(true);
     try {
+      const pickedItems =
+        mode === "cart"
+          ? items
+          : Object.entries(picked)
+              .filter(([, q]) => q > 0)
+              .map(([id, q]) => ({ id, q, inst: form.type === "install" }));
+
       const res = await fetch("/api/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -110,11 +133,12 @@ export function QuoteForm({
           slot: form.slot,
           fee,
           desc: form.desc,
-          items: mode === "cart" ? items : [],
+          items: pickedItems,
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "error");
+      if (!res.ok || !data.ref) throw new Error(data.error || "error");
+      if (data.request) saveLastRequest(data.request);
       if (mode === "cart") clear();
       router.push(`/confirmation?ref=${encodeURIComponent(data.ref)}`);
     } catch {
@@ -223,6 +247,64 @@ export function QuoteForm({
               ? field("svcother", t("q_svcother"), "textarea", t("q_svcother_ph"), t("q_svcother_h"))
               : null}
             {field("desc", t("q_desc"), "textarea", t("q_desc_ph"))}
+            {mode === "form" &&
+            (fv("type") === "install" || fv("type") === "prod") &&
+            catalogForSvc.length > 0 ? (
+              <div className="field">
+                <span className="lab">{t("q_pick")}</span>
+                <p className="hint" style={{ marginBottom: 8 }}>
+                  {t("q_pick_h")}
+                </p>
+                <div className="quote-pick">
+                  {catalogForSvc.map((p) => {
+                    const q = picked[p.id] || 0;
+                    return (
+                      <div key={p.id} className="quote-pick-row">
+                        <div>
+                          <b className="sm">{L(p.name)}</b>
+                          <div className="xs muted">
+                            {p.brand} · {money(lang, p.price)}
+                          </div>
+                        </div>
+                        <div className="quote-pick-qty">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-out"
+                            aria-label="-"
+                            disabled={q <= 0}
+                            onClick={() =>
+                              setPicked((prev) => {
+                                const next = { ...prev };
+                                const n = (next[p.id] || 0) - 1;
+                                if (n <= 0) delete next[p.id];
+                                else next[p.id] = n;
+                                return next;
+                              })
+                            }
+                          >
+                            −
+                          </button>
+                          <span className="num mono">{q}</span>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-out"
+                            aria-label="+"
+                            onClick={() =>
+                              setPicked((prev) => ({
+                                ...prev,
+                                [p.id]: (prev[p.id] || 0) + 1,
+                              }))
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
                 type="button"

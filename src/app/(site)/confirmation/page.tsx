@@ -10,13 +10,14 @@ export default async function ConfirmationPage({
   searchParams: Promise<{ ref?: string }>;
 }) {
   const sp = await searchParams;
+  const ref = sp.ref?.trim() || "";
   const [settings, request] = await Promise.all([
     getSettings(),
-    sp.ref ? getRequest(sp.ref) : Promise.resolve(null),
+    ref ? getRequest(ref) : Promise.resolve(null),
   ]);
   return (
     <Suspense>
-      <ConfirmClient settings={settings} request={request} />
+      <ConfirmClient settings={settings} request={request} refParam={ref || undefined} />
     </Suspense>
   );
 }

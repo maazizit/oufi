@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Request, RequestStatus } from "@/lib/types";
 import { statusOf, fmtDT } from "@/lib/utils";
 import { useLang } from "./LangProvider";
@@ -25,22 +26,33 @@ function flowIndex(status: RequestStatus) {
 
 export function TrackClient() {
   const { t } = useLang();
+  const sp = useSearchParams();
   const [q, setQ] = useState("");
   const [res, setRes] = useState<Request | null | undefined>(undefined);
   const [busy, setBusy] = useState(false);
 
-  async function search() {
-    if (!q.trim()) return;
+  async function search(value?: string) {
+    const query = (value ?? q).trim();
+    if (!query) return;
     setBusy(true);
     setRes(undefined);
     try {
-      const r = await fetch(`/api/track?q=${encodeURIComponent(q.trim())}`);
+      const r = await fetch(`/api/track?q=${encodeURIComponent(query)}`);
       const data = await r.json();
       setRes(data.request ?? null);
     } finally {
       setBusy(false);
     }
   }
+
+  useEffect(() => {
+    const initial = sp.get("q");
+    if (initial) {
+      setQ(initial);
+      void search(initial);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sp]);
 
   const reached = res ? flowIndex(res.status) : -1;
 
@@ -62,7 +74,7 @@ export function TrackClient() {
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && search()}
         />
-        <button type="button" className="btn btn-pri" disabled={busy} onClick={search}>
+        <button type="button" className="btn btn-pri" disabled={busy} onClick={() => search()}>
           {busy ? t("tr_loading") : t("tr_btn")}
         </button>
       </div>
