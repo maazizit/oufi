@@ -23,7 +23,7 @@ export const T: Dict = {
     ar: "معك من الاختيار إلى التركيب والمتابعة",
   },
   h_title: {
-    fr: "Installation de caméras, réseau et contrôle d’accès à Casablanca",
+    fr: "Installation de caméras, réseau et contrôle d’accès",
     ar: "تركيب كاميرات المراقبة والشبكات وأنظمة التحكم بالوصول",
   },
   h_lead: {
@@ -47,8 +47,8 @@ export const T: Dict = {
 
   pill_title: { fr: "Trois piliers, un seul partenaire", ar: "ثلاث ركائز… وشريك واحد" },
   pill_lead: {
-    fr: "Du matériel à la pose, jusqu’au contrat de suivi — tout le parcours C.I.S. sous un même toit.",
-    ar: "من اختيار المنتج إلى التركيب ثم عقد المتابعة — مسار C.I.S. متكامل تحت سقف واحد.",
+    fr: "Du matériel à la pose, jusqu’au contrat de suivi — tout le parcours C.I.S. (Conseil • Installation • Suivi) sous un même toit.",
+    ar: "من اختيار المنتج إلى التركيب ثم عقد المتابعة — مسار C.I.S. (استشارات • تركيب • متابعة) متكامل تحت سقف واحد.",
   },
   pill_shop_t: { fr: "E-commerce / Vente", ar: "التجارة الإلكترونية / البيع" },
   pill_shop_d: {
@@ -335,8 +335,8 @@ export const T: Dict = {
     ar: "AMANPLANET — شريككم في الأمن",
   },
   ab_p1: {
-    fr: "{company} accompagne les entreprises, magasins et villas de Casablanca et région. Nous vendons, installons et suivons : C.I.S. n’est pas un slogan, c’est le métier.",
-    ar: "{company} شريك للشركات والمحلات والفيلات في الدار البيضاء والنواحي. نبيع ونركّب ونتابع: C.I.S. منهجنا العملي وليس مجرد شعار.",
+    fr: "{company} accompagne les entreprises, magasins et villas. Nous vendons, installons et suivons — C.I.S. (Conseil • Installation • Suivi) : ce n’est pas un slogan, c’est le métier.",
+    ar: "{company} شريك للشركات والمحلات والفيلات. نبيع ونركّب ونتابع — C.I.S. (استشارات • تركيب • متابعة): منهجنا العملي وليس مجرد شعار.",
   },
   ab_p2: {
     fr: "Chaque chantier commence par une visite et finit par une démonstration : nous ne partons pas avant que vous sachiez consulter vos caméras depuis votre téléphone.",
@@ -349,11 +349,6 @@ export const T: Dict = {
   ab_v2_d: { fr: "Codes d'accès, comptes, configuration : tout vous est remis. Aucun verrouillage.", ar: "رموز الوصول والحسابات والإعدادات تُسلَّم لكم بالكامل — دون أي قفل." },
   ab_v3_t: { fr: "On répond après la pose", ar: "ندعمكم بعد التركيب" },
   ab_v3_d: { fr: "Garantie 12 mois et une ligne directe. C'est là que se juge un installateur.", ar: "ضمان 12 شهراً وخط دعم مباشر — هنا يُقاس جودة المُركِّب." },
-  ab_team_t: { fr: "L'équipe qui se déplace", ar: "الفريق الميداني" },
-  ab_team_d: {
-    fr: "Vous savez toujours qui sonne à votre porte : le nom du technicien vous est communiqué avant la visite.",
-    ar: "تعرفون دائماً من يزوركم: يُبلَّغ اسم الفني قبل الموعد.",
-  },
   br_title: { fr: "Les marques que nous installons", ar: "العلامات التي نعتمدها" },
   te_title: { fr: "Ce qu'ils en disent", ar: "آراء عملائنا" },
   te_lead: { fr: "Trois clients, trois chantiers terminés.", ar: "ثلاثة عملاء… وثلاثة مشاريع مكتملة." },

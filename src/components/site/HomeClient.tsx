@@ -5,7 +5,6 @@ import Link from "next/link";
 import type { Product, Settings, TeamMember, Localized } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
 import { PILLARS } from "@/lib/data/constants";
-import { roleOf } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 import { ProductCard } from "./ProductCard";
 import { useLang } from "./LangProvider";
@@ -49,7 +48,6 @@ export function HomeClient({
     role: "manager" as const,
     id: "t1",
   };
-  const field = team.filter((m) => m.active && m.role !== "manager");
   const brandLoop = [...brands, ...brands];
   const tel = settings.phone.replace(/\s/g, "");
 
@@ -233,32 +231,6 @@ export function HomeClient({
               <div key={n} className="val">
                 <b>{t(`ab_v${n}_t`)}</b>
                 <span>{t(`ab_v${n}_d`)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div style={{ marginTop: 28 }}>
-          <h3 className="rev">{t("ab_team_t")}</h3>
-          <p className="ink2 sm rev" style={{ marginBottom: 14 }}>
-            {t("ab_team_d")}
-          </p>
-          <div className="people">
-            {field.map((m, i) => (
-              <div key={m.id} className={`person rev r${(i % 4) + 1}`}>
-                <Image
-                  className="avl-img"
-                  src={`/team/${m.id}.jpg`}
-                  alt={m.name}
-                  width={40}
-                  height={40}
-                />
-                <div>
-                  <b className="sm">{m.name}</b>
-                  <div className="xs muted">{L(roleOf(m.role))}</div>
-                  <a className="xs" href={`tel:${m.phone.replace(/\s/g, "")}`}>
-                    {m.phone}
-                  </a>
-                </div>
               </div>
             ))}
           </div>
