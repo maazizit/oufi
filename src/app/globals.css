@@ -847,9 +847,12 @@ tbody tr[data-click]:hover {
 }
 .side-notifs {
   margin-inline-start: auto;
+  position: relative;
+  z-index: 40;
 }
 .admin-notifs {
   position: relative;
+  z-index: 40;
 }
 .admin-notifs-btn {
   position: relative;
@@ -881,12 +884,15 @@ tbody tr[data-click]:hover {
   place-items: center;
   padding: 0 4px;
 }
+/* Open to the right of the bell so the panel isn't clipped by the viewport edge */
 .admin-notifs-panel {
   position: absolute;
-  top: calc(100% + 8px);
-  inset-inline-end: 0;
-  width: min(320px, 82vw);
-  z-index: 50;
+  top: 0;
+  inset-inline-start: calc(100% + 10px);
+  inset-inline-end: auto;
+  width: min(340px, calc(100vw - 250px));
+  min-width: 260px;
+  z-index: 80;
   overflow: hidden;
   box-shadow: var(--sh-2);
   background: var(--surface);
@@ -924,6 +930,11 @@ tbody tr[data-click]:hover {
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
   color: inherit;
+}
+.admin-notifs-list li a .sm {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .admin-notifs-list li[data-unread="1"] a {
   background: var(--blue-soft);
@@ -1680,6 +1691,7 @@ tbody tr[data-click]:hover {
   display: flex;
   flex-direction: column;
   border-inline-end: 1px solid var(--navy-line);
+  overflow: visible;
 }
 .side .bd {
   display: flex;
@@ -1687,6 +1699,9 @@ tbody tr[data-click]:hover {
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid var(--navy-line);
+  overflow: visible;
+  position: relative;
+  z-index: 30;
 }
 .side .bd .mk {
   width: 34px;
@@ -1833,6 +1848,7 @@ tbody tr[data-click]:hover {
   .side {
     flex-direction: row;
     overflow-x: auto;
+    overflow-y: visible;
   }
   .side nav {
     flex-direction: row;
@@ -1843,6 +1859,14 @@ tbody tr[data-click]:hover {
   }
   .panes {
     grid-template-columns: 1fr;
+  }
+  /* Below the bell on narrow layouts — avoid off-screen left clip */
+  .admin-notifs-panel {
+    top: calc(100% + 8px);
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    width: min(320px, calc(100vw - 24px));
+    min-width: 0;
   }
 }
 .pane {
