@@ -1,4 +1,8 @@
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
+import {
+  createClient,
+  createServiceClient,
+  isSupabaseConfigured,
+} from "@/lib/supabase/server";
 import type {
   CartItem,
   ContactChannel,
@@ -266,7 +270,9 @@ export async function createRequest(input: CreateRequestInput): Promise<Request>
     });
   }
 
-  const supabase = await createClient();
+  // Public devis API has no user session; anon INSERT is blocked by RLS/grants.
+  // Use service role on the server only (never expose this key to the client).
+  const supabase = createServiceClient() || (await createClient());
   if (!supabase) throw new Error("Supabase unavailable");
 
   const { data: refData } = await supabase.rpc("next_request_ref");
