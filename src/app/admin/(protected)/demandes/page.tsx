@@ -1,3 +1,4 @@
+import { ensureAdminPage } from "@/lib/admin/guard";
 import { getRequests } from "@/lib/data/repository";
 import { DemandesFilters } from "@/components/admin/DemandesFilters";
 import { DemandesTable } from "@/components/admin/DemandesTable";
@@ -7,6 +8,7 @@ export default async function DemandesPage({
 }: {
   searchParams: Promise<{ status?: string; src?: string; type?: string; q?: string }>;
 }) {
+  await ensureAdminPage("demandes");
   const sp = await searchParams;
   const all = await getRequests();
   let list = all;

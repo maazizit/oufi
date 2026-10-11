@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
 import { syncDemoFromCookies, overlaySetCookieHeader } from "@/lib/data/demo-sync";
 
 export async function POST(req: Request) {
+  const guard = await adminApiGuard("interventions");
+  if (!guard.ok) return guard.response;
   const body = await req.json();
   const ref = String(body.ref || "");
   if (!ref) return NextResponse.json({ error: "missing_ref" }, { status: 400 });
@@ -53,6 +56,8 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const guard = await adminApiGuard("interventions");
+  if (!guard.ok) return guard.response;
   const body = await req.json();
   const id = String(body.id || "");
   if (!id) return NextResponse.json({ error: "missing_id" }, { status: 400 });

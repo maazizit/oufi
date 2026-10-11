@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import { getNotifs, markNotifsRead, exportDemoOverlayIfNeeded } from "@/lib/data/repository";
 import { overlaySetCookieHeader } from "@/lib/data/demo-sync";
 import { isSupabaseConfigured } from "@/lib/supabase/server";
 
 export async function GET() {
+  const guard = await adminApiGuard("demandes");
+  if (!guard.ok) return guard.response;
   const notifs = await getNotifs();
   return NextResponse.json({
     notifs,
@@ -12,6 +15,8 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
+  const guard = await adminApiGuard("demandes");
+  if (!guard.ok) return guard.response;
   const body = await req.json().catch(() => ({}));
   const ids = Array.isArray(body.ids) ? body.ids.map(String) : undefined;
   await markNotifsRead(ids);

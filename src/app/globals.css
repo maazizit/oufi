@@ -3256,3 +3256,16 @@ tbody tr[data-click]:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.admin-perm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px 14px;
+}
+.admin-perm-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}

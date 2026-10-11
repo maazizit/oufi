@@ -1,8 +1,10 @@
+import { ensureAdminPage } from "@/lib/admin/guard";
 import { getProducts } from "@/lib/data/repository";
 import { CATS } from "@/lib/data/constants";
 import { AdminCatalogClient } from "@/components/admin/AdminCatalogClient";
 
 export default async function AdminCatalogPage() {
+  await ensureAdminPage("catalogue");
   const products = await getProducts(false);
   return (
     <>

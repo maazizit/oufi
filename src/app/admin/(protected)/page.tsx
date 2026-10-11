@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ensureAdminPage } from "@/lib/admin/guard";
 import {
   getInterventions,
   getProducts,
@@ -10,6 +11,7 @@ import { chanOf, fmtD, fmtT, isToday, statusOf, typeOf } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 
 export default async function AdminDashboardPage() {
+  await ensureAdminPage("dashboard");
   const [requests, interv, products, settings] = await Promise.all([
     getRequests(),
     getInterventions(),
