@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProducts } from "@/lib/data/repository";
 import { productJsonLd, productSlug, pageMeta } from "@/lib/seo";
@@ -39,12 +38,7 @@ export default async function ProductPage({
   return (
     <>
       <JsonLd data={productJsonLd(product)} />
-      <section className="sec wrap" style={{ maxWidth: 920 }}>
-        <p className="sm muted" style={{ marginBottom: 12 }}>
-          <Link href="/catalogue">← Catalogue</Link>
-        </p>
-        <ProductDetailClient product={product} />
-      </section>
+      <ProductDetailClient product={product} />
     </>
   );
 }
