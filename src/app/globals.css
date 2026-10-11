@@ -633,6 +633,17 @@ tbody tr[data-click]:hover {
 .hdr-drawer {
   display: none;
 }
+.hdr-drawer.is-open {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  padding: 24px var(--gutter) 32px;
+  gap: 8px;
+  overflow-y: auto;
+}
 @media (max-width: 960px) {
   .nav {
     display: none;
@@ -642,17 +653,6 @@ tbody tr[data-click]:hover {
   }
   .hdr-burger {
     display: inline-grid;
-  }
-  .hdr-drawer[data-open="1"] {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    background: var(--bg);
-    padding: 24px var(--gutter) 32px;
-    gap: 8px;
-    overflow-y: auto;
   }
   .hdr-drawer-top {
     display: flex;

@@ -134,9 +134,9 @@ export function SiteHeader({
 
       <div
         id="hdr-drawer"
-        className="hdr-drawer"
+        className={`hdr-drawer${open ? " is-open" : ""}`}
         data-open={open ? "1" : "0"}
-        hidden={!open}
+        aria-hidden={!open}
       >
         <div className="hdr-drawer-top">
           <span className="brand-word">{company}</span>
