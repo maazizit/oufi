@@ -10,32 +10,17 @@ export const metadata = pageMeta({
   path: "/devis",
 });
 
-function DevisShell() {
-  return (
-    <section className="sec wrap sr-only" aria-hidden="false">
-      <h1>Demande de devis</h1>
-      <p>
-        Formulaire AMANPLANET en trois étapes : besoin, site, contact. Rappel sous 24 h ouvrées ;
-        devis détaillé sous 48 h après la visite sur site.
-      </p>
-    </section>
-  );
-}
-
 export default async function DevisPage() {
   const [settings, products] = await Promise.all([getSettings(), getProducts(true)]);
   return (
-    <>
-      <DevisShell />
-      <Suspense
-        fallback={
-          <section className="sec wrap" style={{ maxWidth: 820 }}>
-            <p className="muted">Chargement du formulaire…</p>
-          </section>
-        }
-      >
-        <QuoteForm settings={settings} mode="form" products={products} />
-      </Suspense>
-    </>
+    <Suspense
+      fallback={
+        <section className="sec wrap quote-sec">
+          <p className="muted">Chargement du formulaire…</p>
+        </section>
+      }
+    >
+      <QuoteForm settings={settings} mode="form" products={products} />
+    </Suspense>
   );
 }

@@ -195,6 +195,13 @@ export const T: Dict = {
   q_s1: { fr: "Votre besoin", ar: "حاجتكم" },
   q_s2: { fr: "Le site", ar: "المكان" },
   q_s3: { fr: "Vous contacter", ar: "كيف نتصل بكم" },
+  q_progress: { fr: "Étape {n} sur 3", ar: "الخطوة {n} من 3" },
+  q_wa_press_t: { fr: "Besoin urgent ? WhatsApp en priorité", ar: "حاجة مستعجلة؟ واتساب أولاً" },
+  q_wa_press_d: {
+    fr: "Décrivez votre besoin en un message — nous répondons en priorité sur WhatsApp pendant les heures d’ouverture.",
+    ar: "صفوا حاجتكم في رسالة — نردّ بأولوية عبر واتساب خلال ساعات العمل.",
+  },
+  q_wa_press_cta: { fr: "Écrire sur WhatsApp", ar: "مراسلة واتساب" },
   q_type: { fr: "Type de demande", ar: "نوع الطلب" },
   ty_install: { fr: "Nouvelle installation", ar: "تركيب جديد" },
   ty_install_d: { fr: "Caméras, réseau ou informatique à poser.", ar: "كاميرات أو شبكة أو تقنية معلومات للتركيب." },
