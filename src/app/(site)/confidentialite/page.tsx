@@ -1,50 +1,29 @@
 import { pageMeta } from "@/lib/seo";
+import { SITE } from "@/lib/site-config";
 
 export const metadata = pageMeta({
   title: "Politique de confidentialité",
-  description:
-    "Politique de confidentialité AMANPLANET — traitement des données personnelles conformément à la loi 09-08 / CNDP.",
+  description: "Politique de confidentialité AMANPLANET.",
   path: "/confidentialite",
 });
 
 export default function PrivacyPage() {
   return (
-    <section className="sec wrap legal">
+    <section className="sec wrap" style={{ maxWidth: 720 }}>
       <h1>Politique de confidentialité</h1>
-      <p className="ink2">
-        Conformément à la loi n° 09-08 relative à la protection des personnes physiques à l’égard du
-        traitement des données à caractère personnel, et sous le contrôle de la CNDP.
+      <p style={{ marginTop: 16, lineHeight: 1.65 }}>
+        AMANPLANET — <a href={SITE.mailHref}>{SITE.email}</a> — Marrakech, Maroc
+        (interventions dans tout le Maroc).
       </p>
-      <h2>Responsable de traitement</h2>
-      <p>
-        AMANPLANET — <a href="mailto:contact@amanplanet.ma">contact@amanplanet.ma</a> — Casablanca.
+      <p style={{ marginTop: 12, lineHeight: 1.65 }}>
+        Les données collectées via les formulaires (devis, contact, suivi) servent
+        uniquement à traiter votre demande et à vous recontacter. Elles ne sont
+        pas vendues à des tiers.
       </p>
-      <h2>Données collectées via les formulaires</h2>
-      <ul>
-        <li>Identité et coordonnées (nom, téléphone, e-mail, entreprise)</li>
-        <li>Adresse du site d’intervention et détails du besoin</li>
-        <li>Contenu de la sélection catalogue / panier (références, quantités)</li>
-      </ul>
-      <h2>Finalités</h2>
-      <p>
-        Traiter les demandes de devis, planifier les états des lieux, assurer le suivi commercial et
-        le support après installation. Aucune vente de données à des tiers.
-      </p>
-      <h2>Base légale</h2>
-      <p>
-        Exécution de mesures précontractuelles à votre demande, et consentement lorsque vous acceptez
-        d’être recontacté.
-      </p>
-      <h2>Durée de conservation</h2>
-      <p>
-        Les demandes sont conservées le temps nécessaire au suivi commercial, puis archivées ou
-        supprimées selon les obligations légales applicables.
-      </p>
-      <h2>Vos droits</h2>
-      <p>
-        Vous pouvez demander l’accès, la rectification ou la suppression de vos données en écrivant à{" "}
-        <a href="mailto:contact@amanplanet.ma">contact@amanplanet.ma</a>. Vous pouvez également
-        saisir la CNDP (www.cndp.ma).
+      <p style={{ marginTop: 12, lineHeight: 1.65 }}>
+        Pour toute question ou suppression de données :{" "}
+        <a href={SITE.mailHref}>{SITE.email}</a>. Vous pouvez également nous
+        joindre au <a href={SITE.telHref}>{SITE.phoneDisplay}</a>.
       </p>
     </section>
   );

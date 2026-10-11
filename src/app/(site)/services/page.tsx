@@ -3,9 +3,9 @@ import { ServicesClient } from "@/components/site/ServicesClient";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
-  title: "Services — vidéosurveillance, réseau, maintenance",
+  title: "Services — caméras, réseau, alarme, domotique",
   description:
-    "Métiers AMANPLANET : vidéosurveillance, réseau, informatique, contrôle d’accès, alarmes et domotique. Ancres détaillées, FAQ et frais de déplacement.",
+    "Services AMANPLANET à Marrakech et au Maroc : vidéosurveillance, domotique, alarme, réseau, maintenance, contrôle d’accès. Devis après visite.",
   path: "/services",
 });
 

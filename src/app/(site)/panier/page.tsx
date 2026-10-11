@@ -7,6 +7,7 @@ export const metadata = pageMeta({
   description:
     "Votre sélection matériel AMANPLANET. Aucun paiement en ligne — envoyez la sélection pour un devis. Rappel sous 24 h ouvrées.",
   path: "/panier",
+  noIndex: true,
 });
 
 export default async function PanierPage() {

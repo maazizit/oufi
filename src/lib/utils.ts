@@ -83,7 +83,7 @@ export function localizeFeeLine(
   settings: Settings,
   city?: string,
 ) {
-  const c = city || settings.fees[0]?.[0] || "Casablanca";
+  const c = city || settings.fees[0]?.[0] || "Marrakech";
   const fee = feeFor(settings, c);
   return t(lang, "h_fee", {
     fee: fee != null ? money(lang, fee) : t(lang, "q_feeask"),

@@ -1,34 +1,44 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://oufi-three.vercel.app";
+import { SITE, SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "AMANPLANET — Conseil • Installation • Suivi",
-    template: "%s · AMANPLANET",
+    default: `${SITE.name} — ${SITE.cisShort}`,
+    template: `%s · ${SITE.name}`,
   },
   description:
-    "AMANPLANET C.I.S. — caméras, routeurs, domotique et alarmes. Vente, installation et maintenance à Casablanca et région. Rappel sous 24 h ; devis détaillé sous 48 h après visite.",
+    "AMANPLANET C.I.S. — caméras, routeurs, domotique et alarmes. Vente, installation et maintenance à Marrakech et dans tout le Maroc. Rappel sous 24 h ; devis sous 48 h après visite.",
   alternates: {
     canonical: "/",
-    languages: { fr: "/", ar: "/", "x-default": "/" },
+    languages: {
+      "fr-MA": "/",
+      "ar-MA": "/ar",
+      "x-default": "/",
+    },
   },
   openGraph: {
-    title: "AMANPLANET — Conseil • Installation • Suivi",
+    title: `${SITE.name} — ${SITE.cisShort}`,
     description:
-      "Caméras, réseau et contrôle d’accès à Casablanca. Rappel sous 24 h ; devis détaillé sous 48 h après visite.",
-    url: SITE,
-    siteName: "AMANPLANET",
+      "Caméras, réseau et contrôle d’accès à Marrakech et au Maroc. Rappel sous 24 h ; devis sous 48 h après visite.",
+    url: SITE_URL,
+    siteName: SITE.name,
     locale: "fr_MA",
     type: "website",
-    images: [{ url: "/brand/hero-install.jpg", width: 2000, height: 1333, alt: "AMANPLANET installation" }],
+    images: [
+      {
+        url: "/brand/hero-install.jpg",
+        width: 2000,
+        height: 1333,
+        alt: "AMANPLANET installation",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AMANPLANET — Conseil • Installation • Suivi",
-    description: "Caméras, réseau et contrôle d’accès à Casablanca.",
+    title: `${SITE.name} — ${SITE.cisShort}`,
+    description: "Caméras, réseau et contrôle d’accès — Marrakech & tout le Maroc.",
     images: ["/brand/hero-install.jpg"],
   },
 };

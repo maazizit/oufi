@@ -33,8 +33,8 @@ export const T: Dict = {
   h_cta1: { fr: "Demander un devis", ar: "طلب عرض سعر" },
   h_cta2: { fr: "Voir le catalogue", ar: "تصفح المنتجات" },
   h_fee: {
-    fr: "Déplacement pour l'état des lieux : {fee} à {city}. Déduit du devis si les travaux sont confirmés.",
-    ar: "رسوم المعاينة الميدانية: {fee} في {city}. تُخصم من عرض السعر عند اعتماد الأشغال.",
+    fr: "Déplacement pour l'état des lieux : à partir de {fee} à {city} (selon ville, tout le Maroc). Déduit du devis si les travaux sont confirmés.",
+    ar: "رسوم المعاينة الميدانية: ابتداءً من {fee} في {city} (حسب المدينة، كل المغرب). تُخصم من عرض السعر عند اعتماد الأشغال.",
   },
   h_callback: {
     fr: "Nous vous rappelons sous 24 h ouvrées. Le devis détaillé suit sous 48 h après la visite sur site.",
@@ -130,7 +130,8 @@ export const T: Dict = {
   sect_title: { fr: "Ils nous font confiance", ar: "يثقون بنا" },
   sect_lead: { fr: "Des installations livrées dans ces secteurs.", ar: "تركيبات منجزة في هذه القطاعات." },
   st_1: { fr: "installations livrées", ar: "تركيبة منجزة" },
-  st_2: { fr: "villes couvertes", ar: "مدن مغطاة" },
+  st_2: { fr: "couverture", ar: "التغطية" },
+  st_2_val: { fr: "Tout le Maroc", ar: "كل المغرب" },
   st_3: { fr: "heures max après visite (devis)", ar: "ساعات كحد أقصى بعد المعاينة (عرض السعر)" },
   st_4: { fr: "ans sur le terrain", ar: "سنوات في الميدان" },
   cta_t: { fr: "Un projet, une panne, une question de prix ?", ar: "مشروع، عطل، أو سؤال عن الثمن؟" },
@@ -270,8 +271,8 @@ export const T: Dict = {
   err_req: { fr: "Ce champ est obligatoire.", ar: "هذا الحقل إجباري." },
   err_mail: { fr: "Adresse e-mail invalide.", ar: "البريد الإلكتروني غير صحيح." },
   err_phone: {
-    fr: "Numéro marocain invalide (ex. 06 61 24 18 05 ou +212 6 61 24 18 05).",
-    ar: "رقم مغربي غير صحيح (مثال: 06 61 24 18 05 أو +212 6 61 24 18 05).",
+    fr: "Numéro marocain invalide (ex. 06 41 76 63 54 ou +212 6 41 76 63 54).",
+    ar: "رقم مغربي غير صحيح (مثال: 06 41 76 63 54 أو +212 6 41 76 63 54).",
   },
   err_form: { fr: "Corrigez les champs en rouge.", ar: "صححوا الحقول المظللة بالأحمر." },
 
@@ -361,7 +362,7 @@ export const T: Dict = {
   te_title: { fr: "Ce qu'ils en disent", ar: "آراء عملائنا" },
   te_lead: { fr: "Trois clients, trois chantiers terminés.", ar: "ثلاثة عملاء… وثلاثة مشاريع مكتملة." },
   te1: { fr: "Ils sont venus mesurer avant de me donner un prix. Le devis n'a pas bougé d'un dirham à la fin.", ar: "جاؤوا للقياس قبل إعطائي الثمن. لم يتغير عرض السعر ولو بدرهم في الأخير." },
-  te1_a: { fr: "Karim Belhaj — épicerie, Casablanca", ar: "كريم بلحاج — بقالة، الدار البيضاء" },
+  te1_a: { fr: "Karim Belhaj — épicerie, Marrakech", ar: "كريم بلحاج — بقالة، مراكش" },
   te2: { fr: "Trois caméras coupées un dimanche soir. Réparé le lundi à 10 h.", ar: "ثلاث كاميرات متوقفة مساء الأحد. تم الإصلاح الاثنين على العاشرة." },
   te2_a: { fr: "Rachid A. — café, Mohammedia", ar: "رشيد أ. — مقهى، المحمدية" },
   te3: { fr: "Le Wi-Fi ne passait pas dans la salle d'attente. Deux bornes, problème réglé.", ar: "الواي فاي لم يكن يصل قاعة الانتظار. نقطتان، وانتهى المشكل." },

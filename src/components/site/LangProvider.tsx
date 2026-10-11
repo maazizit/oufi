@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { Lang } from "@/lib/types";
 import { L, t } from "@/lib/data/i18n";
+import { localeFromPath, withLocale, stripLocalePrefix } from "@/lib/locale";
 
 type LangCtx = {
   lang: Lang;
@@ -24,7 +25,7 @@ const Ctx = createContext<LangCtx | null>(null);
 const KEY = "oufi-lang";
 
 function applyDom(lang: Lang) {
-  document.documentElement.lang = lang;
+  document.documentElement.lang = lang === "ar" ? "ar" : "fr";
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 }
 
@@ -34,12 +35,16 @@ function persist(lang: Lang) {
   } catch {
     /* ignore */
   }
+}
+
+function navigateLocale(lang: Lang) {
   try {
+    const path = stripLocalePrefix(window.location.pathname);
+    const next = withLocale(path, lang);
     const url = new URL(window.location.href);
-    if (url.searchParams.get("lang") !== lang) {
-      url.searchParams.set("lang", lang);
-      window.history.replaceState({}, "", url.toString());
-    }
+    url.pathname = next;
+    url.searchParams.delete("lang");
+    window.history.replaceState({}, "", url.toString());
   } catch {
     /* ignore */
   }
@@ -48,8 +53,13 @@ function persist(lang: Lang) {
 function readInitialLang(): Lang {
   if (typeof window === "undefined") return "fr";
   try {
+    const fromPath = localeFromPath(window.location.pathname);
+    if (window.location.pathname === "/ar" || window.location.pathname.startsWith("/ar/")) {
+      return "ar";
+    }
     const q = new URLSearchParams(window.location.search).get("lang");
     if (q === "ar" || q === "fr") return q;
+    if (fromPath === "ar") return "ar";
     const stored = localStorage.getItem(KEY);
     if (stored === "ar" || stored === "fr") return stored;
   } catch {
@@ -73,6 +83,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
     setLangState(next);
     persist(next);
     applyDom(next);
+    navigateLocale(next);
   }, []);
 
   const toggle = useCallback(() => {
@@ -80,6 +91,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
       const next: Lang = prev === "fr" ? "ar" : "fr";
       persist(next);
       applyDom(next);
+      navigateLocale(next);
       return next;
     });
   }, []);
