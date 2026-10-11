@@ -5,8 +5,13 @@ import Link from "next/link";
 import type { Product, Settings, TeamMember, Localized } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
 import { PILLARS } from "@/lib/data/constants";
+import { SITE } from "@/lib/site-config";
 import { Icon } from "@/components/ui/Icon";
+import { CameraWall } from "./CameraWall";
+import { FeesTable } from "./FeesTable";
 import { ProductCard } from "./ProductCard";
+import { SectionHeader } from "./SectionHeader";
+import { StatBand } from "./StatBand";
 import { useLang } from "./LangProvider";
 
 type Svc = {
@@ -41,68 +46,52 @@ export function HomeClient({
   services: Svc[];
 }) {
   const { lang, t, L } = useLang();
-  const city = settings.fees[0]?.[0] || "Marrakech";
-  const fee = settings.fees[0]?.[1] ?? 250;
   const boss = team.find((m) => m.role === "manager") || {
     name: settings.manager,
     role: "manager" as const,
     id: "t1",
   };
   const brandLoop = [...brands, ...brands];
-  const tel = settings.phone.replace(/\s/g, "");
+  const fees = (settings.fees?.length ? settings.fees : SITE.fees) as [string, number][];
 
   return (
     <>
-      <section className="hero-ap">
-        <div className="hero-ap-media" aria-hidden="true">
-          <Image
-            src="/brand/hero-install.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="hero-ap-img"
-          />
-          <div className="hero-ap-veil" />
-          <div className="hero-ap-grid" />
+      <section className="hero-cr">
+        <div className="hero-cr-wall">
+          <CameraWall />
         </div>
-        <div className="wrap hero-ap-in">
-          <div className="hero-ap-brand rise d1">
-            <p className="hero-ap-cis">{t("h_cis")}</p>
-            <p className="hero-ap-ar" dir="rtl" lang="ar">
-              {t("h_ar_line")}
-            </p>
-            <h1 className="hero-ap-title">{t("h_title")}</h1>
-          </div>
-          <p className="hero-ap-lead rise d2">{t("h_lead")}</p>
-          <p className="hero-ap-note rise d2">{t("h_callback")}</p>
-          <div className="cta rise d3">
+        <div className="hero-cr-veil" aria-hidden="true" />
+        <div className="wrap hero-cr-in">
+          <p className="hero-cr-live">
+            <span className="hero-cr-dot" />
+            LIVE · {SITE.hqCity.toUpperCase()}
+          </p>
+          <p className="hero-cr-brand">{t("h_brand")}</p>
+          <p className="hero-cr-cis">{t("h_cis")}</p>
+          <h1 className="hero-cr-title">{t("h_title")}</h1>
+          <p className="hero-cr-lead">{t("h_lead")}</p>
+          <p className="hero-cr-note">{t("h_callback")}</p>
+          <div className="cta hero-cr-cta">
             <Link href="/devis" className="btn btn-pri btn-lg">
               {t("h_cta1")} <Icon name="arrow" size={17} />
             </Link>
             <Link href="/catalogue" className="btn btn-ghost btn-lg">
               {t("h_cta2")}
             </Link>
-            <a href={`tel:${tel}`} className="btn btn-ghost btn-lg">
-              <Icon name="phone" size={16} /> {settings.phone}
+            <a href={SITE.telHref} className="btn btn-ghost btn-lg" dir="ltr">
+              <Icon name="phone" size={16} /> {SITE.phoneDisplay}
             </a>
           </div>
         </div>
       </section>
 
+      <StatBand />
+
       <section className="sec wrap pillars-sec">
-        <div className="sec-h rev">
-          <h2>{t("pill_title")}</h2>
-          <p className="ink2">{t("pill_lead")}</p>
-        </div>
+        <SectionHeader title={t("pill_title")} lead={t("pill_lead")} />
         <div className="pillars">
-          {PILLARS.map((p, i) => (
-            <Link
-              key={p.id}
-              href={p.href}
-              className={`pillar rev r${i + 1}`}
-              data-pill={p.id}
-            >
+          {PILLARS.map((p) => (
+            <Link key={p.id} href={p.href} className="pillar" data-pill={p.id}>
               <span className="pillar-ic">
                 <Icon name={p.ic} size={22} />
               </span>
@@ -118,26 +107,28 @@ export function HomeClient({
       </section>
 
       <section className="sec wrap">
-        <div className="sec-h rev">
-          <h2>{t("s_title")}</h2>
-          <p className="ink2">{t("s_lead")}</p>
-        </div>
-        <div className="svc">
-          {services.map((s, i) => (
-            <div key={s.id} className={`svc-row rev r${(i % 4) + 1}`}>
-              <span className="ic">
-                <Icon name={s.ic} size={20} />
-              </span>
-              <h3>{t(s.k)}</h3>
+        <SectionHeader title={t("s_title")} lead={t("s_lead")} />
+        <div className="trades">
+          {services.map((s) => (
+            <article key={s.id} className="trade">
+              <header className="trade-h">
+                <span className="trade-ic">
+                  <Icon name={s.ic} size={20} />
+                </span>
+                <h3>{t(s.k)}</h3>
+              </header>
               <ul>
                 {s.li.map((k) => (
                   <li key={k}>{t(k)}</li>
                 ))}
               </ul>
-              <div className="from">
-                {t("s_from")} <b className="num">{money(lang, s.from)}</b>
+              <div className="trade-from">
+                {t("s_from")}{" "}
+                <b className="num" dir="ltr">
+                  {money(lang, s.from)}
+                </b>
               </div>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <div className="trade-actions">
                 <Link
                   href={`/services#${SVC_ANCHORS[s.id] || s.id}`}
                   className="btn btn-sm btn-out"
@@ -148,66 +139,54 @@ export function HomeClient({
                   {t("s_quote")}
                 </Link>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
       <section className="sec wrap">
-        <div className="sec-h rev">
-          <h2>{t("p_title")}</h2>
-          <p className="ink2">{t("p_lead")}</p>
-        </div>
+        <SectionHeader title={t("p_title")} lead={t("p_lead")} />
         <div className="steps">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className={`step rev r${n}`}>
-              <span className="n">{n}</span>
+            <div key={n} className="step">
+              <span className="n mono">{String(n).padStart(2, "0")}</span>
               <h3>{t(`p${n}_t`)}</h3>
               <p>{t(`p${n}_d`)}</p>
             </div>
           ))}
         </div>
-        <div className="feebar rise" style={{ marginTop: 22 }}>
-          <Icon name="pin" size={18} />
-          <span
-            dangerouslySetInnerHTML={{
-              __html: t("h_fee", {
-                fee: `<b>${money(lang, fee)}</b>`,
-                city,
-              }),
-            }}
-          />
+        <div className="fees-block">
+          <h3 className="fees-block-t">{t("s_fees_t")}</h3>
+          <p className="ink2 sm" style={{ marginBottom: 14 }}>
+            {t("s_fees_d")}
+          </p>
+          <FeesTable fees={fees} />
         </div>
       </section>
 
       <section className="sec catalog-band">
         <div className="wrap">
-          <div className="sec-h rev sec-h-row">
-            <div>
-              <h2>{t("f_title")}</h2>
-              <p className="ink2">{t("f_lead")}</p>
-            </div>
-            <Link href="/catalogue" className="btn btn-out">
-              {t("f_all")} <Icon name="chev" size={16} />
-            </Link>
-          </div>
+          <SectionHeader
+            title={t("f_title")}
+            lead={t("f_lead")}
+            action={
+              <Link href="/catalogue" className="btn btn-out">
+                {t("f_all")} <Icon name="chev" size={16} />
+              </Link>
+            }
+          />
           <div className="pgrid">
             {featured.map((p) => (
-              <div key={p.id} className="rev">
-                <ProductCard product={p} />
-              </div>
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </div>
       </section>
 
       <section id="about" className="sec wrap" style={{ scrollMarginTop: 88 }}>
-        <div className="sec-h rev">
-          <p className="eyebrow">{t("ab_eye")}</p>
-          <h2>{t("ab_title")}</h2>
-        </div>
+        <SectionHeader eyebrow={t("ab_eye")} title={t("ab_title")} />
         <div className="about-g">
-          <div className="rev">
+          <div>
             <p className="ink2" style={{ marginBottom: 12 }}>
               {t("ab_p1", { company: settings.company })}
             </p>
@@ -226,7 +205,7 @@ export function HomeClient({
               </div>
             </div>
           </div>
-          <div className="vals rev r2">
+          <div className="vals">
             {[1, 2, 3].map((n) => (
               <div key={n} className="val">
                 <b>{t(`ab_v${n}_t`)}</b>
@@ -237,30 +216,11 @@ export function HomeClient({
         </div>
       </section>
 
-      <section className="sec brands-band">
-        <div className="wrap">
-          <p className="eyebrow rev" style={{ textAlign: "center", marginBottom: 14 }}>
-            {t("br_title")}
-          </p>
-          <div className="marq rev">
-            <div className="marq-t">
-              {brandLoop.map((b, i) => (
-                <span key={b + i}>{b}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="sec wrap">
-        <div className="sec-h rev">
-          <h2>{t("te_title")}</h2>
-          <p className="ink2">{t("te_lead")}</p>
-        </div>
+        <SectionHeader title={t("te_title")} lead={t("te_lead")} />
         <div className="quotes">
           {[1, 2, 3].map((n) => (
-            <blockquote key={n} className={`quote rev r${n}`}>
-              <span className="qm">“</span>
+            <blockquote key={n} className="quote">
               <p>{t(`te${n}`)}</p>
               <div className="who2">{t(`te${n}_a`)}</div>
             </blockquote>
@@ -268,55 +228,43 @@ export function HomeClient({
         </div>
       </section>
 
-      <section className="sec wrap">
-        <div className="sec-h rev">
-          <h2>{t("sect_title")}</h2>
-          <p className="ink2">{t("sect_lead")}</p>
-        </div>
-        <div className="frow rev" style={{ marginBottom: 28 }}>
-          {sectors.map((s) => (
-            <span key={s.fr} className="chip" style={{ cursor: "default" }}>
-              {L(s)}
-            </span>
-          ))}
-        </div>
-        <div className="stat rev">
-          <div>
-            <span className="v num">
-              <span data-count="180">180</span>+
-            </span>
-            <span className="l">{t("st_1")}</span>
+      <section className="sec brands-band">
+        <div className="wrap">
+          <p className="eyebrow" style={{ textAlign: "center", marginBottom: 14 }}>
+            {t("br_title")}
+          </p>
+          <div className="marq">
+            <div className="marq-t">
+              {brandLoop.map((b, i) => (
+                <span key={b + i}>{b}</span>
+              ))}
+            </div>
           </div>
-          <div>
-            <span className="v num" style={{ fontSize: "1.15rem" }}>
-              {t("st_2_val")}
-            </span>
-            <span className="l">{t("st_2")}</span>
-          </div>
-          <div>
-            <span className="v num">
-              <span data-count="48">48</span> h
-            </span>
-            <span className="l">{t("st_3")}</span>
-          </div>
-          <div>
-            <span className="v num">
-              <span data-count="12">12</span>
-            </span>
-            <span className="l">{t("st_4")}</span>
+          <div className="frow" style={{ marginTop: 28, justifyContent: "center" }}>
+            {sectors.map((s) => (
+              <span key={s.fr} className="chip" style={{ cursor: "default" }}>
+                {L(s)}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="sec wrap">
-        <div className="cta-band rev">
+      <section className="cta-final">
+        <div className="wrap cta-final-in">
           <div>
+            <p className="cta-final-k mono">C.I.S · {SITE.hqCity.toUpperCase()}</p>
             <h2>{t("cta_t")}</h2>
             <p>{t("cta_d")}</p>
           </div>
-          <Link href="/devis" className="btn btn-pri btn-lg">
-            {t("h_cta1")}
-          </Link>
+          <div className="cta-final-actions">
+            <Link href="/devis" className="btn btn-pri btn-lg">
+              {t("h_cta1")}
+            </Link>
+            <a href={SITE.waHref} className="btn btn-ghost btn-lg" target="_blank" rel="noopener noreferrer">
+              <Icon name="wa" size={17} /> WhatsApp
+            </a>
+          </div>
         </div>
       </section>
     </>
