@@ -22,7 +22,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   return (
     <>
       <section className="page-band page-band-sm">
-        <div className="wrap page-band-in">
+        <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
             C.I.S · CATALOGUE · {product.ref}
           </p>
@@ -40,7 +40,12 @@ export function ProductDetailClient({ product }: { product: Product }) {
         <div className="prod-detail">
           <div className="art prod-detail-art">
             <span className="prod-detail-code mono">{product.cat.toUpperCase()}</span>
-            <ProductArt cat={product.cat} size={180} />
+            {product.img ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={product.img} alt={L(product.name)} className="prod-detail-photo" />
+            ) : (
+              <ProductArt cat={product.cat} size={180} />
+            )}
           </div>
           <div className="prod-detail-body">
             <p className="eyebrow mono">{product.brand}</p>

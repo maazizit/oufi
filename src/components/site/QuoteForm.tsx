@@ -191,7 +191,7 @@ export function QuoteForm({
     <>
       {mode === "form" ? (
         <section className="page-band">
-          <div className="wrap page-band-in">
+          <div className="wrap page-band-in rise">
             <p className="page-band-k mono">
               C.I.S · {SITE.hqCity.toUpperCase()} · DEVIS
             </p>

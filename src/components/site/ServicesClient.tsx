@@ -21,7 +21,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
   return (
     <>
       <section className="page-band">
-        <div className="wrap page-band-in">
+        <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
             C.I.S · {SITE.hqCity.toUpperCase()} · SERVICES
           </p>
@@ -45,8 +45,13 @@ export function ServicesClient({ settings }: { settings: Settings }) {
           lead={t("pill_lead")}
         />
         <div className="pillars">
-          {PILLARS.map((p) => (
-            <Link key={p.id} href={p.href} className="pillar" data-pill={p.id}>
+          {PILLARS.map((p, i) => (
+            <Link
+              key={p.id}
+              href={p.href}
+              className={`pillar rev r${(i % 4) + 1}`}
+              data-pill={p.id}
+            >
               <span className="pillar-ic">
                 <Icon name={p.ic} size={22} />
               </span>
@@ -76,7 +81,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
         </nav>
 
         {SERVICE_DETAILS.map((s, i) => (
-          <article key={s.id} id={s.anchor} className="svc-detail">
+          <article key={s.id} id={s.anchor} className="svc-detail rev">
             <header>
               <span className="ic">
                 <Icon name={s.ic} size={22} />

@@ -72,7 +72,7 @@ export function TrackClient() {
   return (
     <>
       <section className="page-band">
-        <div className="wrap page-band-in">
+        <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
             C.I.S · {SITE.hqCity.toUpperCase()} · SUIVI
           </p>

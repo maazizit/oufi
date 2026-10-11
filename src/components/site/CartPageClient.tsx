@@ -18,7 +18,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
     return (
       <>
         <section className="page-band page-band-sm">
-          <div className="wrap page-band-in">
+          <div className="wrap page-band-in rise">
             <p className="page-band-k mono">
               C.I.S · {SITE.hqCity.toUpperCase()} · PANIER
             </p>
@@ -41,7 +41,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
   return (
     <>
       <section className="page-band page-band-sm">
-        <div className="wrap page-band-in">
+        <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
             C.I.S · {SITE.hqCity.toUpperCase()} · PANIER
           </p>

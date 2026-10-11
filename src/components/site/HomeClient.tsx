@@ -62,16 +62,16 @@ export function HomeClient({
         </div>
         <div className="hero-cr-veil" aria-hidden="true" />
         <div className="wrap hero-cr-in">
-          <p className="hero-cr-live">
+          <p className="hero-cr-live rise">
             <span className="hero-cr-dot" />
             LIVE · {SITE.hqCity.toUpperCase()}
           </p>
-          <p className="hero-cr-brand">{t("h_brand")}</p>
-          <p className="hero-cr-cis">{t("h_cis")}</p>
-          <h1 className="hero-cr-title">{t("h_title")}</h1>
-          <p className="hero-cr-lead">{t("h_lead")}</p>
-          <p className="hero-cr-note">{t("h_callback")}</p>
-          <div className="cta hero-cr-cta">
+          <p className="hero-cr-brand rise d1">{t("h_brand")}</p>
+          <p className="hero-cr-cis rise d1">{t("h_cis")}</p>
+          <h1 className="hero-cr-title rise d2">{t("h_title")}</h1>
+          <p className="hero-cr-lead rise d3">{t("h_lead")}</p>
+          <p className="hero-cr-note rise d3">{t("h_callback")}</p>
+          <div className="cta hero-cr-cta rise d4">
             <Link href="/devis" className="btn btn-pri btn-lg">
               {t("h_cta1")} <Icon name="arrow" size={17} />
             </Link>
@@ -90,8 +90,13 @@ export function HomeClient({
       <section className="sec wrap pillars-sec">
         <SectionHeader title={t("pill_title")} lead={t("pill_lead")} />
         <div className="pillars">
-          {PILLARS.map((p) => (
-            <Link key={p.id} href={p.href} className="pillar" data-pill={p.id}>
+          {PILLARS.map((p, i) => (
+            <Link
+              key={p.id}
+              href={p.href}
+              className={`pillar rev r${(i % 4) + 1}`}
+              data-pill={p.id}
+            >
               <span className="pillar-ic">
                 <Icon name={p.ic} size={22} />
               </span>
@@ -109,8 +114,8 @@ export function HomeClient({
       <section className="sec wrap">
         <SectionHeader title={t("s_title")} lead={t("s_lead")} />
         <div className="trades">
-          {services.map((s) => (
-            <article key={s.id} className="trade">
+          {services.map((s, i) => (
+            <article key={s.id} className={`trade rev r${(i % 4) + 1}`}>
               <header className="trade-h">
                 <span className="trade-ic">
                   <Icon name={s.ic} size={20} />
@@ -147,8 +152,8 @@ export function HomeClient({
       <section className="sec wrap">
         <SectionHeader title={t("p_title")} lead={t("p_lead")} />
         <div className="steps">
-          {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="step">
+          {[1, 2, 3, 4].map((n, i) => (
+            <div key={n} className={`step rev r${(i % 4) + 1}`}>
               <span className="n mono">{String(n).padStart(2, "0")}</span>
               <h3>{t(`p${n}_t`)}</h3>
               <p>{t(`p${n}_d`)}</p>
@@ -176,8 +181,10 @@ export function HomeClient({
             }
           />
           <div className="pgrid">
-            {featured.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {featured.map((p, i) => (
+              <div key={p.id} className={`rev r${(i % 4) + 1}`}>
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         </div>
@@ -185,7 +192,7 @@ export function HomeClient({
 
       <section id="about" className="sec wrap" style={{ scrollMarginTop: 88 }}>
         <SectionHeader eyebrow={t("ab_eye")} title={t("ab_title")} />
-        <div className="about-g">
+        <div className="about-g rev">
           <div>
             <p className="ink2" style={{ marginBottom: 12 }}>
               {t("ab_p1", { company: settings.company })}
@@ -219,8 +226,8 @@ export function HomeClient({
       <section className="sec wrap">
         <SectionHeader title={t("te_title")} lead={t("te_lead")} />
         <div className="quotes">
-          {[1, 2, 3].map((n) => (
-            <blockquote key={n} className="quote">
+          {[1, 2, 3].map((n, i) => (
+            <blockquote key={n} className={`quote rev r${(i % 4) + 1}`}>
               <p>{t(`te${n}`)}</p>
               <div className="who2">{t(`te${n}_a`)}</div>
             </blockquote>

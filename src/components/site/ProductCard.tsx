@@ -20,7 +20,12 @@ export function ProductCard({ product }: { product: Product }) {
     <article className="pcard">
       <Link href={href} className="art" aria-label={L(product.name)}>
         <span className="pcard-ref mono">{product.ref}</span>
-        <ProductArt cat={product.cat} size={96} />
+        {product.img ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={product.img} alt={L(product.name)} className="pcard-photo" loading="lazy" />
+        ) : (
+          <ProductArt cat={product.cat} size={96} />
+        )}
       </Link>
       <div className="bd">
         <span className="br mono">{product.brand}</span>

@@ -67,7 +67,7 @@ export function CatalogueClient({
   return (
     <>
       <section className="page-band">
-        <div className="wrap page-band-in">
+        <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
             C.I.S · {SITE.hqCity.toUpperCase()} · CATALOGUE
           </p>
@@ -197,8 +197,10 @@ export function CatalogueClient({
               <p className="muted">{t("none_found")}</p>
             ) : (
               <div className="pgrid">
-                {list.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                {list.map((p, i) => (
+                  <div key={p.id} className={`rev r${(i % 4) + 1}`}>
+                    <ProductCard product={p} />
+                  </div>
                 ))}
               </div>
             )}
