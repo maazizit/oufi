@@ -10,6 +10,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    // HTTPS + cert Let's Encrypt OK on amanplanet.com (2026-10-11)
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // Anciennes ancres services → pages SEO

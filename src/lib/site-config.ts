@@ -93,8 +93,10 @@ export const SITE = {
   mailHref: "mailto:amanplanet@gmail.com",
 } as const;
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://amanplanet.com";
+/** Always HTTPS — never emit http:// canonicals / OG. */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://amanplanet.com"
+).replace(/^http:\/\//i, "https://");
 
 /** Témoignages affichés — à confirmer par le client (pas d’AggregateRating). */
 export const TESTIMONIALS_NEED_USER_CONFIRMATION = true as const;
