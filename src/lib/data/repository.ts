@@ -3,6 +3,7 @@ import {
   createServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase/server";
+import { SITE } from "@/lib/site-config";
 import type {
   CartItem,
   ContactChannel,
@@ -128,23 +129,24 @@ export async function getSettings(): Promise<Settings> {
 
   if (!s) return demo.demoGetSettings();
 
+  // NAP canonique (site-config) prioritaire tant que le seed DB n’est pas resynchronisé
   return {
-    company: s.company,
-    tagline: { fr: s.tagline_fr, ar: s.tagline_ar },
-    phone: s.phone,
-    whatsapp: s.whatsapp,
-    email: s.email,
-    address: { fr: s.address_fr, ar: s.address_ar },
-    hours: { fr: s.hours_fr, ar: s.hours_ar },
-    sla: s.sla,
+    company: SITE.name,
+    tagline: { ...SITE.tagline },
+    phone: SITE.phoneDisplay,
+    whatsapp: SITE.whatsappDisplay,
+    email: SITE.email,
+    address: { ...SITE.address },
+    hours: { fr: s.hours_fr || SITE.hours.fr, ar: s.hours_ar || SITE.hours.ar },
+    sla: s.sla ?? SITE.slaHours,
     channels: s.channels,
-    fees: s.fees as [string, number][],
-    manager: s.manager,
+    fees: (SITE.fees as [string, number][]) || (s.fees as [string, number][]),
+    manager: SITE.manager,
     team: (team || []).map((m) => ({
       id: m.id,
       name: m.name,
       role: m.role,
-      phone: m.phone,
+      phone: m.id === "t1" ? SITE.phoneDisplay : m.phone,
       active: m.active,
     })),
   };

@@ -1,4 +1,5 @@
 import { pageMeta } from "@/lib/seo";
+import { SITE } from "@/lib/site-config";
 
 export const metadata = pageMeta({
   title: "Conditions générales — devis et services",
@@ -45,8 +46,8 @@ export default function TermsPage() {
       </p>
       <h2>7. Contact</h2>
       <p>
-        <a href="tel:+212661241805">+212 6 61 24 18 05</a> ·{" "}
-        <a href="mailto:contact@amanplanet.ma">contact@amanplanet.ma</a>
+        <a href={SITE.telHref}>{SITE.phoneDisplay}</a> ·{" "}
+        <a href={SITE.mailHref}>{SITE.email}</a> — Marrakech / tout le Maroc
       </p>
     </section>
   );

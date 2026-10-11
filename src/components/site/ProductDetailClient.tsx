@@ -3,6 +3,7 @@
 import type { Product } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
 import { specLabel, stockLabel } from "@/lib/utils";
+import { productCopy } from "@/lib/seo/product-copy";
 import { Icon, ProductArt } from "@/components/ui/Icon";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
@@ -14,6 +15,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const { add } = useCart();
   const { show } = useToast();
   const stock = stockLabel(lang, product);
+  const copy = productCopy(product.id, L(product.name), product.brand);
 
   return (
     <div className="prod-detail">
@@ -22,7 +24,9 @@ export function ProductDetailClient({ product }: { product: Product }) {
       </div>
       <div>
         <p className="eyebrow">{product.brand}</p>
-        <h1 style={{ marginTop: 6 }}>{L(product.name)}</h1>
+        <h1 style={{ marginTop: 6 }}>
+          {product.brand} {L(product.name)}
+        </h1>
         <p className="mono sm muted" style={{ marginTop: 6 }}>
           {t("ref")} {product.ref}
         </p>
@@ -33,6 +37,10 @@ export function ProductDetailClient({ product }: { product: Product }) {
           {money(lang, product.price)}
         </p>
         <p className="sm muted">{t("indicative")}</p>
+        <p style={{ marginTop: 14, lineHeight: 1.65 }}>{copy[lang] || copy.fr}</p>
+        <p className="sm muted" style={{ marginTop: 8 }}>
+          Livraison / installation au Maroc — devis pose après visite.
+        </p>
         <h2 style={{ fontSize: 16, marginTop: 22 }}>{t("specs")}</h2>
         <ul className="spec-list">
           {product.specs.map(([k, v]) => (

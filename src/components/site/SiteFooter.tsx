@@ -45,11 +45,17 @@ export function SiteFooter({ settings }: { settings: Settings }) {
           <Link className="li" href="/catalogue">
             {t("pill_shop_t")}
           </Link>
-          <Link className="li" href="/services#videosurveillance">
+          <Link className="li" href="/installation-camera-surveillance">
             {t("s_cam_t")}
           </Link>
-          <Link className="li" href="/services#reseau">
+          <Link className="li" href="/reseau-informatique">
             {t("s_net_t")}
+          </Link>
+          <Link className="li" href="/zones-d-intervention">
+            Zones
+          </Link>
+          <Link className="li" href="/blog">
+            Blog
           </Link>
           <Link className="li" href="/devis?type=maint">
             {t("pill_maint_t")}

@@ -5,9 +5,9 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
-  title: "Catalogue — caméras, routeurs, alarmes",
+  title: "Catalogue caméras & réseau — Marrakech & Maroc",
   description:
-    "Catalogue AMANPLANET : caméras, enregistreurs, routeurs, contrôle d’accès, domotique et alarmes. Prix indicatifs TTC, sélection pour devis sans paiement en ligne.",
+    "Achetez caméras Hikvision/Dahua, NVR, routeurs et pointeuses. Prix TTC indicatifs, pose AMANPLANET dans tout le Maroc. Devis sans paiement en ligne.",
   path: "/catalogue",
 });
 

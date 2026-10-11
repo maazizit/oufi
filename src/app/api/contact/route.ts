@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       type: "fix",
       svc: "other",
       name: String(body.name),
-      city: "Casablanca",
+      city: "Marrakech",
       chan: isMail ? "mail" : "phone",
       phone: isMail ? "" : String(body.contact),
       email: isMail ? String(body.contact) : "",

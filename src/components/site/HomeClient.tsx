@@ -41,8 +41,8 @@ export function HomeClient({
   services: Svc[];
 }) {
   const { lang, t, L } = useLang();
-  const city = settings.fees[0]?.[0] || "Casablanca";
-  const fee = settings.fees[0]?.[1] ?? 200;
+  const city = settings.fees[0]?.[0] || "Marrakech";
+  const fee = settings.fees[0]?.[1] ?? 250;
   const boss = team.find((m) => m.role === "manager") || {
     name: settings.manager,
     role: "manager" as const,
@@ -288,8 +288,8 @@ export function HomeClient({
             <span className="l">{t("st_1")}</span>
           </div>
           <div>
-            <span className="v num">
-              <span data-count="7">7</span>
+            <span className="v num" style={{ fontSize: "1.15rem" }}>
+              {t("st_2_val")}
             </span>
             <span className="l">{t("st_2")}</span>
           </div>

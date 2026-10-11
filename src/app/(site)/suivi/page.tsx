@@ -7,6 +7,7 @@ export const metadata = pageMeta({
   description:
     "Suivez votre demande AMANPLANET avec la référence AMP-AAAA-NNNN ou votre numéro de téléphone. États : reçu, visite, devis, installation, terminé.",
   path: "/suivi",
+  noIndex: true,
 });
 
 export default function SuiviPage() {

@@ -1,34 +1,34 @@
 import { pageMeta } from "@/lib/seo";
+import { SITE } from "@/lib/site-config";
 
 export const metadata = pageMeta({
   title: "Mentions légales",
-  description: "Mentions légales du site AMANPLANET (C.I.S.).",
+  description: "Mentions légales du site AMANPLANET.",
   path: "/mentions-legales",
 });
 
 export default function MentionsPage() {
   return (
-    <section className="sec wrap legal">
+    <section className="sec wrap" style={{ maxWidth: 720 }}>
       <h1>Mentions légales</h1>
-      <p className="ink2">Dernière mise à jour : septembre 2026.</p>
-      <h2>Éditeur</h2>
-      <p>
-        AMANPLANET — Conseil • Installation • Suivi<br />
-        14, rue Ibn Battouta — Quartier Belvédère, Casablanca, Maroc<br />
-        Tél. : <a href="tel:+212661241805">+212 6 61 24 18 05</a><br />
-        E-mail : <a href="mailto:contact@amanplanet.ma">contact@amanplanet.ma</a>
+      <p style={{ marginTop: 16, lineHeight: 1.65 }}>
+        <strong>{SITE.legalName}</strong>
+        <br />
+        {SITE.cis}
+        <br />
+        {SITE.address.fr}
+        <br />
+        Tél. : <a href={SITE.telHref}>{SITE.phoneDisplay}</a>
+        <br />
+        E-mail : <a href={SITE.mailHref}>{SITE.email}</a>
       </p>
-      <h2>Hébergement</h2>
-      <p>Site hébergé par Vercel Inc. Les contenus et données de contact sont gérés par AMANPLANET.</p>
-      <h2>Propriété intellectuelle</h2>
-      <p>
-        Marques, textes, logos et éléments graphiques du site sont protégés. Toute reproduction non
-        autorisée est interdite.
+      <p className="sm muted" style={{ marginTop: 16 }}>
+        L’adresse complète Marrakech ({SITE.addressPlaceholder}) sera finalisée dès
+        validation client. Zone d’intervention : {SITE.zone.fr}.
       </p>
-      <h2>Responsabilité</h2>
-      <p>
-        Les prix catalogue sont indicatifs et hors pose. Les devis définitifs sont établis après état
-        des lieux. AMANPLANET s’efforce d’assurer l’exactitude des informations publiées.
+      <p style={{ marginTop: 16, lineHeight: 1.65 }}>
+        Le site présente des prix indicatifs hors pose. Aucun paiement en ligne
+        n’est collecté via ce site.
       </p>
     </section>
   );

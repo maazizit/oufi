@@ -1,4 +1,5 @@
 import type { Localized, Product, ProductCategory } from "../types";
+import { SITE } from "@/lib/site-config";
 
 export const CATS: { id: ProductCategory; fr: string; ar: string }[] = [
   { id: "cam", fr: "Caméras de surveillance", ar: "كاميرات المراقبة" },
@@ -147,6 +148,8 @@ export const SECTORS: Localized[] = [
   { fr: "Dépôts & ateliers", ar: "المستودعات والورش" },
   { fr: "Écoles privées", ar: "المدارس الخاصة" },
   { fr: "Syndics de résidence", ar: "إدارات الإقامات السكنية" },
+  { fr: "Villas & riads", ar: "الفيلات والرياضات" },
+  { fr: "Hôtels", ar: "الفنادق" },
 ];
 
 export function P(
@@ -198,36 +201,20 @@ export const SEED_PRODUCTS: Product[] = [
 ];
 
 export const SEED_SETTINGS = {
-  company: "AMANPLANET",
-  tagline: {
-    fr: "Conseil • Installation • Suivi",
-    ar: "معك من الاختيار إلى التركيب والمتابعة",
-  },
-  phone: "+212 6 61 24 18 05",
-  whatsapp: "+212 6 61 24 18 05",
-  email: "contact@amanplanet.ma",
-  address: {
-    fr: "14, rue Ibn Battouta — Quartier Belvédère, Casablanca",
-    ar: "14، زنقة ابن بطوطة — حي بلفيدير، الدار البيضاء",
-  },
-  hours: {
-    fr: "Lundi – vendredi : 9 h – 18 h 30 · Samedi : 9 h – 13 h",
-    ar: "الاثنين – الجمعة: 9:00 – 18:30 · السبت: 9:00 – 13:00",
-  },
-  sla: 24,
+  company: SITE.name,
+  tagline: { ...SITE.tagline },
+  phone: SITE.phoneDisplay,
+  whatsapp: SITE.whatsappDisplay,
+  email: SITE.email,
+  address: { ...SITE.address },
+  hours: { ...SITE.hours },
+  sla: SITE.slaHours,
   channels: { phone: true, wa: true, mail: true },
-  fees: [
-    ["Casablanca", 200],
-    ["Mohammedia", 250],
-    ["Bouskoura", 250],
-    ["Rabat", 350],
-    ["Marrakech", 500],
-    ["Tanger", 600],
-    ["Agadir", 700],
-  ] as [string, number][],
-  manager: "Karim Aman",
+  /** VALIDATION PRIX REQUISE — voir SITE.FEE_NEEDS_USER_VALIDATION */
+  fees: SITE.fees.map(([c, f]) => [c, f] as [string, number]),
+  manager: SITE.manager,
   team: [
-    { id: "t1", name: "Karim Aman", role: "manager" as const, phone: "+212 6 61 24 18 05", active: true },
+    { id: "t1", name: SITE.manager, role: "manager" as const, phone: SITE.phoneDisplay, active: true },
     { id: "t2", name: "Youssef Bennani", role: "tech" as const, phone: "06 61 55 20 14", active: true },
     { id: "t3", name: "Hamza Tazi", role: "tech" as const, phone: "06 62 18 74 03", active: true },
     { id: "t4", name: "Salma Rachidi", role: "tech" as const, phone: "06 70 41 09 88", active: true },
