@@ -8,7 +8,12 @@ export const T: Dict = {
   nav_services: { fr: "Services", ar: "الخدمات" },
   nav_products: { fr: "Produits", ar: "المنتجات" },
   nav_quote: { fr: "Devis", ar: "طلب عرض سعر" },
+  nav_quote_free: { fr: "Devis gratuit", ar: "عرض سعر مجاني" },
   nav_track: { fr: "Suivi", ar: "تتبع الطلب" },
+  theme_dark: { fr: "Passer en mode sombre", ar: "التبديل إلى الوضع الداكن" },
+  theme_light: { fr: "Passer en mode clair", ar: "التبديل إلى الوضع الفاتح" },
+  menu_open: { fr: "Ouvrir le menu", ar: "فتح القائمة" },
+  menu_close: { fr: "Fermer le menu", ar: "إغلاق القائمة" },
   nav_contact: { fr: "Contact", ar: "اتصل بنا" },
   nav_cart: { fr: "Panier", ar: "السلة" },
 
