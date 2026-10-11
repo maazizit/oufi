@@ -13,12 +13,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!session) {
     if (isSupabaseConfigured()) {
       const supabase = await createClient();
-      const {
-        data: { user },
-      } = await supabase ? await supabase.auth.getUser() : { data: { user: null } };
-      if (user) {
-        await supabase?.auth.signOut();
-        redirect("/admin/login?err=access");
+      if (supabase) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.auth.signOut();
+          redirect("/admin/login?err=access");
+        }
       }
     }
     redirect("/admin/login");
