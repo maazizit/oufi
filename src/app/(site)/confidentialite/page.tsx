@@ -1,5 +1,5 @@
 import { pageMeta } from "@/lib/seo";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
   title: "Politique de confidentialité",

@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import type { Settings } from "@/lib/types";
-import { money } from "@/lib/data/i18n";
+import { Money } from "./Money";
 import { PILLARS } from "@/lib/data/constants";
 import { SERVICE_DETAILS } from "@/lib/data/services-content";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { Icon } from "@/components/ui/Icon";
 import { FeesTable } from "./FeesTable";
 import { SectionHeader } from "./SectionHeader";
 import { useLang } from "./LangProvider";
 
 export function ServicesClient({ settings }: { settings: Settings }) {
-  const { lang, t, L } = useLang();
+  const { lang, t, tb, L } = useLang();
   const fees = (settings.fees?.length ? settings.fees : SITE.fees) as [
     string,
     number,
@@ -42,7 +42,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
         <SectionHeader
           eyebrow="C.I.S."
           title={t("pill_title")}
-          lead={t("pill_lead")}
+          lead={tb("pill_lead")}
         />
         <div className="pillars">
           {PILLARS.map((p, i) => (
@@ -93,8 +93,8 @@ export function ServicesClient({ settings }: { settings: Settings }) {
                 <h2>{t(s.k)}</h2>
                 <p className="muted sm">
                   {t("s_from")}{" "}
-                  <b className="num" dir="ltr">
-                    {money(lang, s.from)}
+                  <b>
+                    <Money amount={s.from} />
                   </b>
                 </p>
               </div>
@@ -104,7 +104,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
                 <h3>{t("s_included")}</h3>
                 <ul>
                   {s.included.map((k) => (
-                    <li key={k}>{t(k)}</li>
+                    <li key={k}>{tb(k)}</li>
                   ))}
                 </ul>
               </div>
@@ -153,7 +153,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
               C.I.S · {SITE.hqCity.toUpperCase()}
             </p>
             <h2>{t("cta_t")}</h2>
-            <p>{t("cta_d")}</p>
+            <p>{tb("cta_d")}</p>
           </div>
           <div className="cta-final-actions">
             <Link href="/devis" className="btn btn-pri btn-lg">

@@ -1,5 +1,5 @@
 import { pageMeta } from "@/lib/seo";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
   title: "Conditions générales — devis et services",
@@ -41,8 +41,9 @@ export default function TermsPage() {
         </p>
         <h2>5. Installation et garantie</h2>
         <p>
-          Sauf mention contraire, la pose est garantie 12 mois pièces et main-d’œuvre pour les
-          installations réalisées par nos techniciens. Le matériel reste la propriété du client ;
+          Sauf mention contraire, la pose et la main-d’œuvre sont garanties 12 mois pour les
+          installations réalisées par nos techniciens. La garantie fabricant du matériel est
+          distincte et indiquée sur chaque fiche produit. Le matériel reste la propriété du client ;
           identifiants et configurations lui sont remis.
         </p>
         <h2>6. Maintenance</h2>

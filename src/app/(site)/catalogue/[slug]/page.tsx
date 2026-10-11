@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProducts } from "@/lib/data/repository";
+import { relatedProducts } from "@/lib/related-products";
 import { productJsonLd, productSlug, pageMeta } from "@/lib/seo";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ProductDetailClient } from "@/components/site/ProductDetailClient";
@@ -34,11 +35,12 @@ export default async function ProductPage({
   const products = await getProducts(true);
   const product = products.find((p) => productSlug(p) === slug);
   if (!product) notFound();
+  const related = relatedProducts(product, products, 3);
 
   return (
     <>
       <JsonLd data={productJsonLd(product)} />
-      <ProductDetailClient product={product} />
+      <ProductDetailClient product={product} related={related} />
     </>
   );
 }

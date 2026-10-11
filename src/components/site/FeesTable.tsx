@@ -1,7 +1,7 @@
 "use client";
 
-import { money } from "@/lib/data/i18n";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
+import { Money } from "./Money";
 import { useLang } from "./LangProvider";
 
 export function FeesTable({
@@ -9,7 +9,7 @@ export function FeesTable({
 }: {
   fees?: readonly [string, number][];
 }) {
-  const { lang, t } = useLang();
+  const { t } = useLang();
   const rows = fees?.length ? fees : SITE.fees;
 
   return (
@@ -25,8 +25,8 @@ export function FeesTable({
           {rows.map(([city, fee]) => (
             <tr key={city}>
               <td>{city}</td>
-              <td className="num" dir="ltr">
-                {money(lang, fee)}
+              <td>
+                <Money amount={fee} />
               </td>
             </tr>
           ))}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export function SeoCta() {
   return (

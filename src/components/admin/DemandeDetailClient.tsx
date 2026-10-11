@@ -39,7 +39,7 @@ const labels: Record<string, string> = {
   sl_pm: "Après-midi",
   sl_any: "Peu importe",
   src_form: "Formulaire",
-  src_cart: "Panier",
+  src_cart: "Demande de devis",
   src_contact: "Contact",
 };
 
@@ -235,7 +235,7 @@ export function DemandeDetailClient({
         {items.length ? (
           <div className="card pad">
             <h4 className="lab" style={{ marginBottom: 9 }}>
-              Panier du client
+              Sélection devis du client
             </h4>
             {items.map((l) => (
               <div key={l.id} style={{ display: "flex", gap: 9, alignItems: "center", fontSize: 13, marginBottom: 6 }}>

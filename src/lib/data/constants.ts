@@ -1,5 +1,5 @@
 import type { Localized, Product, ProductCategory } from "../types";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export const CATS: { id: ProductCategory; fr: string; ar: string }[] = [
   { id: "cam", fr: "Caméras de surveillance", ar: "كاميرات المراقبة" },
@@ -192,7 +192,7 @@ export const SEED_PRODUCTS: Product[] = [
   P("p7", "AP-HDD-2T", "nvr", "Seagate", "Disque dur surveillance 2 To", "قرص صلب للمراقبة سعة 2 تيرابايت", 780, 12, 36, [["cap", "2 To"], ["aut", "24/7"]], 69),
   P("p8", "AP-RTR-HEX", "net", "MikroTik", "Routeur hEX RB750Gr3", "راوتر hEX RB750Gr3", 1150, 7, 12, [["ports", "5 × Gigabit"], ["thr", "1 Gb/s"]], 58),
   P("p9", "AP-RTR-AX18", "net", "TP-Link", "Routeur Wi-Fi 6 AX1800", "راوتر واي فاي 6 بسرعة AX1800", 890, 15, 24, [["wifi", "Wi-Fi 6"], ["thr", "1 800 Mb/s"], ["ports", "4 × Gigabit"]], 83, "/products/p9.webp"),
-  P("p10", "AP-AP-U6L", "net", "Ubiquiti", "Point d'accès UniFi U6 Lite", "نقطة ولوج UniFi U6 Lite", 1450, 6, 24, [["wifi", "Wi-Fi 6"], ["users", "≈ 150"], ["poe", "802.3af"]], 61),
+  P("p10", "AP-U6L", "net", "Ubiquiti", "Point d'accès UniFi U6 Lite", "نقطة ولوج UniFi U6 Lite", 1450, 6, 24, [["wifi", "Wi-Fi 6"], ["users", "≈ 150"], ["poe", "802.3af"]], 61),
   P("p11", "AP-SW-8P", "net", "TP-Link", "Switch PoE+ 8 ports — 120 W", "سويتش PoE+ بـ 8 منافذ — 120 واط", 1090, 5, 36, [["ports", "8 × PoE+"], ["pow", "120 W"]], 64, "/products/p11.webp"),
   P("p12", "AP-ACC-BIO", "acc", "ZKTeco", "Pointeuse biométrique empreinte + badge", "جهاز بصمة وبطاقة للحضور والانصراف", 1690, 4, 12, [["users", "3 000 empreintes"], ["ports", "TCP/IP, USB"]], 47),
   P("p13", "AP-ACC-INT", "acc", "Dahua", "Interphone vidéo IP — 2 fils", "إنتركوم فيديو IP بسلكين", 2250, 2, 24, [["res", "2 MP"], ["prot", "IP65"]], 33),

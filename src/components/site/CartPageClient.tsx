@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import type { Product } from "@/lib/types";
-import { money } from "@/lib/data/i18n";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { ProductArt, Icon } from "@/components/ui/Icon";
+import { Money } from "./Money";
+import { Num } from "./Num";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 
 export function CartPageClient({ products }: { products: Product[] }) {
-  const { lang, t, L } = useLang();
+  const { t, Lb, href: localeHref } = useLang();
   const { items, setQty, toggleInst, remove, clear, count } = useCart();
   const map = Object.fromEntries(products.map((p) => [p.id, p]));
   const total = items.reduce((a, l) => a + (map[l.id]?.price || 0) * l.q, 0);
@@ -20,7 +21,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
         <section className="page-band page-band-sm">
           <div className="wrap page-band-in rise">
             <p className="page-band-k mono">
-              C.I.S · {SITE.hqCity.toUpperCase()} · PANIER
+              C.I.S · {SITE.hqCity.toUpperCase()} · DEVIS
             </p>
             <h1>{t("cart_t")}</h1>
           </div>
@@ -29,7 +30,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
           <div className="cart-empty">
             <p className="muted">{t("cart_empty")}</p>
             <p className="sm ink2">{t("cart_empty_d")}</p>
-            <Link href="/catalogue" className="btn btn-pri">
+            <Link href={localeHref("/catalogue")} className="btn btn-pri">
               {t("cart_go")}
             </Link>
           </div>
@@ -43,7 +44,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
       <section className="page-band page-band-sm">
         <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
-            C.I.S · {SITE.hqCity.toUpperCase()} · PANIER
+            C.I.S · {SITE.hqCity.toUpperCase()} · DEVIS
           </p>
           <h1>
             {t("cart_t")} · {count} {t("items")}
@@ -63,9 +64,9 @@ export function CartPageClient({ products }: { products: Product[] }) {
                   <ProductArt cat={p.cat} size={46} />
                 </span>
                 <div className="line-body">
-                  <div className="line-name">{L(p.name)}</div>
-                  <div className="xs muted mono" dir="ltr">
-                    {p.ref} · {p.brand}
+                  <div className="line-name">{Lb(p.name)}</div>
+                  <div className="xs muted mono">
+                    <Num>{p.ref}</Num> · {p.brand}
                   </div>
                   <label className="line-inst">
                     <input
@@ -77,16 +78,14 @@ export function CartPageClient({ products }: { products: Product[] }) {
                   </label>
                 </div>
                 <div className="line-side">
-                  <span className="num line-price" dir="ltr">
-                    {money(lang, p.price * l.q)}
+                  <span className="line-price">
+                    <Money amount={p.price * l.q} />
                   </span>
                   <span className="qty">
                     <button type="button" onClick={() => setQty(l.id, l.q - 1)} aria-label="-">
                       −
                     </button>
-                    <span className="num" dir="ltr">
-                      {l.q}
-                    </span>
+                    <Num className="num">{l.q}</Num>
                     <button type="button" onClick={() => setQty(l.id, l.q + 1)} aria-label="+">
                       +
                     </button>
@@ -103,15 +102,15 @@ export function CartPageClient({ products }: { products: Product[] }) {
         <div className="cart-total">
           <div>
             <div className="lab">{t("cart_sub")}</div>
-            <b className="num cart-total-v" dir="ltr">
-              {money(lang, total)}
+            <b className="cart-total-v">
+              <Money amount={total} />
             </b>
           </div>
           <div className="cart-total-actions">
             <button type="button" className="btn btn-out" onClick={clear}>
               {t("cart_clear")}
             </button>
-            <Link href="/panier/demande" className="btn btn-pri btn-lg">
+            <Link href={localeHref("/panier/demande")} className="btn btn-pri btn-lg">
               {t("cart_req")}
             </Link>
           </div>

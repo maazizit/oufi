@@ -71,7 +71,7 @@ export function DemandesFilters({
         >
           <option value="">Origine — Toutes</option>
           <option value="form">Formulaire devis</option>
-          <option value="cart">Panier / achat articles</option>
+          <option value="cart">Demande de devis / articles</option>
           <option value="contact">Contact</option>
         </select>
       </div>

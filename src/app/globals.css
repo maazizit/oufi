@@ -1596,6 +1596,12 @@ tbody tr[data-click]:hover {
   gap: 6px;
   flex: 1;
 }
+.pcard-cat {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue-ink);
+}
 .pcard .br {
   font-size: 10px;
   letter-spacing: 0.1em;

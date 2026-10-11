@@ -28,7 +28,7 @@ const labels: Record<string, string> = {
   ch_wa: "WhatsApp",
   ch_mail: "E-mail",
   src_form: "Formulaire",
-  src_cart: "Panier",
+  src_cart: "Demande de devis",
   src_contact: "Contact",
 };
 

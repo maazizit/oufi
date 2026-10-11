@@ -1,5 +1,5 @@
 import { pageMeta } from "@/lib/seo";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
   title: "Mentions légales",
@@ -35,8 +35,7 @@ export default function MentionsPage() {
           </a>
         </p>
         <p className="sm muted">
-          L’adresse complète Marrakech ({SITE.addressPlaceholder}) sera finalisée dès validation
-          client. Zone d’intervention : {SITE.zone.fr}.
+          Siège : {SITE.streetAddress}, {SITE.locality}. Zone d’intervention : {SITE.zone.fr}.
         </p>
         <p>
           Le site présente des prix indicatifs hors pose. Aucun paiement en ligne n’est collecté via

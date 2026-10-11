@@ -4,11 +4,11 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Product, Settings } from "@/lib/types";
 import { CHANS, LOCALS, SVCS, TYPES } from "@/lib/data/constants";
-import { money } from "@/lib/data/i18n";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { feeFor, isMoroccanPhone } from "@/lib/utils";
 import { saveLastRequest } from "@/lib/client/demo-client-store";
 import { Icon } from "@/components/ui/Icon";
+import { Money } from "./Money";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 
@@ -21,7 +21,7 @@ export function QuoteForm({
   mode: "form" | "cart";
   products?: Product[];
 }) {
-  const { t, L, lang } = useLang();
+  const { t, L } = useLang();
   const router = useRouter();
   const sp = useSearchParams();
   const { items, clear } = useCart();
@@ -325,7 +325,7 @@ export function QuoteForm({
                         <div>
                           <b className="sm">{L(p.name)}</b>
                           <div className="xs muted">
-                            {p.brand} · {money(lang, p.price)}
+                            {p.brand} · <Money amount={p.price} />
                           </div>
                         </div>
                         <div className="quote-pick-qty">
@@ -407,7 +407,7 @@ export function QuoteForm({
                 <span>
                   <b>
                     {t("q_feeline")} — {String(fv("city"))} :{" "}
-                    {fee != null ? money("fr", fee) : t("q_feeask")}
+                    {fee != null ? <Money amount={fee} /> : t("q_feeask")}
                   </b>
                   <br />
                   {t("q_feenote")}

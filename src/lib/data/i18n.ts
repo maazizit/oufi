@@ -15,7 +15,7 @@ export const T: Dict = {
   menu_open: { fr: "Ouvrir le menu", ar: "فتح القائمة" },
   menu_close: { fr: "Fermer le menu", ar: "إغلاق القائمة" },
   nav_contact: { fr: "Contact", ar: "اتصل بنا" },
-  nav_cart: { fr: "Panier", ar: "السلة" },
+  nav_cart: { fr: "Ma demande de devis", ar: "طلب عرض السعر" },
 
   h_eyebrow: {
     fr: "C.I.S. — Conseil • Installation • Suivi",
@@ -57,8 +57,8 @@ export const T: Dict = {
   },
   pill_shop_t: { fr: "E-commerce / Vente", ar: "التجارة الإلكترونية / البيع" },
   pill_shop_d: {
-    fr: "Caméras, routeurs, matériel domotique et alarmes — catalogue pro, prix indicatifs, panier sans paiement en ligne.",
-    ar: "كاميرات مراقبة، راوترات، أنظمة منزل ذكي وإنذارات — كتالوج احترافي بأسعار استرشادية، وسلة بدون دفع عبر الإنترنت.",
+    fr: "Caméras, routeurs, matériel domotique et alarmes — catalogue pro, prix indicatifs, sélection devis sans paiement en ligne.",
+    ar: "كاميرات مراقبة، راوترات، أنظمة منزل ذكي وإنذارات — كتالوج احترافي بأسعار استرشادية، واختيار لعرض السعر بدون دفع عبر الإنترنت.",
   },
   pill_shop_cta: { fr: "Parcourir le catalogue", ar: "تصفح المنتجات" },
   pill_install_t: { fr: "Services & Installation", ar: "الخدمات والتركيب" },
@@ -127,7 +127,10 @@ export const T: Dict = {
   p3_t: { fr: "Devis détaillé sous 48 h après la visite", ar: "عرض سعر مفصل خلال 48 ساعة بعد المعاينة" },
   p3_d: { fr: "Matériel ligne par ligne, main-d'œuvre, délai. Sans engagement. (Le premier rappel reste sous 24 h ouvrées.)", ar: "المعدات بندا بندا، اليد العاملة، والأجل. بدون التزام. (أول اتصال يبقى خلال 24 ساعة عمل.)" },
   p4_t: { fr: "Installation & garantie", ar: "التركيب والضمان" },
-  p4_d: { fr: "Pose, configuration, formation de vos équipes. Garantie 12 mois pièces et main-d'œuvre.", ar: "التركيب، الإعداد، وتكوين فريقكم. ضمان 12 شهرا على القطع واليد العاملة." },
+  p4_d: {
+    fr: "Pose, configuration, formation de vos équipes. Garantie 12 mois pose et main-d'œuvre (garantie fabricant du matériel en plus, selon le produit).",
+    ar: "التركيب، الإعداد، وتكوين فريقكم. ضمان 12 شهراً على التركيب واليد العاملة (ضمان الشركة المصنّعة للمعدات منفصل حسب المنتج).",
+  },
 
   f_title: { fr: "Produits en vedette", ar: "منتجات مختارة" },
   f_lead: { fr: "Le matériel que nous installons le plus. Prix indicatifs, hors pose.", ar: "المعدات الأكثر تركيبا لدينا. أسعار استرشادية، دون التركيب." },
@@ -137,14 +140,19 @@ export const T: Dict = {
   st_1: { fr: "installations livrées", ar: "تركيبة منجزة" },
   st_2: { fr: "couverture", ar: "التغطية" },
   st_2_val: { fr: "Tout le Maroc", ar: "كل المغرب" },
-  st_3: { fr: "heures max après visite (devis)", ar: "ساعات كحد أقصى بعد المعاينة (عرض السعر)" },
+  st_3: {
+    fr: "heures max après visite (devis)",
+    ar: "كحد أقصى لعرض السعر بعد المعاينة",
+  },
   st_4: { fr: "ans sur le terrain", ar: "سنوات في الميدان" },
+  st_unit_h: { fr: " h", ar: "" },
+  st_unit_hour: { fr: "", ar: " ساعة" },
   cta_t: { fr: "Un projet, une panne, une question de prix ?", ar: "مشروع، عطل، أو سؤال عن الثمن؟" },
 
   cat_title: { fr: "Catalogue", ar: "المنتجات" },
   cat_lead: {
-    fr: "Prix TTC en dirhams, hors installation. Aucun paiement en ligne : vous composez votre panier, nous vous rappelons pour confirmer la disponibilité et le prix posé.",
-    ar: "الأسعار بالدرهم شاملة الضريبة ودون التركيب. لا يوجد دفع عبر الإنترنت: تختارون منتجاتكم ونتواصل لتأكيد التوفر وسعر التركيب.",
+    fr: "Prix TTC en dirhams, hors installation. Aucun paiement en ligne : vous composez votre demande de devis, nous vous rappelons pour confirmer la disponibilité et le prix posé.",
+    ar: "الأسعار بالدرهم شاملة الضريبة ودون التركيب. لا يوجد دفع عبر الإنترنت: تُعدّون طلب عرض السعر ونتواصل لتأكيد التوفر وسعر التركيب.",
   },
   f_cat: { fr: "Catégorie", ar: "الصنف" },
   f_brand: { fr: "Marque", ar: "العلامة" },
@@ -160,7 +168,7 @@ export const T: Dict = {
   sort_desc: { fr: "Prix décroissant", ar: "الثمن تنازليا" },
   n_found: { fr: "{n} produit(s)", ar: "{n} منتج" },
   none_found: { fr: "Aucun produit ne correspond à ces filtres.", ar: "لا يوجد منتج يطابق هذه الفلاتر." },
-  add: { fr: "Ajouter", ar: "أضف" },
+  add: { fr: "Ajouter au devis", ar: "إضافة إلى عرض السعر" },
   details: { fr: "Détails", ar: "التفاصيل" },
   instock: { fr: "En stock", ar: "متوفر" },
   lowstock: { fr: "Dernières pièces", ar: "آخر القطع" },
@@ -170,10 +178,10 @@ export const T: Dict = {
   withinstall: { fr: "Je veux aussi l'installation par vos soins", ar: "أريد كذلك التركيب من طرفكم" },
   withinstall_h: { fr: "Chiffrée dans le devis après l'état des lieux.", ar: "تُحتسب في عرض السعر بعد المعاينة." },
   addcart: { fr: "Ajouter au devis", ar: "إضافة إلى عرض السعر" },
-  added: { fr: "Ajouté — ouvrez le panier pour finaliser", ar: "تمت الإضافة — افتحوا السلة لإكمال الطلب" },
-  toast_added: { fr: "Ajouté à votre sélection", ar: "تمت الإضافة إلى اختياركم" },
+  added: { fr: "Ajouté — ouvrez Ma demande de devis pour finaliser", ar: "تمت الإضافة — افتحوا طلب عرض السعر لإكمال الطلب" },
+  toast_added: { fr: "Ajouté à votre demande de devis", ar: "تمت الإضافة إلى طلب عرض السعر" },
 
-  cart_t: { fr: "Préparer une demande de devis", ar: "تحضير طلب عرض سعر" },
+  cart_t: { fr: "Ma demande de devis", ar: "طلب عرض السعر" },
   cart_empty: { fr: "Votre sélection est vide.", ar: "لم تختاروا أي منتج بعد." },
   cart_empty_d: { fr: "Ajoutez du matériel depuis le catalogue, puis envoyez votre sélection pour un devis.", ar: "أضيفوا منتجات من الكتالوج ثم أرسلوا اختياركم للحصول على عرض سعر." },
   cart_go: { fr: "Parcourir le catalogue", ar: "تصفح المنتجات" },
@@ -283,8 +291,8 @@ export const T: Dict = {
   err_req: { fr: "Ce champ est obligatoire.", ar: "هذا الحقل إجباري." },
   err_mail: { fr: "Adresse e-mail invalide.", ar: "البريد الإلكتروني غير صحيح." },
   err_phone: {
-    fr: "Numéro marocain invalide (ex. 06 41 76 63 54 ou +212 6 41 76 63 54).",
-    ar: "رقم مغربي غير صحيح (مثال: 06 41 76 63 54 أو +212 6 41 76 63 54).",
+    fr: "Numéro marocain invalide (ex. 0641766354 ou +212 641-766354).",
+    ar: "رقم مغربي غير صحيح (مثال: 0641766354 أو +212 641-766354).",
   },
   err_form: { fr: "Corrigez les champs en rouge.", ar: "صححوا الحقول المظللة بالأحمر." },
 
@@ -369,7 +377,14 @@ export const T: Dict = {
   ab_v2_t: { fr: "Le matériel est à vous", ar: "المعدات ملككم" },
   ab_v2_d: { fr: "Codes d'accès, comptes, configuration : tout vous est remis. Aucun verrouillage.", ar: "رموز الوصول والحسابات والإعدادات تُسلَّم لكم بالكامل — دون أي قفل." },
   ab_v3_t: { fr: "On répond après la pose", ar: "ندعمكم بعد التركيب" },
-  ab_v3_d: { fr: "Garantie 12 mois et une ligne directe. C'est là que se juge un installateur.", ar: "ضمان 12 شهراً وخط دعم مباشر — هنا يُقاس جودة المُركِّب." },
+  ab_v3_d: {
+    fr: "Garantie 12 mois pose et main-d'œuvre, plus une ligne directe. C'est là que se juge un installateur.",
+    ar: "ضمان 12 شهراً على التركيب واليد العاملة وخط دعم مباشر — هنا يُقاس جودة المُركِّب.",
+  },
+  often_installed: { fr: "Souvent installé avec", ar: "يُركَّب غالباً مع" },
+  warr_install: { fr: "Garantie pose & main-d'œuvre", ar: "ضمان التركيب واليد العاملة" },
+  warr_mfr: { fr: "Garantie fabricant (matériel)", ar: "ضمان الشركة المصنّعة (المعدات)" },
+  warr_months: { fr: "{n} mois", ar: "{n} شهراً" },
   br_title: { fr: "Les marques que nous installons", ar: "العلامات التي نعتمدها" },
   te_title: { fr: "Ce qu'ils en disent", ar: "آراء عملائنا" },
   te_lead: { fr: "Trois clients, trois chantiers terminés.", ar: "ثلاثة عملاء… وثلاثة مشاريع مكتملة." },
@@ -437,7 +452,7 @@ export const T: Dict = {
   th_sent: { fr: "Envoyé sur place", ar: "المُرسَل إلى المكان" },
   th_by: { fr: "Envoyé par", ar: "أرسله" },
   src_form: { fr: "Formulaire", ar: "استمارة" },
-  src_cart: { fr: "Panier", ar: "سلة" },
+  src_cart: { fr: "Demande de devis", ar: "طلب عرض سعر" },
   st_new: { fr: "Nouvelle", ar: "جديد" },
   st_contacted: { fr: "Contactée", ar: "تم الاتصال" },
   st_visit: { fr: "Visite planifiée", ar: "معاينة مبرمجة" },
@@ -450,7 +465,7 @@ export const T: Dict = {
   a_prefers: { fr: "Le client a demandé à être contacté par {chan}.", ar: "طلب الزبون أن يتم الاتصال به عبر {chan}." },
   a_site: { fr: "Le site", ar: "المكان" },
   a_needs: { fr: "Le besoin", ar: "الحاجة" },
-  a_cartof: { fr: "Panier du client", ar: "سلة الزبون" },
+  a_cartof: { fr: "Sélection devis du client", ar: "اختيار عرض السعر للزبون" },
   a_setstatus: { fr: "Changer le statut", ar: "تغيير الحالة" },
   a_assign: { fr: "Technicien assigné", ar: "التقني المكلف" },
   a_unassigned: { fr: "Non assigné", ar: "غير مكلف" },
@@ -531,6 +546,14 @@ export function L(lang: Lang, o?: Localized | string | null) {
   return o[lang] || o.fr || "";
 }
 
+/** Montant formaté avec séparateur milliers NBSP (U+00A0), sans devise. */
+export function moneyAmount(n: number): string {
+  return new Intl.NumberFormat("fr-FR")
+    .format(Math.round(n))
+    .replace(/[\u202f\u00a0\u2009 ]/g, "\u00a0");
+}
+
+/** Chaîne plain-text (WhatsApp, admin) — NBSP + devise. */
 export function money(lang: Lang, n: number) {
-  return `${new Intl.NumberFormat("fr-FR").format(Math.round(n))} ${t(lang, "dh")}`;
+  return `${moneyAmount(n)} ${t(lang, "dh")}`;
 }

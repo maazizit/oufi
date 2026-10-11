@@ -2,24 +2,29 @@
 
 import Link from "next/link";
 import type { Product } from "@/lib/types";
-import { money } from "@/lib/data/i18n";
+import { CATS } from "@/lib/data/constants";
 import { productSlug, stockLabel } from "@/lib/utils";
 import { Icon, ProductArt } from "@/components/ui/Icon";
+import { Money } from "./Money";
+import { Num } from "./Num";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 import { useToast } from "./ToastProvider";
 
 export function ProductCard({ product }: { product: Product }) {
-  const { lang, t, L } = useLang();
+  const { lang, t, L, Lb, href } = useLang();
   const { add } = useCart();
   const { show } = useToast();
   const stock = stockLabel(lang, product);
-  const href = `/catalogue/${productSlug(product)}`;
+  const path = href(`/catalogue/${productSlug(product)}`);
+  const catLabel = CATS.find((c) => c.id === product.cat);
 
   return (
     <article className="pcard">
-      <Link href={href} className="art" aria-label={L(product.name)}>
-        <span className="pcard-ref mono">{product.ref}</span>
+      <Link href={path} className="art" aria-label={L(product.name)}>
+        <span className="pcard-ref mono">
+          <Num>{product.ref}</Num>
+        </span>
         {product.img ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={product.img} alt={L(product.name)} className="pcard-photo" loading="lazy" />
@@ -28,17 +33,18 @@ export function ProductCard({ product }: { product: Product }) {
         )}
       </Link>
       <div className="bd">
+        {catLabel ? <span className="pcard-cat mono">{L(catLabel)}</span> : null}
         <span className="br mono">{product.brand}</span>
-        <Link href={href} className="nm">
-          {L(product.name)}
+        <Link href={path} className="nm">
+          {Lb(product.name)}
         </Link>
         <span className={`pill ${stock.cls}`}>{stock.text}</span>
-        <div className="pr num" dir="ltr">
-          {money(lang, product.price)}
+        <div className="pr">
+          <Money amount={product.price} />
         </div>
       </div>
       <div className="acts">
-        <Link href={href} className="btn btn-sm btn-out">
+        <Link href={path} className="btn btn-sm btn-out">
           {t("details")}
         </Link>
         <button

@@ -1,15 +1,17 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 export function SectionHeader({
   eyebrow,
   title,
   lead,
   action,
 }: {
-  eyebrow?: string;
-  title: string;
-  lead?: string;
-  action?: React.ReactNode;
+  eyebrow?: ReactNode;
+  title: ReactNode;
+  lead?: ReactNode;
+  action?: ReactNode;
 }) {
   return (
     <div className={`sec-h${action ? " sec-h-row" : ""}`}>

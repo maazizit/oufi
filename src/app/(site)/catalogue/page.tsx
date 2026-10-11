@@ -13,6 +13,7 @@ export const metadata = pageMeta({
 
 export default async function CataloguePage() {
   const [settings, products] = await Promise.all([getSettings(), getProducts(true)]);
+  /** Fallback no-JS uniquement — une seule grille interactive côté client. */
   const preview = products.slice().sort((a, b) => b.pop - a.pop).slice(0, 8);
 
   return (
@@ -30,12 +31,7 @@ export default async function CataloguePage() {
       <Suspense
         fallback={
           <section className="sec wrap">
-            <h1>Catalogue</h1>
-            <div className="pgrid">
-              {preview.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+            <p className="muted mono sm">Catalogue…</p>
           </section>
         }
       >
