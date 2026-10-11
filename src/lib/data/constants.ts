@@ -164,6 +164,7 @@ export function P(
   warr: number,
   specs: [string, string][],
   pop: number,
+  img?: string,
 ): Product {
   return {
     id,
@@ -177,24 +178,25 @@ export function P(
     specs,
     pop,
     active: true,
+    ...(img ? { img } : {}),
   };
 }
 
 export const SEED_PRODUCTS: Product[] = [
-  P("p1", "AP-CAM-D4", "cam", "Hikvision", "Caméra dôme IP 4 MP — intérieure", "كاميرا قبة IP بدقة 4 ميغابكسل — داخلية", 690, 24, 24, [["res", "4 MP (2560×1440)"], ["lens", "2,8 mm"], ["ir", "30 m"], ["poe", "802.3af"]], 98),
-  P("p2", "AP-CAM-B4", "cam", "Hikvision", "Caméra bullet IP 4 MP — extérieure", "كاميرا بوليت IP بدقة 4 ميغابكسل — خارجية", 850, 16, 24, [["res", "4 MP"], ["prot", "IP67"], ["ir", "50 m"], ["poe", "802.3af"]], 91),
-  P("p3", "AP-CAM-P25", "cam", "Dahua", "Caméra PTZ motorisée — zoom ×25", "كاميرا PTZ متحركة — تقريب ×25", 4200, 3, 24, [["res", "2 MP"], ["zoom", "×25 optique"], ["ir", "100 m"], ["prot", "IP66"]], 44),
+  P("p1", "AP-CAM-D4", "cam", "Hikvision", "Caméra dôme IP 4 MP — intérieure", "كاميرا قبة IP بدقة 4 ميغابكسل — داخلية", 690, 24, 24, [["res", "4 MP (2560×1440)"], ["lens", "2,8 mm"], ["ir", "30 m"], ["poe", "802.3af"]], 98, "/products/p1.webp"),
+  P("p2", "AP-CAM-B4", "cam", "Hikvision", "Caméra bullet IP 4 MP — extérieure", "كاميرا بوليت IP بدقة 4 ميغابكسل — خارجية", 850, 16, 24, [["res", "4 MP"], ["prot", "IP67"], ["ir", "50 m"], ["poe", "802.3af"]], 91, "/products/p2.webp"),
+  P("p3", "AP-CAM-P25", "cam", "Dahua", "Caméra PTZ motorisée — zoom ×25", "كاميرا PTZ متحركة — تقريب ×25", 4200, 3, 24, [["res", "2 MP"], ["zoom", "×25 optique"], ["ir", "100 m"], ["prot", "IP66"]], 44, "/products/p3.webp"),
   P("p4", "AP-CAM-W2", "cam", "Ezviz", "Caméra Wi-Fi intérieure 2 MP", "كاميرا واي فاي داخلية بدقة 2 ميغابكسل", 390, 41, 12, [["res", "2 MP"], ["wifi", "2,4 GHz"], ["ir", "10 m"], ["cap", "microSD 256 Go"]], 87),
   P("p5", "AP-NVR-8P", "nvr", "Hikvision", "Enregistreur NVR 8 canaux PoE", "مسجل NVR بـ 8 قنوات PoE", 1950, 9, 24, [["ch", "8"], ["poe", "8 ports"], ["hdd", "2 × 8 To"], ["res", "jusqu'à 8 MP"]], 76),
   P("p6", "AP-XVR-16", "nvr", "Dahua", "Enregistreur XVR 16 canaux", "مسجل XVR بـ 16 قناة", 2400, 4, 24, [["ch", "16"], ["hdd", "2 × 10 To"], ["res", "5 MP Lite"]], 52),
   P("p7", "AP-HDD-2T", "nvr", "Seagate", "Disque dur surveillance 2 To", "قرص صلب للمراقبة سعة 2 تيرابايت", 780, 12, 36, [["cap", "2 To"], ["aut", "24/7"]], 69),
   P("p8", "AP-RTR-HEX", "net", "MikroTik", "Routeur hEX RB750Gr3", "راوتر hEX RB750Gr3", 1150, 7, 12, [["ports", "5 × Gigabit"], ["thr", "1 Gb/s"]], 58),
-  P("p9", "AP-RTR-AX18", "net", "TP-Link", "Routeur Wi-Fi 6 AX1800", "راوتر واي فاي 6 بسرعة AX1800", 890, 15, 24, [["wifi", "Wi-Fi 6"], ["thr", "1 800 Mb/s"], ["ports", "4 × Gigabit"]], 83),
+  P("p9", "AP-RTR-AX18", "net", "TP-Link", "Routeur Wi-Fi 6 AX1800", "راوتر واي فاي 6 بسرعة AX1800", 890, 15, 24, [["wifi", "Wi-Fi 6"], ["thr", "1 800 Mb/s"], ["ports", "4 × Gigabit"]], 83, "/products/p9.webp"),
   P("p10", "AP-AP-U6L", "net", "Ubiquiti", "Point d'accès UniFi U6 Lite", "نقطة ولوج UniFi U6 Lite", 1450, 6, 24, [["wifi", "Wi-Fi 6"], ["users", "≈ 150"], ["poe", "802.3af"]], 61),
-  P("p11", "AP-SW-8P", "net", "TP-Link", "Switch PoE+ 8 ports — 120 W", "سويتش PoE+ بـ 8 منافذ — 120 واط", 1090, 5, 36, [["ports", "8 × PoE+"], ["pow", "120 W"]], 64),
+  P("p11", "AP-SW-8P", "net", "TP-Link", "Switch PoE+ 8 ports — 120 W", "سويتش PoE+ بـ 8 منافذ — 120 واط", 1090, 5, 36, [["ports", "8 × PoE+"], ["pow", "120 W"]], 64, "/products/p11.webp"),
   P("p12", "AP-ACC-BIO", "acc", "ZKTeco", "Pointeuse biométrique empreinte + badge", "جهاز بصمة وبطاقة للحضور والانصراف", 1690, 4, 12, [["users", "3 000 empreintes"], ["ports", "TCP/IP, USB"]], 47),
   P("p13", "AP-ACC-INT", "acc", "Dahua", "Interphone vidéo IP — 2 fils", "إنتركوم فيديو IP بسلكين", 2250, 2, 24, [["res", "2 MP"], ["prot", "IP65"]], 33),
-  P("p14", "AP-PC-I5", "it", "HP", "PC de bureau i5 — 8 Go / SSD 256 Go", "حاسوب مكتبي i5 — 8 غيغا / SSD 256 غيغا", 4900, 3, 12, [["cpu", "Intel Core i5"], ["ram", "8 Go"], ["disk", "SSD 256 Go"]], 40),
+  P("p14", "AP-PC-I5", "it", "HP", "PC de bureau i5 — 8 Go / SSD 256 Go", "حاسوب مكتبي i5 — 8 غيغا / SSD 256 غيغا", 4900, 3, 12, [["cpu", "Intel Core i5"], ["ram", "8 Go"], ["disk", "SSD 256 Go"]], 40, "/products/p14.webp"),
   P("p15", "AP-IMP-MF", "it", "Epson", "Imprimante multifonction Wi-Fi", "طابعة متعددة الوظائف بالواي فاي", 1350, 6, 12, [["wifi", "Wi-Fi"], ["ports", "USB, réseau"]], 38),
   P("p16", "AP-CBL-C6", "cbl", "Générique", "Câble réseau Cat6 UTP — rouleau 305 m", "كابل شبكة Cat6 UTP — بكرة 305 متر", 1250, 8, 0, [["len", "305 m"], ["thr", "1 Gb/s"]], 55),
   P("p17", "AP-UPS-1K", "cbl", "Eaton", "Onduleur 1000 VA", "جهاز إمداد بالطاقة 1000 فولت أمبير", 950, 10, 24, [["pow", "1000 VA / 600 W"], ["aut", "≈ 20 min"]], 49),

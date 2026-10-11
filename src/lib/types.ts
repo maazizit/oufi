@@ -37,6 +37,11 @@ export type Product = {
   specs: [string, string][];
   pop: number;
   active: boolean;
+  /**
+   * Chemin de la photo produit, ex. "/products/p1.webp" (dossier public/products/).
+   * Absent/vide → la fiche retombe sur l'icône de catégorie (ProductArt).
+   */
+  img?: string;
 };
 
 export type CartItem = { id: string; q: number; inst: boolean };

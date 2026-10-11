@@ -27,6 +27,7 @@ export function AdminCatalogClient({
     warr: "12",
     specs: "",
     active: true,
+    img: "",
   });
 
   const list = useMemo(() => {
@@ -50,6 +51,7 @@ export function AdminCatalogClient({
         warr: "12",
         specs: "",
         active: true,
+        img: "",
       });
     } else {
       setForm({
@@ -63,6 +65,7 @@ export function AdminCatalogClient({
         warr: String(p.warr),
         specs: p.specs.map(([k, v]) => `${k} : ${v}`).join("\n"),
         active: p.active,
+        img: p.img || "",
       });
     }
     setEdit(p);
@@ -143,8 +146,24 @@ export function AdminCatalogClient({
               <tr key={p.id}>
                 <td>
                   <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                    <span style={{ width: 34 }}>
-                      <ProductArt cat={p.cat} size={34} />
+                    <span
+                      style={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: 6,
+                        overflow: "hidden",
+                        display: "grid",
+                        placeItems: "center",
+                        background: "var(--surface-2)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {p.img ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.img} alt="" width={34} height={34} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                      ) : (
+                        <ProductArt cat={p.cat} size={34} />
+                      )}
                     </span>
                     <span>
                       <b>{p.name.fr}</b>
@@ -271,6 +290,19 @@ export function AdminCatalogClient({
               <div className="field">
                 <label>Caractéristiques</label>
                 <textarea className="textarea" value={form.specs} onChange={(e) => setForm({ ...form, specs: e.target.value })} />
+              </div>
+              <div className="field">
+                <label>Photo produit — chemin</label>
+                <input
+                  className="input mono"
+                  placeholder={`/products/${form.ref ? form.ref.toLowerCase() : "slug"}.webp`}
+                  value={form.img}
+                  onChange={(e) => setForm({ ...form, img: e.target.value })}
+                />
+                <p className="xs muted" style={{ marginTop: 4 }}>
+                  Déposer le fichier dans <code>public/products/</code> puis indiquer son chemin ici
+                  (ex. <code>/products/p1.webp</code>). Vide → icône de catégorie par défaut.
+                </p>
               </div>
               <label className="opt" data-on={form.active ? 1 : 0}>
                 <input type="checkbox" checked={form.active} onChange={(e) => setForm({ ...form, active: e.target.checked })} />

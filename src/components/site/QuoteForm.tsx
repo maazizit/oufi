@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { Product, Settings } from "@/lib/types";
 import { CHANS, LOCALS, SVCS, TYPES } from "@/lib/data/constants";
 import { money } from "@/lib/data/i18n";
+import { SITE } from "@/lib/site-config";
 import { feeFor, isMoroccanPhone } from "@/lib/utils";
 import { saveLastRequest } from "@/lib/client/demo-client-store";
 import { Icon } from "@/components/ui/Icon";
@@ -184,44 +185,97 @@ export function QuoteForm({
     </div>
   );
 
-  return (
-    <section className="sec wrap" style={{ maxWidth: 820 }}>
-      <div className="sec-h rise">
-        {mode === "cart" ? <h1>{t("cart_req")}</h1> : <h2 style={{ fontSize: "clamp(21px, 2.6vw, 30px)" }}>{t("q_title")}</h2>}
-        <p className="ink2">{mode === "cart" ? t("cart_note") : t("q_lead")}</p>
-        {mode === "form" ? <p className="sm muted">{t("h_callback")}</p> : null}
-      </div>
+  const progressPct = mode === "form" ? Math.round((step / 3) * 100) : 100;
 
+  return (
+    <>
       {mode === "form" ? (
-        <div className="stepper">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className="s" data-on={step === n ? 1 : 0} data-done={step > n ? 1 : 0}>
-              <b>{n}</b>
-              {t(`q_s${n}`)}
-            </div>
-          ))}
-        </div>
+        <section className="page-band">
+          <div className="wrap page-band-in rise">
+            <p className="page-band-k mono">
+              C.I.S · {SITE.hqCity.toUpperCase()} · DEVIS
+            </p>
+            <h1>{t("q_title")}</h1>
+            <p className="page-band-lead">{t("q_lead")}</p>
+            <p className="sm" style={{ color: "#8d9ab3", margin: 0 }}>
+              {t("h_callback")}
+            </p>
+          </div>
+        </section>
       ) : null}
 
-      <div className="card pad" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <section className={`sec wrap quote-sec${mode === "cart" ? " quote-sec-cart" : ""}`}>
+        {mode === "cart" ? (
+          <div className="sec-h">
+            <h1>{t("cart_req")}</h1>
+            <p className="ink2">{t("cart_note")}</p>
+          </div>
+        ) : null}
+
+        {mode === "form" ? (
+          <aside className="wa-press">
+            <div className="wa-press-body">
+              <span className="wa-press-badge mono">PRIORITY · WA</span>
+              <h2 className="wa-press-t">{t("q_wa_press_t")}</h2>
+              <p className="wa-press-d">{t("q_wa_press_d")}</p>
+            </div>
+            <a
+              className="btn btn-pri wa-press-cta"
+              href={SITE.waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="wa" size={17} /> {t("q_wa_press_cta")}
+            </a>
+          </aside>
+        ) : null}
+
+        {mode === "form" ? (
+          <div className="quote-progress" aria-label={t("q_progress", { n: String(step) })}>
+            <div className="quote-progress-meta">
+              <span className="mono">{t("q_progress", { n: String(step) })}</span>
+              <span className="mono num">{progressPct}%</span>
+            </div>
+            <div className="quote-progress-track" aria-hidden="true">
+              <div className="quote-progress-fill" style={{ width: `${progressPct}%` }} />
+            </div>
+            <div className="stepper">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="s"
+                  data-on={step === n ? 1 : 0}
+                  data-done={step > n ? 1 : 0}
+                >
+                  <b>{n}</b>
+                  {t(`q_s${n}`)}
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+      <div className="quote-panel">
         {mode === "form" && step === 1 ? (
           <>
             <div className="field">
               <span className="lab">{t("q_type")}</span>
-              <div className="grid2">
+              <div className="type-cards">
                 {TYPES.map((ty) => (
-                  <label key={ty.id} className="opt" data-on={fv("type") === ty.id ? 1 : 0}>
+                  <label
+                    key={ty.id}
+                    className="type-card"
+                    data-on={fv("type") === ty.id ? 1 : 0}
+                  >
                     <input
                       type="radio"
                       name="type"
                       checked={fv("type") === ty.id}
                       onChange={() => set("type", ty.id)}
                     />
-                    <span>
-                      <span className="t">{t(ty.k)}</span>
-                      <br />
-                      <span className="hint">{t(ty.d)}</span>
-                    </span>
+                    <span className="type-card-k mono">{ty.id.toUpperCase()}</span>
+                    <span className="type-card-t">{t(ty.k)}</span>
+                    <span className="type-card-d">{t(ty.d)}</span>
                   </label>
                 ))}
               </div>
@@ -313,7 +367,7 @@ export function QuoteForm({
                 </div>
               </div>
             ) : null}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div className="quote-nav">
               <button
                 type="button"
                 className="btn btn-pri"
@@ -321,7 +375,7 @@ export function QuoteForm({
                   if (validate(1)) setStep(2);
                 }}
               >
-                {t("q_next")}
+                {t("q_next")} <Icon name="arrow" size={16} />
               </button>
             </div>
           </>
@@ -431,7 +485,7 @@ export function QuoteForm({
               </div>
             </div>
             {field("budget", t("q_budget"))}
-            <div style={{ display: "flex", gap: 10, justifyContent: "space-between" }}>
+            <div className="quote-nav">
               <button type="button" className="btn btn-out" onClick={() => setStep(1)}>
                 {t("q_back")}
               </button>
@@ -442,7 +496,7 @@ export function QuoteForm({
                   if (validate(2)) setStep(3);
                 }}
               >
-                {t("q_next")}
+                {t("q_next")} <Icon name="arrow" size={16} />
               </button>
             </div>
           </>
@@ -474,16 +528,20 @@ export function QuoteForm({
             {field("company", t("q_comp"))}
             <div className="field">
               <span className="lab">{t("q_chan")}</span>
-              <div className="grid3">
+              <div className="type-cards type-cards-3">
                 {avChans.map((c) => (
-                  <label key={c.id} className="opt" data-on={fv("chan") === c.id ? 1 : 0}>
+                  <label
+                    key={c.id}
+                    className="type-card type-card-sm"
+                    data-on={fv("chan") === c.id ? 1 : 0}
+                  >
                     <input
                       type="radio"
                       name="chan"
                       checked={fv("chan") === c.id}
                       onChange={() => set("chan", c.id)}
                     />
-                    <span className="t" style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+                    <span className="type-card-t" style={{ display: "inline-flex", gap: 8, alignItems: "center" }}>
                       <Icon name={c.ic} size={16} /> {t(c.k)}
                     </span>
                   </label>
@@ -515,7 +573,7 @@ export function QuoteForm({
             </label>
             {errors.ok ? <span className="err">{errors.ok}</span> : null}
             {errors.form ? <span className="err">{errors.form}</span> : null}
-            <div style={{ display: "flex", gap: 10, justifyContent: "space-between" }}>
+            <div className="quote-nav">
               {mode === "form" ? (
                 <button type="button" className="btn btn-out" onClick={() => setStep(2)}>
                   {t("q_back")}
@@ -537,6 +595,7 @@ export function QuoteForm({
           </>
         ) : null}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

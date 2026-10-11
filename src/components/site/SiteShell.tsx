@@ -3,9 +3,9 @@
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { CartProvider } from "./CartProvider";
-import { LangProvider, useLang } from "./LangProvider";
+import { LangProvider } from "./LangProvider";
 import { ToastProvider } from "./ToastProvider";
-import { WhatsAppFloat } from "./WhatsAppFloat";
+import { WhatsAppFab } from "./WhatsAppFab";
 import { RevealObserver } from "@/components/motion/RevealObserver";
 import type { Settings } from "@/lib/types";
 
@@ -16,13 +16,12 @@ function ShellInner({
   settings: Settings;
   children: React.ReactNode;
 }) {
-  const { L } = useLang();
   return (
     <div className="site">
-      <SiteHeader company={settings.company} tagline={L(settings.tagline)} />
+      <SiteHeader company={settings.company} />
       <main id="contenu">{children}</main>
       <SiteFooter settings={settings} />
-      <WhatsAppFloat />
+      <WhatsAppFab />
       <RevealObserver />
     </div>
   );

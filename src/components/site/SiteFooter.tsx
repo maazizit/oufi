@@ -1,21 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { SITE } from "@/lib/site-config";
 import { useLang } from "./LangProvider";
 import type { Settings } from "@/lib/types";
 
 export function SiteFooter({ settings }: { settings: Settings }) {
   const { t, L } = useLang();
-  const tel = settings.phone.replace(/\s/g, "");
+  const company = settings.company || SITE.name;
+  const phone = SITE.phoneDisplay;
+  const email = SITE.email;
+  const address = L(SITE.address);
+
   return (
     <footer className="footer">
       <div className="wrap">
         <div>
-          <h4>{settings.company}</h4>
-          <p className="sm" style={{ opacity: 0.9, maxWidth: "36ch" }}>
-            C.I.S. — {L(settings.tagline)}
+          <p className="ft-brand">{company}</p>
+          <p className="ft-cis">C.I.S · {SITE.hqCity.toUpperCase()}</p>
+          <p className="sm ft-nap" style={{ maxWidth: "36ch" }}>
+            {L(settings.tagline) || SITE.cisShort}
           </p>
-          <p className="sm" dir="rtl" lang="ar" style={{ opacity: 0.85, marginTop: 6 }}>
+          <p className="sm ft-nap" dir="rtl" lang="ar" style={{ marginTop: 8 }}>
             {t("h_ar_line")}
           </p>
         </div>
@@ -26,6 +32,15 @@ export function SiteFooter({ settings }: { settings: Settings }) {
           </Link>
           <Link className="li" href="/#about">
             {t("nav_about")}
+          </Link>
+          <Link className="li" href="/services">
+            {t("nav_services")}
+          </Link>
+          <Link className="li" href="/catalogue">
+            {t("nav_products")}
+          </Link>
+          <Link className="li" href="/suivi">
+            {t("nav_track")}
           </Link>
           <Link className="li" href="/contact">
             {t("nav_contact")}
@@ -63,23 +78,30 @@ export function SiteFooter({ settings }: { settings: Settings }) {
         </div>
         <div>
           <h4>{t("ft_ct")}</h4>
-          <p className="sm">
-            <a className="li" href={`tel:${tel}`}>
-              {settings.phone}
+          <p className="ft-nap">
+            <a href={SITE.telHref} dir="ltr">
+              {phone}
             </a>
           </p>
-          <p className="sm">
-            <a className="li" href={`mailto:${settings.email}`}>
-              {settings.email}
-            </a>
+          <p className="ft-nap" style={{ marginTop: 6 }}>
+            <a href={SITE.mailHref}>{email}</a>
           </p>
-          <p className="sm" style={{ marginTop: 6 }}>
-            {L(settings.address)}
+          <p className="ft-nap" style={{ marginTop: 10 }}>
+            {address}
+          </p>
+          <p className="ft-nap" style={{ marginTop: 8 }}>
+            <a
+              href={SITE.waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
           </p>
         </div>
       </div>
       <div className="copy">
-        © {new Date().getFullYear()} {settings.company}
+        © {new Date().getFullYear()} {company} · {SITE.hqCity}
       </div>
     </footer>
   );

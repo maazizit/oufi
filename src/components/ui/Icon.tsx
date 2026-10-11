@@ -124,6 +124,25 @@ const paths: Record<string, ReactNode> = {
       <path d="M9 7V5.5h6V7" />
     </>
   ),
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M5.2 18.8l1.6-1.6M17.2 6.8l1.6-1.6" />
+    </>
+  ),
+  moon: (
+    <path d="M19 14.5A7.5 7.5 0 0 1 9.5 5 6.2 6.2 0 1 0 19 14.5z" />
+  ),
+  menu: (
+    <>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </>
+  ),
+  close: (
+    <>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </>
+  ),
 };
 
 export function Icon({

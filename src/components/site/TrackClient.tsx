@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Request, RequestStatus } from "@/lib/types";
+import { SITE } from "@/lib/site-config";
 import { statusOf, fmtDT } from "@/lib/utils";
 import { getClientRequest, listClientRequests } from "@/lib/client/demo-client-store";
 import { useLang } from "./LangProvider";
@@ -69,77 +70,90 @@ export function TrackClient() {
   const reached = res ? flowIndex(res.status) : -1;
 
   return (
-    <section className="sec wrap" style={{ maxWidth: 720 }}>
-      <div className="sec-h">
-        <h1>{t("tr_t")}</h1>
-        <p className="ink2">{t("tr_lead")}</p>
-      </div>
-      <div className="toolbar">
-        <label className="sr-only" htmlFor="track-q">
-          {t("tr_ph")}
-        </label>
-        <input
-          id="track-q"
-          className="input search mono"
-          placeholder={t("tr_ph")}
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && search()}
-        />
-        <button type="button" className="btn btn-pri" disabled={busy} onClick={() => search()}>
-          {busy ? t("tr_loading") : t("tr_btn")}
-        </button>
-      </div>
-      {busy ? <p className="muted" style={{ marginTop: 18 }}>{t("tr_loading")}</p> : null}
-      {!busy && res === null ? (
-        <p className="muted" style={{ marginTop: 18 }}>
-          {t("tr_none", { q })}
-        </p>
-      ) : null}
-      {res ? (
-        <div className="card pad" style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
-            <b className="mono">{res.ref}</b>
-            <span className={`pill ${statusOf(res.status).p}`}>{t(statusOf(res.status).k)}</span>
-          </div>
-          <div>
-            <div className="lab">{t("tr_state")}</div>
-            <ol className="track-flow">
-              {FLOW.map((s, i) => (
-                <li
-                  key={s.id}
-                  data-on={i === reached ? 1 : 0}
-                  data-done={i < reached ? 1 : 0}
-                >
-                  <b>{i + 1}</b>
-                  <span>{t(s.k)}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div>
-            <div className="lab" style={{ marginBottom: 8 }}>
-              {t("tr_hist")}
+    <>
+      <section className="page-band">
+        <div className="wrap page-band-in rise">
+          <p className="page-band-k mono">
+            C.I.S · {SITE.hqCity.toUpperCase()} · SUIVI
+          </p>
+          <h1>{t("tr_t")}</h1>
+          <p className="page-band-lead">{t("tr_lead")}</p>
+        </div>
+      </section>
+
+      <section className="sec wrap track-sec">
+        <div className="toolbar track-toolbar">
+          <label className="sr-only" htmlFor="track-q">
+            {t("tr_ph")}
+          </label>
+          <input
+            id="track-q"
+            className="input search mono"
+            placeholder={t("tr_ph")}
+            value={q}
+            dir="ltr"
+            onChange={(e) => setQ(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && search()}
+          />
+          <button type="button" className="btn btn-pri" disabled={busy} onClick={() => search()}>
+            {busy ? t("tr_loading") : t("tr_btn")}
+          </button>
+        </div>
+
+        {busy ? <p className="muted track-msg">{t("tr_loading")}</p> : null}
+        {!busy && res === null ? (
+          <p className="muted track-msg">{t("tr_none", { q })}</p>
+        ) : null}
+
+        {res ? (
+          <div className="track-panel">
+            <div className="track-panel-head">
+              <b className="mono" dir="ltr">
+                {res.ref}
+              </b>
+              <span className={`pill ${statusOf(res.status).p}`}>{t(statusOf(res.status).k)}</span>
             </div>
-            <ul className="tl">
-              {(res.tl || [])
-                .slice()
-                .reverse()
-                .map((e, i) => (
-                  <li key={i} data-on="1">
-                    <span className="dot" />
-                    <span>
-                      <span className="t">
-                        {e.k === "created" ? t("tr_step_new") : t(statusOf(e.v || "new").k)}
-                      </span>
-                      <span className="m">{fmtDT(e.at)}</span>
-                    </span>
+            <div>
+              <div className="lab">{t("tr_state")}</div>
+              <ol className="track-flow">
+                {FLOW.map((s, i) => (
+                  <li
+                    key={s.id}
+                    data-on={i === reached ? 1 : 0}
+                    data-done={i < reached ? 1 : 0}
+                  >
+                    <b className="mono">{String(i + 1).padStart(2, "0")}</b>
+                    <span>{t(s.k)}</span>
                   </li>
                 ))}
-            </ul>
+              </ol>
+            </div>
+            <div>
+              <div className="lab" style={{ marginBottom: 8 }}>
+                {t("tr_hist")}
+              </div>
+              <ul className="tl">
+                {(res.tl || [])
+                  .slice()
+                  .reverse()
+                  .map((e, i) => (
+                    <li key={i} data-on="1">
+                      <span className="dot" />
+                      <span>
+                        <span className="t">
+                          {e.k === "created" ? t("tr_step_new") : t(statusOf(e.v || "new").k)}
+                        </span>
+                        <span className="m mono" dir="ltr">
+                          {fmtDT(e.at)}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
-        </div>
-      ) : null}
-    </section>
+        ) : null}
+      </section>
+    </>
   );
 }

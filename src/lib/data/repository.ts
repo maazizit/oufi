@@ -33,6 +33,7 @@ type DbProduct = {
   specs: [string, string][] | unknown;
   pop: number;
   active: boolean;
+  image_path?: string | null;
 };
 
 type DbRequest = {
@@ -81,6 +82,7 @@ function mapProduct(p: DbProduct): Product {
     specs: (p.specs as [string, string][]) || [],
     pop: p.pop,
     active: p.active,
+    ...(p.image_path ? { img: p.image_path } : {}),
   };
 }
 

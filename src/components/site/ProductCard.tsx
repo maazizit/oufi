@@ -19,15 +19,23 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="pcard">
       <Link href={href} className="art" aria-label={L(product.name)}>
-        <ProductArt cat={product.cat} size={110} />
+        <span className="pcard-ref mono">{product.ref}</span>
+        {product.img ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={product.img} alt={L(product.name)} className="pcard-photo" loading="lazy" />
+        ) : (
+          <ProductArt cat={product.cat} size={96} />
+        )}
       </Link>
       <div className="bd">
-        <span className="br">{product.brand}</span>
+        <span className="br mono">{product.brand}</span>
         <Link href={href} className="nm">
           {L(product.name)}
         </Link>
         <span className={`pill ${stock.cls}`}>{stock.text}</span>
-        <div className="pr num">{money(lang, product.price)}</div>
+        <div className="pr num" dir="ltr">
+          {money(lang, product.price)}
+        </div>
       </div>
       <div className="acts">
         <Link href={href} className="btn btn-sm btn-out">

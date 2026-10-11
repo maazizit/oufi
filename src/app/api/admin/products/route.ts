@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     specs: body.specs || [],
     pop: 50,
     active: Boolean(body.active),
+    ...(body.img ? { img: String(body.img).trim() } : {}),
   };
 
   if (!isSupabaseConfigured()) {
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
     specs: product.specs,
     pop: product.pop,
     active: product.active,
+    image_path: product.img || null,
     updated_at: new Date().toISOString(),
   };
   const { error } = await supabase.from("products").upsert(row);
@@ -61,6 +63,7 @@ export async function PATCH(req: Request) {
       ...p,
       stock: body.stock != null ? Number(body.stock) : p.stock,
       active: body.active != null ? Boolean(body.active) : p.active,
+      ...(body.img != null ? { img: String(body.img).trim() || undefined } : {}),
     });
     return NextResponse.json({ ok: true });
   }
@@ -75,6 +78,7 @@ export async function PATCH(req: Request) {
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
   if (body.stock != null) patch.stock = Number(body.stock);
   if (body.active != null) patch.active = Boolean(body.active);
+  if (body.img != null) patch.image_path = String(body.img).trim() || null;
   const { error } = await supabase.from("products").update(patch).eq("id", body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });
