@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { Num } from "./Num";
 import { useLang } from "./LangProvider";
 import type { Settings } from "@/lib/types";
 
@@ -17,7 +18,9 @@ export function SiteFooter({ settings }: { settings: Settings }) {
       <div className="wrap">
         <div>
           <p className="ft-brand">{company}</p>
-          <p className="ft-cis">C.I.S · {SITE.hqCity.toUpperCase()}</p>
+          <p className="ft-cis">
+            <Num>C.I.S.</Num> · {SITE.hqCity.toUpperCase()}
+          </p>
           <p className="sm ft-nap" style={{ maxWidth: "36ch" }}>
             {L(settings.tagline) || SITE.cisShort}
           </p>

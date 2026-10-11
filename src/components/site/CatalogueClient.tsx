@@ -6,6 +6,7 @@ import type { Product, Settings } from "@/lib/types";
 import { CATS } from "@/lib/data/constants";
 import { SITE } from "@/lib/site";
 import { Money } from "./Money";
+import { Num } from "./Num";
 import { ProductCard } from "./ProductCard";
 import { useLang } from "./LangProvider";
 
@@ -70,7 +71,7 @@ export function CatalogueClient({
       <section className="page-band">
         <div className="wrap page-band-in rise">
           <p className="page-band-k mono">
-            C.I.S · {SITE.hqCity.toUpperCase()} · CATALOGUE
+            <Num>C.I.S.</Num> · {SITE.hqCity.toUpperCase()} · CATALOGUE
           </p>
           <h1>{t("cat_title")}</h1>
           <p className="page-band-lead">{t("cat_lead")}</p>

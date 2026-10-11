@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { SITE } from "@/lib/site";
 import { BrandMark } from "./BrandMark";
+import { Num } from "./Num";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 import { ThemeToggle } from "./ThemeToggle";
@@ -55,7 +56,13 @@ export function SiteHeader({
     };
   }, [open]);
 
-  const subtitle = `C.I.S · ${SITE.hqCity.toUpperCase()}`;
+  const subtitleNode = (
+    <>
+      <Num>C.I.S.</Num>
+      {" · "}
+      {SITE.hqCity.toUpperCase()}
+    </>
+  );
 
   const renderNav = (onNavigate?: () => void) =>
     NAV.map(([path, key]) => {
@@ -87,7 +94,7 @@ export function SiteHeader({
           <span>
             <span className="nm brand-word">{company}</span>
             <br />
-            <span className="sl">{subtitle}</span>
+            <span className="sl">{subtitleNode}</span>
           </span>
         </Link>
 
