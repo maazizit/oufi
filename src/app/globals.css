@@ -2021,10 +2021,19 @@ tbody tr[data-click]:hover {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+  /* If RevealObserver never marks the node (Suspense race, IO failure), show it. */
+  animation: rev-failsafe 1ms 1.25s forwards;
 }
 .rev[data-seen] {
   opacity: 1;
   transform: none;
+  animation: none;
+}
+@keyframes rev-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .r1 {
   transition-delay: 60ms;
@@ -2726,6 +2735,7 @@ tbody tr[data-click]:hover {
     opacity: 1;
     transform: none;
     transition: none;
+    animation: none;
   }
   .marq-t {
     animation: none;
