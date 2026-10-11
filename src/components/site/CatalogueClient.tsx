@@ -4,8 +4,8 @@ import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Product, Settings } from "@/lib/types";
 import { CATS } from "@/lib/data/constants";
-import { money } from "@/lib/data/i18n";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
+import { Money } from "./Money";
 import { ProductCard } from "./ProductCard";
 import { useLang } from "./LangProvider";
 
@@ -16,7 +16,7 @@ export function CatalogueClient({
   products: Product[];
   settings: Settings;
 }) {
-  const { lang, t, L } = useLang();
+  const { t, L, href: localeHref } = useLang();
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -43,9 +43,10 @@ export function CatalogueClient({
         }
       });
       const qs = next.toString();
-      router.replace(qs ? `/catalogue?${qs}` : "/catalogue", { scroll: false });
+      const base = localeHref("/catalogue");
+      router.replace(qs ? `${base}?${qs}` : base, { scroll: false });
     },
-    [router, sp],
+    [router, sp, localeHref],
   );
 
   const list = useMemo(() => {
@@ -123,7 +124,7 @@ export function CatalogueClient({
 
             <div className="fbox">
               <h4>
-                {t("f_price")} — <span className="num" dir="ltr">{money(lang, max)}</span>
+                {t("f_price")} — <Money amount={max} />
               </h4>
               <input
                 className="input range"
@@ -180,7 +181,7 @@ export function CatalogueClient({
             <button
               type="button"
               className="btn btn-out btn-sm"
-              onClick={() => router.replace("/catalogue")}
+              onClick={() => router.replace(localeHref("/catalogue"))}
             >
               {t("f_clear")}
             </button>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { Localized, Product, Settings } from "./types";
 import { L } from "./data/i18n";
-import { SITE, SITE_URL as CONFIG_SITE_URL } from "./site-config";
+import { SITE, SITE_URL as CONFIG_SITE_URL } from "./site";
 import { alternateUrls, stripLocalePrefix } from "./locale";
 
 export const SITE_URL = CONFIG_SITE_URL;

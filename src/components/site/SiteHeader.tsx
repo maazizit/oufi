@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { BrandMark } from "./BrandMark";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
@@ -26,10 +26,16 @@ export function SiteHeader({
   tagline?: string;
 }) {
   const pathname = usePathname();
-  const { t, toggle } = useLang();
+  const { t, toggle, href: localeHref } = useLang();
   const { count } = useCart();
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const barePath = pathname?.startsWith("/ar")
+    ? pathname === "/ar"
+      ? "/"
+      : pathname.replace(/^\/ar/, "") || "/"
+    : pathname || "/";
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 40);
@@ -52,17 +58,19 @@ export function SiteHeader({
   const subtitle = `C.I.S · ${SITE.hqCity.toUpperCase()}`;
 
   const renderNav = (onNavigate?: () => void) =>
-    NAV.map(([href, key]) => {
+    NAV.map(([path, key]) => {
       const current =
-        href === "/#about"
+        path === "/#about"
           ? false
-          : href === "/"
-            ? pathname === "/"
-            : pathname === href || pathname.startsWith(href + "/");
+          : path === "/"
+            ? barePath === "/"
+            : barePath === path || barePath.startsWith(path + "/");
+      const target =
+        path === "/#about" ? `${localeHref("/")}#about` : localeHref(path);
       return (
         <Link
-          key={href}
-          href={href}
+          key={path}
+          href={target}
           aria-current={current ? "page" : undefined}
           onClick={onNavigate}
         >
@@ -74,7 +82,7 @@ export function SiteHeader({
   return (
     <header className={`hdr${compact ? " is-compact" : ""}`}>
       <div className="hdr-in">
-        <Link href="/" className="brand" aria-label={company}>
+        <Link href={localeHref("/")} className="brand" aria-label={company}>
           <BrandMark size={40} />
           <span>
             <span className="nm brand-word">{company}</span>
@@ -105,7 +113,7 @@ export function SiteHeader({
             {t("lang_switch")}
           </button>
           <Link
-            href="/panier"
+            href={localeHref("/panier")}
             className="hdr-icon-btn cartbtn"
             aria-label={t("nav_cart")}
           >
@@ -117,7 +125,7 @@ export function SiteHeader({
               </span>
             ) : null}
           </Link>
-          <Link href="/devis" className="btn btn-pri btn-sm hdr-cta hdr-cta-desk">
+          <Link href={localeHref("/devis")} className="btn btn-pri btn-sm hdr-cta hdr-cta-desk">
             {t("nav_quote_free")}
           </Link>
           <button
@@ -152,7 +160,7 @@ export function SiteHeader({
         </div>
         <nav aria-label={t("menu_open")}>{renderNav(() => setOpen(false))}</nav>
         <div className="hdr-drawer-ctas">
-          <Link href="/devis" className="btn btn-pri" onClick={() => setOpen(false)}>
+          <Link href={localeHref("/devis")} className="btn btn-pri" onClick={() => setOpen(false)}>
             {t("nav_quote_free")}
           </Link>
           <a className="btn btn-out" href={SITE.telHref}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/ui/Icon";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { useLang } from "./LangProvider";
 
 export function WhatsAppFab() {

@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { useLang } from "./LangProvider";
 import type { Settings } from "@/lib/types";
 
 export function SiteFooter({ settings }: { settings: Settings }) {
-  const { t, L } = useLang();
+  const { t, L, href: localeHref } = useLang();
   const company = settings.company || SITE.name;
   const phone = SITE.phoneDisplay;
   const email = SITE.email;
@@ -27,52 +27,52 @@ export function SiteFooter({ settings }: { settings: Settings }) {
         </div>
         <div>
           <h4>{t("ft_nav")}</h4>
-          <Link className="li" href="/">
+          <Link className="li" href={localeHref("/")}>
             {t("nav_home")}
           </Link>
-          <Link className="li" href="/#about">
+          <Link className="li" href={`${localeHref("/")}#about`}>
             {t("nav_about")}
           </Link>
-          <Link className="li" href="/services">
+          <Link className="li" href={localeHref("/services")}>
             {t("nav_services")}
           </Link>
-          <Link className="li" href="/catalogue">
+          <Link className="li" href={localeHref("/catalogue")}>
             {t("nav_products")}
           </Link>
-          <Link className="li" href="/suivi">
+          <Link className="li" href={localeHref("/suivi")}>
             {t("nav_track")}
           </Link>
-          <Link className="li" href="/contact">
+          <Link className="li" href={localeHref("/contact")}>
             {t("nav_contact")}
           </Link>
-          <Link className="li" href="/mentions-legales">
+          <Link className="li" href={localeHref("/mentions-legales")}>
             {t("ft_mentions")}
           </Link>
-          <Link className="li" href="/confidentialite">
+          <Link className="li" href={localeHref("/confidentialite")}>
             {t("ft_privacy")}
           </Link>
-          <Link className="li" href="/conditions">
+          <Link className="li" href={localeHref("/conditions")}>
             {t("ft_terms")}
           </Link>
         </div>
         <div>
           <h4>{t("ft_svc")}</h4>
-          <Link className="li" href="/catalogue">
+          <Link className="li" href={localeHref("/catalogue")}>
             {t("pill_shop_t")}
           </Link>
-          <Link className="li" href="/installation-camera-surveillance">
+          <Link className="li" href={localeHref("/installation-camera-surveillance")}>
             {t("s_cam_t")}
           </Link>
-          <Link className="li" href="/reseau-informatique">
+          <Link className="li" href={localeHref("/reseau-informatique")}>
             {t("s_net_t")}
           </Link>
-          <Link className="li" href="/zones-d-intervention">
+          <Link className="li" href={localeHref("/zones-d-intervention")}>
             Zones
           </Link>
-          <Link className="li" href="/blog">
+          <Link className="li" href={localeHref("/blog")}>
             Blog
           </Link>
-          <Link className="li" href="/devis?type=maint">
+          <Link className="li" href={`${localeHref("/devis")}?type=maint`}>
             {t("pill_maint_t")}
           </Link>
         </div>

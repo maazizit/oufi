@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Sans_Arabic, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/site/ThemeProvider";
-import { SITE, SITE_URL } from "@/lib/site-config";
+import { SITE, SITE_URL } from "@/lib/site";
 
 const archivo = Archivo({
   subsets: ["latin"],

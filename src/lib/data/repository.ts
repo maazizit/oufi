@@ -3,7 +3,7 @@ import {
   createServiceClient,
   isSupabaseConfigured,
 } from "@/lib/supabase/server";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import type {
   CartItem,
   ContactChannel,
@@ -131,7 +131,7 @@ export async function getSettings(): Promise<Settings> {
 
   if (!s) return demo.demoGetSettings();
 
-  // NAP canonique (site-config) prioritaire tant que le seed DB n’est pas resynchronisé
+  // NAP canonique (lib/site) prioritaire tant que le seed DB n’est pas resynchronisé
   return {
     company: SITE.name,
     tagline: { ...SITE.tagline },

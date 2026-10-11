@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Settings } from "@/lib/types";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { Icon } from "@/components/ui/Icon";
 import { FeesTable } from "./FeesTable";
 import { useLang } from "./LangProvider";
@@ -38,6 +38,7 @@ export function ContactClient({ settings }: { settings: Settings }) {
     val: string,
     key: string,
     ltr = false,
+    linkHref?: string,
   ) => (
     <div className="contact-row">
       <span className="contact-row-ic">
@@ -46,7 +47,11 @@ export function ContactClient({ settings }: { settings: Settings }) {
       <div className="contact-row-body">
         <div className="lab">{lab}</div>
         <div className="mono" style={{ wordBreak: "break-word" }} dir={ltr ? "ltr" : undefined}>
-          {val}
+          {linkHref ? (
+            <a href={linkHref}>{val}</a>
+          ) : (
+            val
+          )}
         </div>
       </div>
       <button type="button" className="btn btn-sm btn-out" onClick={() => copy(val, key)}>
@@ -84,8 +89,8 @@ export function ContactClient({ settings }: { settings: Settings }) {
         <div className="contact-grid">
           <div className="contact-panel">
             {row("pin", t("ct_addr"), L(SITE.address), "a")}
-            {row("phone", t("ch_phone"), SITE.phoneDisplay, "p", true)}
-            {row("mail", t("ch_mail"), SITE.email, "m", true)}
+            {row("phone", t("ch_phone"), SITE.phoneDisplay, "p", true, SITE.telHref)}
+            {row("mail", t("ch_mail"), SITE.email, "m", true, SITE.mailHref)}
             {row("cal", t("ct_hours"), L(settings.hours), "h")}
             <div>
               <div className="lab">{t("ct_zone")}</div>

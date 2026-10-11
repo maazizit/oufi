@@ -39,7 +39,7 @@ export const SERVICE_PAGES: ServicePage[] = [
       fr: [
         "Une bonne installation commence par le plan de couverture : angles morts, hauteur de pose, éclairage, besoin de vision nocturne et enregistrement local ou cloud. Nous posons des caméras dôme, bullet, PTZ et Wi-Fi selon le site.",
         "Le câblage Cat6 / PoE et le NVR sont dimensionnés pour votre nombre de canaux. À la mise en service, vous consultez vos caméras depuis le téléphone (Android / iOS) et nous formons votre équipe.",
-        "Que vous soyez à Marrakech (Gueliz, Médina, Route de Casablanca) ou dans une autre ville, le parcours reste le même : visite → devis détaillé → pose → garantie 12 mois.",
+        "Que vous soyez à Marrakech (Gueliz, Médina, Route de Casablanca) ou dans une autre ville, le parcours reste le même : visite → devis détaillé → pose → garantie 12 mois pose et main-d’œuvre (garantie fabricant du matériel en plus).",
       ],
       ar: [
         "تبدأ التركيبة الجيدة بخطة تغطية: الزوايا الميتة، ارتفاع التركيب، الإضاءة، والرؤية الليلية. نركّب كاميرات قبة وبوليت وPTZ وواي فاي حسب الموقع.",

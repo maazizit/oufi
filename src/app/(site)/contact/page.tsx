@@ -1,7 +1,7 @@
 import { getSettings } from "@/lib/data/repository";
 import { ContactClient } from "@/components/site/ContactClient";
 import { pageMeta } from "@/lib/seo";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
   title: "Contact AMANPLANET — Marrakech & Maroc",

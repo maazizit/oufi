@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Request, Settings } from "@/lib/types";
 import { chanOf } from "@/lib/utils";
-import { money } from "@/lib/data/i18n";
 import { getClientRequest, readLastRequest } from "@/lib/client/demo-client-store";
+import { Money } from "./Money";
+import { Num } from "./Num";
 import { useLang } from "./LangProvider";
 
 export function ConfirmClient({
@@ -17,7 +18,7 @@ export function ConfirmClient({
   request: Request | null;
   refParam?: string;
 }) {
-  const { lang, t } = useLang();
+  const { t, tb } = useLang();
   const [request, setRequest] = useState<Request | null>(initial);
 
   useEffect(() => {
@@ -59,21 +60,21 @@ export function ConfirmClient({
         <div>
           <div className="lab">{t("cf_ref")}</div>
           <b className="mono" style={{ fontSize: 22 }}>
-            {request.ref}
+            <Num>{request.ref}</Num>
           </b>
         </div>
         <p>
-          {t("cf_24", {
+          {tb("cf_24", {
             chan: t(ch.k),
             contact,
           })}
         </p>
-        <p className="sm">{t("cf_keep")}</p>
+        <p className="sm">{tb("cf_keep")}</p>
         {request.fee != null ? (
           <div className="feebar">
             <span>
               <b>
-                {t("q_feeline")} : {money(lang, request.fee)}
+                {t("q_feeline")} : <Money amount={request.fee} />
               </b>
               <br />
               {t("q_feenote")}

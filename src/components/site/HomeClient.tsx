@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product, Settings, TeamMember, Localized } from "@/lib/types";
-import { money } from "@/lib/data/i18n";
 import { PILLARS } from "@/lib/data/constants";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { Icon } from "@/components/ui/Icon";
 import { CameraWall } from "./CameraWall";
 import { FeesTable } from "./FeesTable";
+import { Money } from "./Money";
+import { Num } from "./Num";
 import { ProductCard } from "./ProductCard";
 import { SectionHeader } from "./SectionHeader";
 import { StatBand } from "./StatBand";
@@ -45,7 +46,7 @@ export function HomeClient({
   sectors: Localized[];
   services: Svc[];
 }) {
-  const { lang, t, L } = useLang();
+  const { t, tb, L } = useLang();
   const boss = team.find((m) => m.role === "manager") || {
     name: settings.manager,
     role: "manager" as const,
@@ -66,11 +67,11 @@ export function HomeClient({
             <span className="hero-cr-dot" />
             LIVE · {SITE.hqCity.toUpperCase()}
           </p>
-          <p className="hero-cr-brand rise d1">{t("h_brand")}</p>
-          <p className="hero-cr-cis rise d1">{t("h_cis")}</p>
+          <p className="hero-cr-brand rise d1">{tb("h_brand")}</p>
+          <p className="hero-cr-cis rise d1">{tb("h_cis")}</p>
           <h1 className="hero-cr-title rise d2">{t("h_title")}</h1>
-          <p className="hero-cr-lead rise d3">{t("h_lead")}</p>
-          <p className="hero-cr-note rise d3">{t("h_callback")}</p>
+          <p className="hero-cr-lead rise d3">{tb("h_lead")}</p>
+          <p className="hero-cr-note rise d3">{tb("h_callback")}</p>
           <div className="cta hero-cr-cta rise d4">
             <Link href="/devis" className="btn btn-pri btn-lg">
               {t("h_cta1")} <Icon name="arrow" size={17} />
@@ -78,8 +79,8 @@ export function HomeClient({
             <Link href="/catalogue" className="btn btn-ghost btn-lg">
               {t("h_cta2")}
             </Link>
-            <a href={SITE.telHref} className="btn btn-ghost btn-lg" dir="ltr">
-              <Icon name="phone" size={16} /> {SITE.phoneDisplay}
+            <a href={SITE.telHref} className="btn btn-ghost btn-lg">
+              <Icon name="phone" size={16} /> <Num>{SITE.phoneDisplay}</Num>
             </a>
           </div>
         </div>
@@ -88,7 +89,7 @@ export function HomeClient({
       <StatBand />
 
       <section className="sec wrap pillars-sec">
-        <SectionHeader title={t("pill_title")} lead={t("pill_lead")} />
+        <SectionHeader title={t("pill_title")} lead={tb("pill_lead")} />
         <div className="pillars">
           {PILLARS.map((p, i) => (
             <Link
@@ -124,13 +125,13 @@ export function HomeClient({
               </header>
               <ul>
                 {s.li.map((k) => (
-                  <li key={k}>{t(k)}</li>
+                  <li key={k}>{tb(k)}</li>
                 ))}
               </ul>
               <div className="trade-from">
                 {t("s_from")}{" "}
-                <b className="num" dir="ltr">
-                  {money(lang, s.from)}
+                <b>
+                  <Money amount={s.from} />
                 </b>
               </div>
               <div className="trade-actions">
@@ -191,11 +192,11 @@ export function HomeClient({
       </section>
 
       <section id="about" className="sec wrap" style={{ scrollMarginTop: 88 }}>
-        <SectionHeader eyebrow={t("ab_eye")} title={t("ab_title")} />
+        <SectionHeader eyebrow={t("ab_eye")} title={tb("ab_title")} />
         <div className="about-g rev">
           <div>
             <p className="ink2" style={{ marginBottom: 12 }}>
-              {t("ab_p1", { company: settings.company })}
+              {tb("ab_p1", { company: settings.company })}
             </p>
             <p className="ink2">{t("ab_p2")}</p>
             <div className="person" style={{ marginTop: 18 }}>
@@ -216,7 +217,7 @@ export function HomeClient({
             {[1, 2, 3].map((n) => (
               <div key={n} className="val">
                 <b>{t(`ab_v${n}_t`)}</b>
-                <span>{t(`ab_v${n}_d`)}</span>
+                <span>{tb(`ab_v${n}_d`)}</span>
               </div>
             ))}
           </div>

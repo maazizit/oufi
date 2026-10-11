@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Request, RequestStatus } from "@/lib/types";
-import { SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site";
 import { statusOf, fmtDT } from "@/lib/utils";
 import { getClientRequest, listClientRequests } from "@/lib/client/demo-client-store";
 import { useLang } from "./LangProvider";
