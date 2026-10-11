@@ -2517,67 +2517,169 @@ tbody tr[data-click]:hover {
   transform: scale(1.05);
   background: #0f7a6e;
 }
+/* —— Page band (services & shared) —— */
+.page-band {
+  background: #070c16;
+  color: #e8eef7;
+  border-bottom: 1px solid #1a2540;
+  padding-block: clamp(48px, 8vw, 88px);
+}
+.page-band-in {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: var(--container);
+}
+.page-band-k {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #3ba7e8;
+}
+.page-band h1 {
+  color: #f2f6fc;
+  margin: 0;
+  max-width: 22ch;
+}
+.page-band-lead {
+  margin: 0;
+  max-width: 52ch;
+  color: #a9b6cc;
+  font-size: 15.5px;
+}
+.page-band-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.page-band .btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #2a3a58;
+  color: #e8eef7;
+}
+
 .svc-anchors {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  padding: 10px 0;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+.svc-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-s);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.svc-anchor:hover {
+  border-color: var(--blue);
+  color: var(--blue-ink);
+}
+.svc-anchor-n {
+  font-size: 11px;
+  color: var(--subtle);
+  letter-spacing: 0.06em;
 }
 .svc-detail {
   border: 1px solid var(--line);
   background: var(--surface);
-  border-radius: var(--r-l);
-  padding: 22px;
-  margin-bottom: 16px;
-  scroll-margin-top: 88px;
+  border-radius: var(--r-m);
+  padding: 24px;
+  margin-bottom: 18px;
+  scroll-margin-top: 120px;
 }
 .svc-detail header {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: flex-start;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 .svc-detail .ic {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: var(--blue-soft);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
   color: var(--blue-ink);
   flex: 0 0 auto;
+}
+.svc-detail-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.svc-code {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--subtle);
+}
+.svc-detail h2 {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  color: var(--titles);
 }
 .svc-detail-g {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 .svc-detail h3 {
-  font-size: 15px;
-  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 10px;
 }
 .svc-detail ul {
   margin: 0;
   padding-inline-start: 18px;
   color: var(--ink-2);
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .svc-faq {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
 .svc-faq details {
   border-top: 1px solid var(--line);
-  padding: 10px 0;
+  padding: 12px 0;
 }
 .svc-faq summary {
   cursor: pointer;
   font-weight: 600;
+  color: var(--titles);
 }
 .svc-faq p {
-  margin-top: 6px;
+  margin-top: 8px;
   color: var(--ink-2);
   font-size: 14px;
+}
+.svc-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .fees-table h2 {
   margin-bottom: 6px;
