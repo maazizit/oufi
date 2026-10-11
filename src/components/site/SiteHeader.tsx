@@ -51,24 +51,25 @@ export function SiteHeader({
 
   const subtitle = `C.I.S · ${SITE.hqCity.toUpperCase()}`;
 
-  const navLinks = NAV.map(([href, key]) => {
-    const current =
-      href === "/#about"
-        ? false
-        : href === "/"
-          ? pathname === "/"
-          : pathname === href || pathname.startsWith(href + "/");
-    return (
-      <Link
-        key={href}
-        href={href}
-        aria-current={current ? "page" : undefined}
-        onClick={() => setOpen(false)}
-      >
-        {t(key)}
-      </Link>
-    );
-  });
+  const renderNav = (onNavigate?: () => void) =>
+    NAV.map(([href, key]) => {
+      const current =
+        href === "/#about"
+          ? false
+          : href === "/"
+            ? pathname === "/"
+            : pathname === href || pathname.startsWith(href + "/");
+      return (
+        <Link
+          key={href}
+          href={href}
+          aria-current={current ? "page" : undefined}
+          onClick={onNavigate}
+        >
+          {t(key)}
+        </Link>
+      );
+    });
 
   return (
     <header className={`hdr${compact ? " is-compact" : ""}`}>
@@ -86,7 +87,7 @@ export function SiteHeader({
           className="nav"
           aria-label={t("nav_home") === "الرئيسية" ? "القائمة الرئيسية" : "Navigation principale"}
         >
-          {navLinks}
+          {renderNav()}
         </nav>
 
         <div className="hdr-actions">
@@ -149,7 +150,7 @@ export function SiteHeader({
             <Icon name="close" size={20} />
           </button>
         </div>
-        <nav aria-label={t("menu_open")}>{navLinks}</nav>
+        <nav aria-label={t("menu_open")}>{renderNav(() => setOpen(false))}</nav>
         <div className="hdr-drawer-ctas">
           <Link href="/devis" className="btn btn-pri" onClick={() => setOpen(false)}>
             {t("nav_quote_free")}
