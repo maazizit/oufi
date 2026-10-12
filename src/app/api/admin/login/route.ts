@@ -9,7 +9,7 @@ import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const rawUser = String(body.user || body.email || "");
-  const password = String(body.password || "");
+  const password = String(body.password || "").trim();
 
   if (!isAllowedAdminIdentifier(rawUser) || !password) {
     return NextResponse.json({ error: "bad_credentials" }, { status: 401 });

@@ -4,7 +4,7 @@ import {
   ensureSupabaseAdminUser,
   resetSupabaseAdminPassword,
 } from "@/lib/admin/supabase-admin";
-import { isSupabaseConfigured } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 /**
  * Crée (ou réinitialise avec ?reset=1) le compte admin Supabase Auth.
@@ -32,9 +32,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "bootstrap_failed" }, { status: 500 });
   }
 
+  const supabase = await createClient();
+  let signInCheck: { ok: boolean; message?: string } = { ok: false };
+  if (supabase) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: ADMIN_EMAIL,
+      password,
+    });
+    signInCheck = error ? { ok: false, message: error.message } : { ok: true };
+  }
+
   return NextResponse.json({
     ok: true,
     email: ADMIN_EMAIL,
     reset,
+    signInCheck,
   });
 }

@@ -21,7 +21,9 @@ export function isAllowedAdminIdentifier(raw: string): boolean {
 /** Mot de passe initial stocké côté Vercel (bootstrap), pas vérifié au login. */
 export function adminPasswordFromEnv(): string | null {
   const pw = process.env.ADMIN_PASSWORD || process.env.ADMIN_DEMO_PASSWORD;
-  return pw && pw.length > 0 ? pw : null;
+  if (!pw) return null;
+  const trimmed = pw.trim();
+  return trimmed.length > 0 ? trimmed : null;
 }
 
 export { ADMIN_EMAIL };
