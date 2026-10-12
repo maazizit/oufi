@@ -3,13 +3,18 @@ import { normalizeDraft } from "./devis";
 import type { ChatAssistantPayload, ChatTurn } from "./types";
 import type { Lang } from "@/lib/types";
 
-const DEFAULT_MODEL = "llama-3.1-8b-instant";
-const ALLOWED_MODELS = new Set([
-  DEFAULT_MODEL,
+const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+const MODEL_PREFERENCE = [
   "llama-3.3-70b-versatile",
+  "llama-3.1-8b-instant",
   "llama-3.1-70b-versatile",
   "mixtral-8x7b-32768",
-]);
+  "gemma2-9b-it",
+  "openai/gpt-oss-20b",
+  "openai/gpt-oss-120b",
+];
+
+let cachedModelIds: string[] | null = null;
 
 function normalizeGroqKey(raw: string | undefined): string {
   if (!raw) return "";
@@ -24,15 +29,27 @@ function normalizeGroqKey(raw: string | undefined): string {
   return k;
 }
 
-function resolveModel(): string {
-  const fromEnv = process.env.GROQ_MODEL?.trim();
-  if (fromEnv && ALLOWED_MODELS.has(fromEnv)) return fromEnv;
-  return DEFAULT_MODEL;
+async function listGroqModelIds(key: string): Promise<string[]> {
+  if (cachedModelIds) return cachedModelIds;
+  const res = await fetch("https://api.groq.com/openai/v1/models", {
+    headers: { Authorization: `Bearer ${key}` },
+  });
+  if (!res.ok) return [];
+  const data = (await res.json()) as { data?: { id: string }[] };
+  cachedModelIds = (data.data ?? []).map((m) => m.id).filter(Boolean);
+  return cachedModelIds;
 }
 
-function modelsToTry(): string[] {
-  const preferred = resolveModel();
-  return [...new Set([DEFAULT_MODEL, preferred])];
+async function modelsToTry(key: string): Promise<string[]> {
+  const fromEnv = process.env.GROQ_MODEL?.trim();
+  const available = await listGroqModelIds(key);
+  const ordered: string[] = [];
+  if (fromEnv) ordered.push(fromEnv);
+  ordered.push(...MODEL_PREFERENCE);
+  ordered.push(...available);
+  const unique = [...new Set(ordered.filter(Boolean))];
+  if (!available.length) return unique.slice(0, 4);
+  return unique.filter((id) => available.includes(id)).slice(0, 6);
 }
 
 function systemPrompt(lang: Lang): string {
@@ -164,11 +181,16 @@ export async function pingGroq(): Promise<{
   configured: boolean;
   status: number;
   detail?: string;
+  model?: string;
+  modelCount?: number;
 }> {
   const key = normalizeGroqKey(process.env.GROQ_API_KEY);
   if (!key || !key.startsWith("gsk_")) {
     return { configured: false, status: 0 };
   }
+  const models = await modelsToTry(key);
+  const modelCount = (await listGroqModelIds(key)).length;
+  const model = models[0] || DEFAULT_MODEL;
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -176,13 +198,19 @@ export async function pingGroq(): Promise<{
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: DEFAULT_MODEL,
+      model,
       max_tokens: 8,
       messages: [{ role: "user", content: "ping" }],
     }),
   });
   const detail = res.ok ? undefined : (await res.text()).slice(0, 280);
-  return { configured: true, status: res.status, detail };
+  return {
+    configured: true,
+    status: res.status,
+    detail,
+    model,
+    modelCount,
+  };
 }
 
 export async function chatWithGroq(
@@ -190,7 +218,7 @@ export async function chatWithGroq(
   messages: ChatTurn[],
 ): Promise<ChatAssistantPayload> {
   const key = normalizeGroqKey(process.env.GROQ_API_KEY);
-  const models = modelsToTry();
+  const models = await modelsToTry(key);
 
   if (!key) {
     return unavailablePayload(lang, "missing");

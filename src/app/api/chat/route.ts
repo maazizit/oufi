@@ -8,10 +8,12 @@ export const runtime = "nodejs";
 
 /** Diagnostic: vérifie la clé Groq côté serveur (sans exposer la clé). */
 export async function GET() {
-  const { configured, status, detail } = await pingGroq();
+  const { configured, status, detail, model, modelCount } = await pingGroq();
   return NextResponse.json({
     groqConfigured: configured,
     groqHttpStatus: status,
+    groqModel: model,
+    groqModelCount: modelCount,
     ok: configured && status === 200,
     ...(detail ? { groqError: detail } : {}),
   });
