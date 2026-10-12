@@ -154,6 +154,27 @@ function payloadFromGroqContent(
   };
 }
 
+/** Minimal Groq ping for ops (does not expose secrets). */
+export async function pingGroq(): Promise<{ configured: boolean; status: number }> {
+  const key = normalizeGroqKey(process.env.GROQ_API_KEY);
+  if (!key || !key.startsWith("gsk_")) {
+    return { configured: false, status: 0 };
+  }
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: DEFAULT_MODEL,
+      max_tokens: 8,
+      messages: [{ role: "user", content: "ping" }],
+    }),
+  });
+  return { configured: true, status: res.status };
+}
+
 export async function chatWithGroq(
   lang: Lang,
   messages: ChatTurn[],

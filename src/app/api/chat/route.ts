@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
-import { chatWithGroq } from "@/lib/chat/groq";
+import { chatWithGroq, pingGroq } from "@/lib/chat/groq";
 import { checkRateLimit, rateLimitKey } from "@/lib/chat/rate-limit";
 import type { ChatTurn } from "@/lib/chat/types";
 import type { Lang } from "@/lib/types";
 
 export const runtime = "nodejs";
+
+/** Diagnostic: vérifie la clé Groq côté serveur (sans exposer la clé). */
+export async function GET() {
+  const { configured, status } = await pingGroq();
+  return NextResponse.json({
+    groqConfigured: configured,
+    groqHttpStatus: status,
+    ok: configured && status === 200,
+  });
+}
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip");
