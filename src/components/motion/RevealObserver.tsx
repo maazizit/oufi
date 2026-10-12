@@ -49,8 +49,14 @@ export function RevealObserver() {
       failsafeTimer = window.setTimeout(revealAllPending, FAILSAFE_MS);
     };
 
+    const touchUi = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
     const observe = (el: HTMLElement) => {
       if (el.hasAttribute("data-seen") || pending.has(el)) return;
+      if (touchUi) {
+        markSeen(el);
+        return;
+      }
       pending.add(el);
       if (!io) {
         markSeen(el);

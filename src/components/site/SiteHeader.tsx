@@ -50,10 +50,33 @@ export function SiteHeader({
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const scrollY = window.scrollY;
+    const { style } = document.body;
+    style.position = "fixed";
+    style.top = `-${scrollY}px`;
+    style.left = "0";
+    style.right = "0";
+    style.width = "100%";
+    style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      style.position = "";
+      style.top = "";
+      style.left = "";
+      style.right = "";
+      style.width = "";
+      style.overflow = "";
+      window.scrollTo(0, scrollY);
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   const subtitleNode = (
@@ -147,6 +170,15 @@ export function SiteHeader({
           </button>
         </div>
       </div>
+
+      {open ? (
+        <button
+          type="button"
+          className="hdr-drawer-backdrop"
+          aria-label={t("menu_close")}
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
 
       <div
         id="hdr-drawer"
