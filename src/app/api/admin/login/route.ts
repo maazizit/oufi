@@ -4,6 +4,10 @@ import {
   isAllowedAdminIdentifier,
   normalizeAdminLogin,
 } from "@/lib/admin/credentials";
+import {
+  ensureSupabaseAdminUser,
+  resetSupabaseAdminPassword,
+} from "@/lib/admin/supabase-admin";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export async function POST(req: Request) {
@@ -39,7 +43,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "no_client" }, { status: 500 });
   }
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  let { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  const envPassword = adminPasswordFromEnv();
+  if (error && envPassword && password === envPassword) {
+    const synced =
+      (await ensureSupabaseAdminUser(envPassword)) &&
+      (await resetSupabaseAdminPassword(envPassword));
+    if (synced) {
+      ({ error } = await supabase.auth.signInWithPassword({ email, password: envPassword }));
+    }
+  }
+
   if (error) {
     console.error("[admin/login] signIn", error.message);
     return NextResponse.json({ error: "bad_credentials" }, { status: 401 });
