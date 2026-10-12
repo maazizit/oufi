@@ -378,7 +378,7 @@ export async function markNotifsRead(ids?: string[]): Promise<void> {
     demo.demoMarkNotifsRead();
     return;
   }
-  const supabase = await createClient();
+  const supabase = createServiceClient() || (await createClient());
   if (!supabase) {
     await syncDemoFromCookies();
     demo.demoMarkNotifsRead();

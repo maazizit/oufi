@@ -6,6 +6,7 @@ import { CartProvider } from "./CartProvider";
 import { LangProvider } from "./LangProvider";
 import { ToastProvider } from "./ToastProvider";
 import { WhatsAppFab } from "./WhatsAppFab";
+import { SiteChatbot } from "./SiteChatbot";
 import { RevealObserver } from "@/components/motion/RevealObserver";
 import type { Settings } from "@/lib/types";
 
@@ -21,6 +22,7 @@ function ShellInner({
       <SiteHeader company={settings.company} />
       <main id="contenu">{children}</main>
       <SiteFooter settings={settings} />
+      <SiteChatbot />
       <WhatsAppFab />
       <RevealObserver />
     </div>
