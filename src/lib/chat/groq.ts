@@ -52,9 +52,12 @@ export async function chatWithGroq(
     ...messages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
   ];
 
-  async function callGroq(jsonMode: boolean) {
+  const defaultModel = "llama-3.3-70b-versatile";
+  const models = [...new Set([model, defaultModel])];
+
+  async function callGroq(modelName: string, jsonMode: boolean) {
     const body: Record<string, unknown> = {
-      model,
+      model: modelName,
       temperature: 0.4,
       max_tokens: 600,
       messages: groqMessages,
@@ -70,9 +73,13 @@ export async function chatWithGroq(
     });
   }
 
-  let res = await callGroq(true);
+  let res = await callGroq(models[0], true);
   if (!res.ok && res.status === 400) {
-    res = await callGroq(false);
+    res = await callGroq(models[0], false);
+  }
+  if (!res.ok && res.status === 400 && models.length > 1) {
+    const alt = await callGroq(models[1], true);
+    if (alt.ok) res = alt;
   }
 
   if (!res.ok) {
