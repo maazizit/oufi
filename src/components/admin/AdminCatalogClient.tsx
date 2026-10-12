@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Product } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
 import { ProductArt } from "@/components/ui/Icon";
+import { useAdminLang } from "@/components/admin/AdminLangProvider";
 
 export function AdminCatalogClient({
   products,
@@ -14,8 +15,11 @@ export function AdminCatalogClient({
   categories: { id: string; label: string }[];
 }) {
   const router = useRouter();
+  const { t } = useAdminLang();
   const [q, setQ] = useState("");
   const [edit, setEdit] = useState<Product | "new" | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState("");
   const [form, setForm] = useState({
     ref: "",
     cat: "cam",
@@ -69,6 +73,29 @@ export function AdminCatalogClient({
       });
     }
     setEdit(p);
+  }
+
+  async function onPickImage(file: File | null) {
+    if (!file) return;
+    setUploadErr("");
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      fd.set("ref", form.ref || form.name_fr || "product");
+      const res = await fetch("/api/admin/products/upload", { method: "POST", body: fd });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setUploadErr(t("adm_photo_err"));
+        return;
+      }
+      const url = String(data.url || data.path || "");
+      if (url) setForm((f) => ({ ...f, img: url }));
+    } catch {
+      setUploadErr(t("adm_photo_err"));
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function save() {
@@ -292,17 +319,66 @@ export function AdminCatalogClient({
                 <textarea className="textarea" value={form.specs} onChange={(e) => setForm({ ...form, specs: e.target.value })} />
               </div>
               <div className="field">
-                <label>Photo produit — chemin</label>
+                <label>{t("adm_photo_label")}</label>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 14,
+                    alignItems: "flex-start",
+                    flexWrap: "wrap",
+                    marginBottom: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 88,
+                      height: 88,
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      display: "grid",
+                      placeItems: "center",
+                      background: "var(--surface-2)",
+                      border: "1px solid var(--line)",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {form.img ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={form.img}
+                        alt=""
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <ProductArt cat={form.cat} size={88} />
+                    )}
+                  </span>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <label className="btn btn-sm btn-out" style={{ cursor: "pointer" }}>
+                      {uploading ? t("adm_photo_uploading") : t("adm_photo_upload")}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/*"
+                        hidden
+                        disabled={uploading}
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          void onPickImage(f || null);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                    <p className="xs muted" style={{ maxWidth: 280 }}>{t("adm_photo_hint")}</p>
+                    {uploadErr ? <p className="xs err">{uploadErr}</p> : null}
+                  </div>
+                </div>
+                <label className="xs muted">{t("adm_photo_path")}</label>
                 <input
                   className="input mono"
                   placeholder={`/products/${form.ref ? form.ref.toLowerCase() : "slug"}.webp`}
                   value={form.img}
                   onChange={(e) => setForm({ ...form, img: e.target.value })}
                 />
-                <p className="xs muted" style={{ marginTop: 4 }}>
-                  Déposer le fichier dans <code>public/products/</code> puis indiquer son chemin ici
-                  (ex. <code>/products/p1.webp</code>). Vide → icône de catégorie par défaut.
-                </p>
               </div>
               <label className="opt" data-on={form.active ? 1 : 0}>
                 <input type="checkbox" checked={form.active} onChange={(e) => setForm({ ...form, active: e.target.checked })} />

@@ -138,6 +138,16 @@ const A: Record<string, Localized> = {
   adm_interv_actions: { fr: "Actions", ar: "إجراءات" },
   adm_today: { fr: "Aujourd'hui", ar: "اليوم" },
   adm_open_whatsapp: { fr: "Ouvrir WhatsApp", ar: "فتح واتساب" },
+
+  adm_photo_label: { fr: "Photo produit", ar: "صورة المنتج" },
+  adm_photo_upload: { fr: "Choisir une image", ar: "اختيار صورة" },
+  adm_photo_uploading: { fr: "Envoi en cours…", ar: "جاري الرفع…" },
+  adm_photo_hint: {
+    fr: "JPG, PNG ou WebP — max. 5 Mo. Vous pouvez aussi coller une URL ci-dessous.",
+    ar: "JPG أو PNG أو WebP — حتى 5 ميغا. يمكنكم أيضاً لصق رابط أدناه.",
+  },
+  adm_photo_path: { fr: "URL ou chemin", ar: "رابط أو مسار" },
+  adm_photo_err: { fr: "Échec de l’envoi de la photo.", ar: "فشل رفع الصورة." },
 };
 
 export function adminT(lang: Lang, key: string, vars?: Record<string, string | number>) {
