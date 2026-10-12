@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { getRequests, getSettings } from "@/lib/data/repository";
+import { getNotifs, getRequests, getSettings } from "@/lib/data/repository";
 import { Icon } from "@/components/ui/Icon";
 import { AdminSignOut } from "@/components/admin/AdminSignOut";
+import { AdminNotifs } from "@/components/admin/AdminNotifs";
 
 const NAV = [
   { href: "/admin", label: "Tableau de bord", icon: "grid" as const },
@@ -12,8 +13,13 @@ const NAV = [
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [settings, requests] = await Promise.all([getSettings(), getRequests()]);
+  const [settings, requests, notifs] = await Promise.all([
+    getSettings(),
+    getRequests(),
+    getNotifs(),
+  ]);
   const newCount = requests.filter((r) => r.status === "new").length;
+  const unreadNotifs = notifs.filter((n) => !n.read).length;
 
   return (
     <div className="admin">
@@ -27,14 +33,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <br />
             <span className="sl">Back-office</span>
           </span>
+          <div className="side-notifs">
+            <AdminNotifs initial={notifs} />
+          </div>
         </div>
         <nav>
           {NAV.map((n) => (
             <Link key={n.href} href={n.href}>
               <Icon name={n.icon} size={18} />
               <span>{n.label}</span>
-              {n.href === "/admin/demandes" && newCount > 0 ? (
-                <span className="b num">{newCount}</span>
+              {n.href === "/admin/demandes" && (newCount > 0 || unreadNotifs > 0) ? (
+                <span className="b num">{Math.max(newCount, unreadNotifs)}</span>
               ) : null}
             </Link>
           ))}

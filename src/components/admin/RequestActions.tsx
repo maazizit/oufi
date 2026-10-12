@@ -2,9 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Request, TeamMember } from "@/lib/types";
+import type { Request, Settings, TeamMember } from "@/lib/types";
 import { STATUSES } from "@/lib/data/constants";
 import { fmtDT } from "@/lib/utils";
+import { GenerateDevisButton } from "./GenerateDevisButton";
+import type { DevisLine } from "@/lib/pdf/devis";
 
 const statusLabels: Record<string, string> = {
   st_new: "Nouvelle",
@@ -19,9 +21,13 @@ const statusLabels: Record<string, string> = {
 export function RequestActions({
   request,
   team,
+  settings,
+  lines,
 }: {
   request: Request;
   team: TeamMember[];
+  settings: Settings;
+  lines: DevisLine[];
 }) {
   const router = useRouter();
   const [note, setNote] = useState("");
@@ -115,23 +121,25 @@ export function RequestActions({
             ))}
         </div>
       ) : null}
-      <button
-        type="button"
-        className="btn btn-navy"
-        style={{ alignSelf: "flex-start" }}
-        disabled={busy}
-        onClick={async () => {
-          await fetch("/api/admin/interventions", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ref: request.ref }),
-          });
-          router.push("/admin/interventions");
-          router.refresh();
-        }}
-      >
-        Planifier une intervention
-      </button>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "flex-start" }}>
+        <GenerateDevisButton request={request} settings={settings} lines={lines} />
+        <button
+          type="button"
+          className="btn btn-navy"
+          disabled={busy}
+          onClick={async () => {
+            await fetch("/api/admin/interventions", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ref: request.ref }),
+            });
+            router.push("/admin/interventions");
+            router.refresh();
+          }}
+        >
+          Planifier une intervention
+        </button>
+      </div>
     </div>
   );
 }

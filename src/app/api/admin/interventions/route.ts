@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
+import { syncDemoFromCookies, overlaySetCookieHeader } from "@/lib/data/demo-sync";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -8,8 +9,12 @@ export async function POST(req: Request) {
   if (!ref) return NextResponse.json({ error: "missing_ref" }, { status: 400 });
 
   if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
     const iv = demo.demoPlanIntervention(ref);
-    return NextResponse.json({ ok: true, intervention: iv });
+    const res = NextResponse.json({ ok: true, intervention: iv });
+    const c = overlaySetCookieHeader(demo.demoExportOverlay());
+    res.cookies.set(c.name, c.value, c.options);
+    return res;
   }
 
   const supabase = await createClient();

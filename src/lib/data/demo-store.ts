@@ -9,6 +9,7 @@ import type {
   TeamMember,
 } from "../types";
 import { SEED_PRODUCTS, SEED_SETTINGS } from "./constants";
+import type { DemoOverlay } from "./demo-overlay";
 
 /** In-memory demo store when Supabase env vars are missing (local / preview without DB). */
 type DemoDb = {
@@ -55,7 +56,10 @@ function db(): DemoDb {
           desc: "Magasin sur deux niveaux. Je veux couvrir la caisse, l'entrée et la réserve à l'étage.",
           svcother: "",
           tech: "t2",
-          items: [],
+          items: [
+            { id: "p1", q: 4, inst: true },
+            { id: "p2", q: 2, inst: true },
+          ],
           notes: [
             {
               at: "2026-09-26T11:40:00",
@@ -67,6 +71,41 @@ function db(): DemoDb {
             { at: "2026-09-26T11:40:00", k: "status", v: "contacted" },
             { at: "2026-09-26T11:45:00", k: "status", v: "visit" },
           ],
+        },
+        {
+          ref: "AMP-2026-0141",
+          src: "cart",
+          type: "prod",
+          svc: "cam",
+          status: "new",
+          created: "2026-09-25T16:40:00",
+          name: "Sara Ouazzani",
+          company: "",
+          city: "Casablanca",
+          addr: "Maarif",
+          local: "villa",
+          surface: "",
+          rooms: "",
+          cams: "",
+          place: "",
+          net: "",
+          exist: "",
+          delay: "",
+          budget: "",
+          chan: "phone",
+          phone: "06 12 34 56 78",
+          email: "",
+          slot: "any",
+          fee: 200,
+          desc: "Commande catalogue — caméras + NVR, pose à chiffrer.",
+          svcother: "",
+          tech: "",
+          items: [
+            { id: "p1", q: 2, inst: true },
+            { id: "p5", q: 1, inst: true },
+          ],
+          notes: [],
+          tl: [{ at: "2026-09-25T16:40:00", k: "created" }],
         },
       ],
       interv: [
@@ -82,12 +121,63 @@ function db(): DemoDb {
           state: "sched",
         },
       ],
-      notifs: [],
+      notifs: [
+        {
+          id: "n-seed-2",
+          at: "2026-09-25T16:40:00",
+          ref: "AMP-2026-0141",
+          read: false,
+          txt: {
+            fr: "Nouvelle demande panier de Sara Ouazzani",
+            ar: "طلب سلة جديد من سارة الوزاني",
+          },
+        },
+        {
+          id: "n-seed-1",
+          at: "2026-09-26T09:12:00",
+          ref: "AMP-2026-0142",
+          read: true,
+          txt: {
+            fr: "Nouvelle demande de Karim Belhaj",
+            ar: "طلب جديد من كريم بلحاج",
+          },
+        },
+      ],
       settings: structuredClone(SEED_SETTINGS),
       seq: 143,
     };
   }
   return g.__oufiDemo;
+}
+
+/** Merge cookie/serverless-persisted overlay into the in-memory demo DB. */
+export function demoHydrateFromOverlay(overlay: DemoOverlay | null | undefined) {
+  if (!overlay) return;
+  const d = db();
+  if (overlay.seq > d.seq) d.seq = overlay.seq;
+  for (const r of overlay.requests || []) {
+    const i = d.requests.findIndex((x) => x.ref === r.ref);
+    if (i >= 0) d.requests[i] = r;
+    else d.requests.unshift(r);
+  }
+  for (const n of overlay.notifs || []) {
+    if (!d.notifs.some((x) => x.id === n.id)) d.notifs.unshift(n);
+  }
+  for (const iv of overlay.interv || []) {
+    const i = d.interv.findIndex((x) => x.id === iv.id);
+    if (i >= 0) d.interv[i] = iv;
+    else d.interv.unshift(iv);
+  }
+}
+
+export function demoExportOverlay(): DemoOverlay {
+  const d = db();
+  return {
+    seq: d.seq,
+    requests: structuredClone(d.requests),
+    notifs: structuredClone(d.notifs),
+    interv: structuredClone(d.interv),
+  };
 }
 
 export function demoGetSettings(): Settings {

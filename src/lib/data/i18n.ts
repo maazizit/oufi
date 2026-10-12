@@ -212,6 +212,14 @@ export const T: Dict = {
   q_surf: { fr: "Surface approximative (m²)", ar: "المساحة التقريبية (م²)" },
   q_rooms: { fr: "Nombre de pièces / zones", ar: "عدد الغرف أو المناطق" },
   q_cams: { fr: "Caméras souhaitées (estimation)", ar: "عدد الكاميرات المطلوبة (تقديري)" },
+  q_pick: {
+    fr: "Matériel catalogue (optionnel)",
+    ar: "منتجات من الكتالوج (اختياري)",
+  },
+  q_pick_h: {
+    fr: "Pour une installation caméras, choisissez les modèles déjà au catalogue — nous chiffrons pose + matériel.",
+    ar: "لتركيب الكاميرات يمكنكم اختيار الموديلات من الكتالوج — نحسب التركيب والمعدات معاً.",
+  },
   q_place: { fr: "Emplacement", ar: "موقع التركيب" },
   pl_in: { fr: "Intérieur", ar: "داخلي" },
   pl_out: { fr: "Extérieur", ar: "خارجي" },

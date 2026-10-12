@@ -37,7 +37,7 @@ npm run dev
 Sans variables Supabase, l’app tourne en **mode démo** (données en mémoire) :
 - Site public : http://localhost:3000
 - Back-office : http://localhost:3000/admin/login  
-  Mot de passe : `ADMIN_DEMO_PASSWORD` (défaut `oufi-admin`)
+  Identifiant : `admin` (`ADMIN_DEMO_USER`) · Mot de passe : `oufi-admin` (`ADMIN_DEMO_PASSWORD`)
 
 ## Configuration Supabase (production)
 

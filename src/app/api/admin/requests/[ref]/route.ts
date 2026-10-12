@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
+import { syncDemoFromCookies, overlaySetCookieHeader } from "@/lib/data/demo-sync";
 
 async function assertAdmin() {
   if (!isSupabaseConfigured()) {
-    // demo cookie checked in middleware; API still gated lightly
     return true;
   }
   const supabase = await createClient();
@@ -13,6 +13,14 @@ async function assertAdmin() {
     data: { user },
   } = await supabase.auth.getUser();
   return Boolean(user);
+}
+
+function withOverlay(res: NextResponse) {
+  if (!isSupabaseConfigured()) {
+    const c = overlaySetCookieHeader(demo.demoExportOverlay());
+    res.cookies.set(c.name, c.value, c.options);
+  }
+  return res;
 }
 
 export async function PATCH(
@@ -26,10 +34,13 @@ export async function PATCH(
   const body = await req.json();
 
   if (!isSupabaseConfigured()) {
+    await syncDemoFromCookies();
     if (body.status) demo.demoUpdateRequestStatus(ref, body.status);
     if (body.tech != null) demo.demoAssignTech(ref, body.tech);
     if (body.note) demo.demoAddNote(ref, body.note);
-    return NextResponse.json({ ok: true, request: demo.demoGetRequest(ref) });
+    return withOverlay(
+      NextResponse.json({ ok: true, request: demo.demoGetRequest(ref) }),
+    );
   }
 
   const supabase = await createClient();

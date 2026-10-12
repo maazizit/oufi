@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { TrackClient } from "@/components/site/TrackClient";
 import { pageMeta } from "@/lib/seo";
 
@@ -9,5 +10,15 @@ export const metadata = pageMeta({
 });
 
 export default function SuiviPage() {
-  return <TrackClient />;
+  return (
+    <Suspense
+      fallback={
+        <section className="sec wrap">
+          <p className="muted">…</p>
+        </section>
+      }
+    >
+      <TrackClient />
+    </Suspense>
+  );
 }
