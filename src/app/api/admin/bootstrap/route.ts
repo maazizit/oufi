@@ -11,18 +11,39 @@ import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
  * Mot de passe = ADMIN_PASSWORD (ou ADMIN_DEMO_PASSWORD) sur Vercel.
  * À appeler une fois après déploiement prod.
  */
+function bootstrapAuthToken(req: Request): string | null {
+  const header =
+    req.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ||
+    req.headers.get("x-admin-bootstrap-secret")?.trim();
+  return header || null;
+}
+
 export async function POST(req: Request) {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "supabase_required" }, { status: 503 });
   }
 
-  const password = adminPasswordFromEnv();
+  const body = await req.json().catch(() => ({}));
+  const envPassword = adminPasswordFromEnv();
+  const requested =
+    typeof body.password === "string" ? body.password.trim() : null;
+  const auth = bootstrapAuthToken(req);
+  const secret =
+    process.env.ADMIN_BOOTSTRAP_SECRET?.trim() ||
+    envPassword ||
+    null;
+
+  let password = envPassword;
+  if (requested && auth && secret && auth === secret) {
+    password = requested;
+  }
+
   if (!password) {
     return NextResponse.json({ error: "admin_password_env_missing" }, { status: 503 });
   }
 
   const url = new URL(req.url);
-  const reset = url.searchParams.get("reset") === "1";
+  const reset = url.searchParams.get("reset") === "1" || Boolean(requested);
 
   const ok = reset
     ? await resetSupabaseAdminPassword(password)
