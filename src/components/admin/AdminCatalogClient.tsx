@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Product } from "@/lib/types";
 import { money } from "@/lib/data/i18n";
@@ -15,8 +15,15 @@ export function AdminCatalogClient({
   categories: { id: string; label: string }[];
 }) {
   const router = useRouter();
-  const { t } = useAdminLang();
+  const { t, lang } = useAdminLang();
   const [q, setQ] = useState("");
+  const [catFilter, setCatFilter] = useState("");
+  const [pubFilter, setPubFilter] = useState<"all" | "yes" | "no">("all");
+  const [stockFilter, setStockFilter] = useState<"all" | "low" | "out">("all");
+  const [sortKey, setSortKey] = useState<"name" | "price" | "stock" | "ref">("name");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [page, setPage] = useState(1);
+  const pageSize = 12;
   const [edit, setEdit] = useState<Product | "new" | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadErr, setUploadErr] = useState("");
@@ -34,13 +41,44 @@ export function AdminCatalogClient({
     img: "",
   });
 
+  const filtered = useMemo(() => {
+    let rows = [...products];
+    if (q) {
+      const qq = q.toLowerCase();
+      rows = rows.filter((p) =>
+        (p.name.fr + " " + p.name.ar + " " + p.ref + " " + p.brand)
+          .toLowerCase()
+          .includes(qq),
+      );
+    }
+    if (catFilter) rows = rows.filter((p) => p.cat === catFilter);
+    if (pubFilter === "yes") rows = rows.filter((p) => p.active);
+    if (pubFilter === "no") rows = rows.filter((p) => !p.active);
+    if (stockFilter === "low") rows = rows.filter((p) => p.stock > 0 && p.stock <= 5);
+    if (stockFilter === "out") rows = rows.filter((p) => p.stock <= 0);
+
+    const dir = sortDir === "asc" ? 1 : -1;
+    rows.sort((a, b) => {
+      let cmp = 0;
+      if (sortKey === "name") cmp = a.name.fr.localeCompare(b.name.fr, "fr");
+      else if (sortKey === "price") cmp = a.price - b.price;
+      else if (sortKey === "stock") cmp = a.stock - b.stock;
+      else cmp = a.ref.localeCompare(b.ref);
+      return cmp * dir;
+    });
+    return rows;
+  }, [products, q, catFilter, pubFilter, stockFilter, sortKey, sortDir]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const list = useMemo(() => {
-    if (!q) return products;
-    const qq = q.toLowerCase();
-    return products.filter((p) =>
-      (p.name.fr + " " + p.ref + " " + p.brand).toLowerCase().includes(qq),
-    );
-  }, [products, q]);
+    const p = Math.min(page, pageCount);
+    const start = (p - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page, pageCount]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [q, catFilter, pubFilter, stockFilter, sortKey, sortDir]);
 
   function openEdit(p: Product | "new") {
     if (p === "new") {
@@ -144,28 +182,83 @@ export function AdminCatalogClient({
 
   return (
     <>
-      <div className="toolbar">
+      <div className="toolbar" style={{ flexWrap: "wrap", gap: 8 }}>
         <input
           className="input search"
-          placeholder="Nom, réf. ou marque…"
+          placeholder={t("adm_search_ph")}
           value={q}
           onChange={(e) => setQ(e.target.value)}
+          style={{ flex: "1 1 200px" }}
         />
+        <select
+          className="select"
+          style={{ width: "auto" }}
+          value={catFilter}
+          onChange={(e) => setCatFilter(e.target.value)}
+        >
+          <option value="">{t("adm_cat_all")}</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>{c.label}</option>
+          ))}
+        </select>
+        <select
+          className="select"
+          style={{ width: "auto" }}
+          value={pubFilter}
+          onChange={(e) => setPubFilter(e.target.value as "all" | "yes" | "no")}
+        >
+          <option value="all">{t("adm_pub_all")}</option>
+          <option value="yes">{t("adm_pub_yes")}</option>
+          <option value="no">{t("adm_pub_no")}</option>
+        </select>
+        <select
+          className="select"
+          style={{ width: "auto" }}
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value as "all" | "low" | "out")}
+        >
+          <option value="all">{t("adm_stock_all")}</option>
+          <option value="low">{t("adm_stock_low")}</option>
+          <option value="out">{t("adm_stock_out")}</option>
+        </select>
+        <select
+          className="select"
+          style={{ width: "auto" }}
+          value={sortKey}
+          onChange={(e) => setSortKey(e.target.value as "name" | "price" | "stock" | "ref")}
+        >
+          <option value="name">{t("adm_sort_name")}</option>
+          <option value="price">{t("adm_sort_price")}</option>
+          <option value="stock">{t("adm_sort_stock")}</option>
+          <option value="ref">{t("adm_sort_ref")}</option>
+        </select>
+        <select
+          className="select"
+          style={{ width: "auto" }}
+          value={sortDir}
+          onChange={(e) => setSortDir(e.target.value as "asc" | "desc")}
+        >
+          <option value="asc">{t("adm_sort_asc")}</option>
+          <option value="desc">{t("adm_sort_desc")}</option>
+        </select>
         <button type="button" className="btn btn-pri" onClick={() => openEdit("new")}>
-          Nouvel article
+          {t("adm_new_product")}
         </button>
       </div>
+      <p className="xs muted" style={{ margin: "0 0 8px" }}>
+        {t("adm_results", { n: filtered.length })}
+      </p>
       <div className="tw">
         <table>
           <thead>
             <tr>
-              <th>Article</th>
-              <th>Catégorie</th>
-              <th>Marque</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>Publié</th>
-              <th>Actions</th>
+              <th>{t("adm_col_product")}</th>
+              <th>{t("adm_col_category")}</th>
+              <th>{t("adm_col_brand")}</th>
+              <th>{t("adm_col_price")}</th>
+              <th>{t("adm_col_stock")}</th>
+              <th>{t("adm_col_published")}</th>
+              <th>{t("adm_col_actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -201,7 +294,7 @@ export function AdminCatalogClient({
                 </td>
                 <td>{categories.find((c) => c.id === p.cat)?.label || p.cat}</td>
                 <td>{p.brand}</td>
-                <td className="num mono">{money("fr", p.price)}</td>
+                <td className="num mono">{money(lang, p.price)}</td>
                 <td>
                   <input
                     className="input num"
@@ -213,7 +306,7 @@ export function AdminCatalogClient({
                   />
                   {p.stock <= 5 ? (
                     <span className="pill pill-warn" style={{ marginInlineStart: 4 }}>
-                      Stock bas
+                      {t("adm_stock_low_badge")}
                     </span>
                   ) : null}
                 </td>
@@ -224,16 +317,16 @@ export function AdminCatalogClient({
                       checked={p.active}
                       onChange={(e) => updateField(p.id, { active: e.target.checked })}
                     />
-                    {p.active ? "Oui" : "Non"}
+                    {p.active ? t("adm_yes") : t("adm_no")}
                   </label>
                 </td>
                 <td>
                   <div style={{ display: "flex", gap: 6 }}>
                     <button type="button" className="btn btn-sm btn-out" onClick={() => openEdit(p)}>
-                      Modifier
+                      {t("adm_edit")}
                     </button>
                     <button type="button" className="btn btn-sm btn-dan" onClick={() => remove(p.id)}>
-                      Supprimer
+                      {t("adm_delete")}
                     </button>
                   </div>
                 </td>
@@ -242,6 +335,29 @@ export function AdminCatalogClient({
           </tbody>
         </table>
       </div>
+      {pageCount > 1 ? (
+        <div className="admin-pager">
+          <button
+            type="button"
+            className="btn btn-sm btn-out"
+            disabled={page <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+          >
+            ←
+          </button>
+          <span className="sm muted">
+            {t("adm_pager", { page: Math.min(page, pageCount), total: pageCount })}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-out"
+            disabled={page >= pageCount}
+            onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+          >
+            →
+          </button>
+        </div>
+      ) : null}
 
       {edit ? (
         <div

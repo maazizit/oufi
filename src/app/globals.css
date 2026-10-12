@@ -2505,6 +2505,16 @@ html[dir="rtl"] .admin-login-card {
   align-items: center;
   gap: 6px;
 }
+.admin-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 0 4px;
+}
+.admin-users-table tbody tr[data-open="1"] {
+  background: var(--blue-soft);
+}
 .side {
   background: var(--navy);
   color: var(--on-navy);

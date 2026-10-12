@@ -14,7 +14,7 @@ import {
   demoSaveAdminUser,
 } from "@/lib/data/demo-store";
 import type { AdminUserRecord } from "./users";
-import { isBootstrapSuperAdmin, superAdminFromEmail } from "./users";
+import { isBootstrapSuperAdmin, parseSuperAdminEmails, superAdminFromEmail } from "./users";
 
 function recordToSession(rec: AdminUserRecord, userId: string): AdminSession {
   return {
@@ -172,9 +172,19 @@ export async function listAdminUsersForSuper(): Promise<AdminUserRecord[]> {
     return demoGetAdminUsers();
   }
   const service = createServiceClient();
-  if (!service) return [];
+  if (!service) {
+    return parseSuperAdminEmails().map((email) => superAdminFromEmail(email));
+  }
   const { data } = await service.from("admin_users").select("*").order("email");
-  return (data || []).map(mapRow);
+  const rows = (data || []).map(mapRow);
+  const seen = new Set(rows.map((r) => r.email.toLowerCase()));
+  for (const email of parseSuperAdminEmails()) {
+    if (!seen.has(email)) {
+      rows.push(superAdminFromEmail(email));
+      seen.add(email);
+    }
+  }
+  return rows.sort((a, b) => a.email.localeCompare(b.email));
 }
 
 export async function upsertAdminUserRecord(
