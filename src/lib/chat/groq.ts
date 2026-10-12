@@ -3,6 +3,33 @@ import { normalizeDraft } from "./devis";
 import type { ChatAssistantPayload, ChatTurn } from "./types";
 import type { Lang } from "@/lib/types";
 
+const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+const ALLOWED_MODELS = new Set([
+  DEFAULT_MODEL,
+  "llama-3.1-8b-instant",
+  "llama-3.1-70b-versatile",
+  "mixtral-8x7b-32768",
+]);
+
+function normalizeGroqKey(raw: string | undefined): string {
+  if (!raw) return "";
+  let k = raw.trim();
+  if (k.toLowerCase().startsWith("bearer ")) k = k.slice(7).trim();
+  if (
+    (k.startsWith('"') && k.endsWith('"')) ||
+    (k.startsWith("'") && k.endsWith("'"))
+  ) {
+    k = k.slice(1, -1).trim();
+  }
+  return k;
+}
+
+function resolveModel(): string {
+  const fromEnv = process.env.GROQ_MODEL?.trim();
+  if (fromEnv && ALLOWED_MODELS.has(fromEnv)) return fromEnv;
+  return DEFAULT_MODEL;
+}
+
 function systemPrompt(lang: Lang): string {
   const langLine =
     lang === "ar"
@@ -30,30 +57,122 @@ Réponds en JSON uniquement, schéma:
 }`;
 }
 
+function extractJsonObject(text: string): Record<string, unknown> | null {
+  const t = text.trim();
+  try {
+    return JSON.parse(t) as Record<string, unknown>;
+  } catch {
+    /* continue */
+  }
+  const fenced = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenced?.[1]) {
+    try {
+      return JSON.parse(fenced[1].trim()) as Record<string, unknown>;
+    } catch {
+      /* continue */
+    }
+  }
+  const start = t.indexOf("{");
+  const end = t.lastIndexOf("}");
+  if (start >= 0 && end > start) {
+    try {
+      return JSON.parse(t.slice(start, end + 1)) as Record<string, unknown>;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+function groqAuthOrConfigError(status: number, errText: string): boolean {
+  if (status === 401 || status === 403) return true;
+  const lower = errText.toLowerCase();
+  return (
+    lower.includes("invalid_api_key") ||
+    lower.includes("invalid api key") ||
+    lower.includes("incorrect api key") ||
+    lower.includes("permission denied")
+  );
+}
+
+function unavailablePayload(lang: Lang, kind: "missing" | "auth" | "rate" | "generic"): ChatAssistantPayload {
+  const links = sanitizeLinks([{ href: "/devis" }, { href: "/contact" }]);
+  if (kind === "missing" || kind === "auth") {
+    return {
+      reply:
+        lang === "ar"
+          ? "المساعد غير مُهيأ بعد. استخدموا نموذج العرض أو اتصلوا بنا."
+          : "L’assistant n’est pas encore configuré. Utilisez le devis ou contactez-nous.",
+      links,
+    };
+  }
+  if (kind === "rate") {
+    return {
+      reply:
+        lang === "ar"
+          ? "الطلبات كثيرة حالياً. جرّبوا بعد قليل أو اطلبوا عرض سعر."
+          : "Trop de demandes pour l’instant. Réessayez dans un moment ou demandez un devis.",
+      links,
+    };
+  }
+  return {
+    reply:
+      lang === "ar"
+        ? "حدث خطأ. جرّبوا لاحقاً أو اطلبوا عرض سعر مباشرة."
+        : "Une erreur est survenue. Réessayez plus tard ou demandez un devis directement.",
+    links,
+  };
+}
+
+function payloadFromGroqContent(
+  lang: Lang,
+  raw: string,
+): ChatAssistantPayload {
+  const parsed = extractJsonObject(raw);
+  if (parsed && typeof parsed.reply === "string") {
+    return {
+      reply: String(parsed.reply).slice(0, 1200),
+      links: sanitizeLinks(
+        Array.isArray(parsed.links)
+          ? (parsed.links as { href: string; titleFr?: string; titleAr?: string }[])
+          : [],
+      ),
+      draft: normalizeDraft(parsed.draft),
+    };
+  }
+  if (parsed) {
+    return {
+      reply:
+        lang === "ar" ? "كيف يمكنني مساعدتكم؟" : "Comment puis-je vous aider ?",
+      links: [],
+      draft: normalizeDraft(parsed.draft),
+    };
+  }
+  return {
+    reply: raw.slice(0, 1200),
+    links: [],
+  };
+}
+
 export async function chatWithGroq(
   lang: Lang,
   messages: ChatTurn[],
 ): Promise<ChatAssistantPayload> {
-  const key = process.env.GROQ_API_KEY?.trim();
-  const model =
-    process.env.GROQ_MODEL?.trim() || "llama-3.3-70b-versatile";
+  const key = normalizeGroqKey(process.env.GROQ_API_KEY);
+  const model = resolveModel();
+
   if (!key) {
-    return {
-      reply:
-        lang === "ar"
-          ? "المساعد غير متاح حالياً. يمكنكم طلب عرض سعر أو التواصل معنا."
-          : "L’assistant est indisponible pour le moment. Utilisez le formulaire de devis ou contactez-nous.",
-      links: sanitizeLinks([{ href: "/devis" }, { href: "/contact" }]),
-    };
+    return unavailablePayload(lang, "missing");
+  }
+  if (!key.startsWith("gsk_")) {
+    console.error("[chat/groq] GROQ_API_KEY format invalid (expected gsk_…)", key.length);
+    return unavailablePayload(lang, "auth");
   }
 
   const groqMessages = [
     { role: "system", content: systemPrompt(lang) },
     ...messages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
   ];
-
-  const defaultModel = "llama-3.3-70b-versatile";
-  const models = [...new Set([model, defaultModel])];
 
   async function callGroq(modelName: string, jsonMode: boolean) {
     const body: Record<string, unknown> = {
@@ -73,50 +192,36 @@ export async function chatWithGroq(
     });
   }
 
-  let res = await callGroq(models[0], true);
-  if (!res.ok && res.status === 400) {
-    res = await callGroq(models[0], false);
-  }
-  if (!res.ok && res.status === 400 && models.length > 1) {
-    const alt = await callGroq(models[1], true);
-    if (alt.ok) res = alt;
-  }
-
-  if (!res.ok) {
-    const errText = await res.text().catch(() => "");
-    console.error("[chat/groq]", res.status, errText.slice(0, 240));
-    const authFailed = res.status === 401 || res.status === 403;
-    return {
-      reply:
-        lang === "ar"
-          ? authFailed
-            ? "المساعد غير مُهيأ بعد. استخدموا نموذج العرض أو اتصلوا بنا."
-            : "حدث خطأ. جرّبوا لاحقاً أو اطلبوا عرض سعر مباشرة."
-          : authFailed
-            ? "L’assistant n’est pas encore configuré. Utilisez le devis ou contactez-nous."
-            : "Une erreur est survenue. Réessayez plus tard ou demandez un devis directement.",
-      links: sanitizeLinks([{ href: "/devis" }, { href: "/contact" }]),
-    };
+  const attempts: { model: string; jsonMode: boolean }[] = [
+    { model, jsonMode: false },
+    { model, jsonMode: true },
+  ];
+  if (model !== DEFAULT_MODEL) {
+    attempts.push({ model: DEFAULT_MODEL, jsonMode: false });
+    attempts.push({ model: DEFAULT_MODEL, jsonMode: true });
   }
 
-  const data = await res.json();
-  const raw = data.choices?.[0]?.message?.content;
-  try {
-    const parsed = JSON.parse(String(raw || "{}")) as {
-      reply?: string;
-      links?: { href: string; titleFr?: string; titleAr?: string }[];
-      draft?: unknown;
-    };
-    const reply = String(parsed.reply || "").slice(0, 1200);
-    return {
-      reply: reply || (lang === "ar" ? "كيف يمكنني مساعدتكم؟" : "Comment puis-je vous aider ?"),
-      links: sanitizeLinks(Array.isArray(parsed.links) ? parsed.links : []),
-      draft: normalizeDraft(parsed.draft),
-    };
-  } catch {
-    return {
-      reply: String(raw || "").slice(0, 1200),
-      links: [],
-    };
+  let lastStatus = 0;
+  let lastErr = "";
+
+  for (const { model: m, jsonMode } of attempts) {
+    const res = await callGroq(m, jsonMode);
+    if (res.ok) {
+      const data = await res.json();
+      const raw = String(data.choices?.[0]?.message?.content || "");
+      return payloadFromGroqContent(lang, raw);
+    }
+    lastStatus = res.status;
+    lastErr = await res.text().catch(() => "");
+    if (groqAuthOrConfigError(res.status, lastErr)) {
+      console.error("[chat/groq]", res.status, lastErr.slice(0, 240));
+      return unavailablePayload(lang, "auth");
+    }
+    if (res.status === 429) {
+      return unavailablePayload(lang, "rate");
+    }
   }
+
+  console.error("[chat/groq]", lastStatus, lastErr.slice(0, 240));
+  return unavailablePayload(lang, "generic");
 }
