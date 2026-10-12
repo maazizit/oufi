@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
@@ -11,39 +10,22 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const configured = isSupabaseConfigured();
-
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setBusy(true);
     try {
-      if (!configured) {
-        const res = await fetch("/api/admin/demo-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user, password }),
-        });
-        if (!res.ok) {
-          setError("Identifiant ou mot de passe incorrect.");
-          return;
-        }
-        router.push("/admin");
-        router.refresh();
-        return;
-      }
-      const supabase = createClient();
-      if (!supabase) throw new Error("no client");
-      const email = user.includes("@") ? user : `${user}@amanplanet.local`;
-      const { error: err } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user, password }),
       });
-      if (err) {
+      if (!res.ok) {
         setError("Identifiant ou mot de passe incorrect.");
         return;
       }
-      router.push("/admin");
+      const next = new URLSearchParams(window.location.search).get("next");
+      router.push(next && next.startsWith("/admin") ? next : "/admin");
       router.refresh();
     } finally {
       setBusy(false);
