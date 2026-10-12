@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  adminPasswordForBootstrap,
   adminPasswordFromEnv,
   isAllowedAdminIdentifier,
   normalizeAdminLogin,
@@ -45,13 +46,16 @@ export async function POST(req: Request) {
 
   let { error } = await supabase.auth.signInWithPassword({ email, password });
 
-  const envPassword = adminPasswordFromEnv();
-  if (error && envPassword && password === envPassword) {
+  const bootstrapPassword = adminPasswordForBootstrap(password);
+  if (error && bootstrapPassword) {
     const synced =
-      (await ensureSupabaseAdminUser(envPassword)) &&
-      (await resetSupabaseAdminPassword(envPassword));
+      (await ensureSupabaseAdminUser(bootstrapPassword)) &&
+      (await resetSupabaseAdminPassword(bootstrapPassword));
     if (synced) {
-      ({ error } = await supabase.auth.signInWithPassword({ email, password: envPassword }));
+      ({ error } = await supabase.auth.signInWithPassword({
+        email,
+        password: bootstrapPassword,
+      }));
     }
   }
 

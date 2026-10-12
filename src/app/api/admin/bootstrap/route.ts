@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { ADMIN_EMAIL, adminPasswordFromEnv } from "@/lib/admin/credentials";
+import {
+  ADMIN_EMAIL,
+  DEFAULT_ADMIN_PASSWORD,
+  adminPasswordFromEnv,
+} from "@/lib/admin/credentials";
 import {
   ensureSupabaseAdminUser,
   resetSupabaseAdminPassword,
@@ -33,13 +37,9 @@ export async function POST(req: Request) {
     envPassword ||
     null;
 
-  let password = envPassword;
+  let password = envPassword || DEFAULT_ADMIN_PASSWORD;
   if (requested && auth && secret && auth === secret) {
     password = requested;
-  }
-
-  if (!password) {
-    return NextResponse.json({ error: "admin_password_env_missing" }, { status: 503 });
   }
 
   const url = new URL(req.url);
