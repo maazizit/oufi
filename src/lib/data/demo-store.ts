@@ -357,6 +357,31 @@ export function demoSetIntervDone(id: string) {
   return structuredClone(i);
 }
 
+export function demoUpdateIntervention(
+  id: string,
+  patch: Partial<Pick<Intervention, "client" | "city" | "when" | "tech" | "by" | "state" | "obj">>,
+) {
+  const i = db().interv.find((x) => x.id === id);
+  if (!i) return null;
+  if (patch.client != null) i.client = patch.client;
+  if (patch.city != null) i.city = patch.city;
+  if (patch.when != null) i.when = patch.when;
+  if (patch.tech != null) i.tech = patch.tech;
+  if (patch.by != null) i.by = patch.by;
+  if (patch.state != null) i.state = patch.state;
+  if (patch.obj) {
+    i.obj = { fr: patch.obj.fr ?? i.obj.fr, ar: patch.obj.ar ?? i.obj.ar };
+  }
+  return structuredClone(i);
+}
+
+export function demoDeleteIntervention(id: string) {
+  const d = db();
+  const before = d.interv.length;
+  d.interv = d.interv.filter((x) => x.id !== id);
+  return d.interv.length < before;
+}
+
 export function demoSaveSettings(patch: Partial<Settings>) {
   Object.assign(db().settings, patch);
   return structuredClone(db().settings);

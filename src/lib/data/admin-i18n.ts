@@ -200,6 +200,23 @@ const A: Record<string, Localized> = {
   adm_users_col_email: { fr: "E-mail", ar: "البريد" },
   adm_users_col_role: { fr: "Rôle", ar: "الدور" },
   adm_users_col_status: { fr: "Statut", ar: "الحالة" },
+
+  adm_interv_state_all: { fr: "Tous les statuts", ar: "كل الحالات" },
+  adm_interv_mark_done: { fr: "Terminer", ar: "إنهاء" },
+  adm_interv_edit: { fr: "Modifier", ar: "تعديل" },
+  adm_interv_delete: { fr: "Supprimer", ar: "حذف" },
+  adm_interv_delete_confirm: {
+    fr: "Supprimer cette intervention ?",
+    ar: "حذف هذا التدخل؟",
+  },
+  adm_interv_edit_title: { fr: "Modifier l'intervention", ar: "تعديل التدخل" },
+  adm_interv_when: { fr: "Date et heure", ar: "التاريخ والوقت" },
+  adm_interv_obj_fr: { fr: "Objet (français)", ar: "الموضوع (فرنسي)" },
+  adm_interv_obj_ar: { fr: "Objet (arabe)", ar: "الموضوع (عربي)" },
+  adm_interv_state: { fr: "Statut", ar: "الحالة" },
+  adm_interv_saved: { fr: "Intervention enregistrée.", ar: "تم حفظ التدخل." },
+  adm_interv_err: { fr: "Erreur.", ar: "خطأ." },
+  adm_interv_request_ref: { fr: "Demande liée", ar: "الطلب المرتبط" },
 };
 
 export function adminT(lang: Lang, key: string, vars?: Record<string, string | number>) {
