@@ -3,10 +3,10 @@ import { normalizeDraft } from "./devis";
 import type { ChatAssistantPayload, ChatTurn } from "./types";
 import type { Lang } from "@/lib/types";
 
-const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+const DEFAULT_MODEL = "llama-3.1-8b-instant";
 const ALLOWED_MODELS = new Set([
   DEFAULT_MODEL,
-  "llama-3.1-8b-instant",
+  "llama-3.3-70b-versatile",
   "llama-3.1-70b-versatile",
   "mixtral-8x7b-32768",
 ]);
@@ -28,6 +28,11 @@ function resolveModel(): string {
   const fromEnv = process.env.GROQ_MODEL?.trim();
   if (fromEnv && ALLOWED_MODELS.has(fromEnv)) return fromEnv;
   return DEFAULT_MODEL;
+}
+
+function modelsToTry(): string[] {
+  const preferred = resolveModel();
+  return [...new Set([DEFAULT_MODEL, preferred])];
 }
 
 function systemPrompt(lang: Lang): string {
@@ -155,7 +160,11 @@ function payloadFromGroqContent(
 }
 
 /** Minimal Groq ping for ops (does not expose secrets). */
-export async function pingGroq(): Promise<{ configured: boolean; status: number }> {
+export async function pingGroq(): Promise<{
+  configured: boolean;
+  status: number;
+  detail?: string;
+}> {
   const key = normalizeGroqKey(process.env.GROQ_API_KEY);
   if (!key || !key.startsWith("gsk_")) {
     return { configured: false, status: 0 };
@@ -172,7 +181,8 @@ export async function pingGroq(): Promise<{ configured: boolean; status: number 
       messages: [{ role: "user", content: "ping" }],
     }),
   });
-  return { configured: true, status: res.status };
+  const detail = res.ok ? undefined : (await res.text()).slice(0, 280);
+  return { configured: true, status: res.status, detail };
 }
 
 export async function chatWithGroq(
@@ -180,7 +190,7 @@ export async function chatWithGroq(
   messages: ChatTurn[],
 ): Promise<ChatAssistantPayload> {
   const key = normalizeGroqKey(process.env.GROQ_API_KEY);
-  const model = resolveModel();
+  const models = modelsToTry();
 
   if (!key) {
     return unavailablePayload(lang, "missing");
@@ -213,13 +223,10 @@ export async function chatWithGroq(
     });
   }
 
-  const attempts: { model: string; jsonMode: boolean }[] = [
-    { model, jsonMode: false },
-    { model, jsonMode: true },
-  ];
-  if (model !== DEFAULT_MODEL) {
-    attempts.push({ model: DEFAULT_MODEL, jsonMode: false });
-    attempts.push({ model: DEFAULT_MODEL, jsonMode: true });
+  const attempts: { model: string; jsonMode: boolean }[] = [];
+  for (const m of models) {
+    attempts.push({ model: m, jsonMode: false });
+    attempts.push({ model: m, jsonMode: true });
   }
 
   let lastStatus = 0;
