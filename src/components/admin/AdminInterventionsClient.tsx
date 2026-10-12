@@ -312,7 +312,7 @@ export function AdminInterventionsClient({
             </div>
             <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 12 }}>
               <div className="field">
-                <label>{t("adm_interv_when")}</label>
+                <label>{t("adm_interv_datetime")}</label>
                 <input
                   className="input"
                   type="datetime-local"

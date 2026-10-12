@@ -210,7 +210,7 @@ const A: Record<string, Localized> = {
     ar: "حذف هذا التدخل؟",
   },
   adm_interv_edit_title: { fr: "Modifier l'intervention", ar: "تعديل التدخل" },
-  adm_interv_when: { fr: "Date et heure", ar: "التاريخ والوقت" },
+  adm_interv_datetime: { fr: "Date et heure", ar: "التاريخ والوقت" },
   adm_interv_obj_fr: { fr: "Objet (français)", ar: "الموضوع (فرنسي)" },
   adm_interv_obj_ar: { fr: "Objet (arabe)", ar: "الموضوع (عربي)" },
   adm_interv_state: { fr: "Statut", ar: "الحالة" },
