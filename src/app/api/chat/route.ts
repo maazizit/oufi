@@ -4,6 +4,8 @@ import { checkRateLimit, rateLimitKey } from "@/lib/chat/rate-limit";
 import type { ChatTurn } from "@/lib/chat/types";
 import type { Lang } from "@/lib/types";
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip");
   const key = rateLimitKey(ip);
