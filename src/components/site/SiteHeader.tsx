@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
+import { BrandMark } from "./BrandMark";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
 
 const NAV = [
   ["/", "nav_home"],
+  ["/#about", "nav_about"],
   ["/services", "nav_services"],
   ["/catalogue", "nav_products"],
   ["/devis", "nav_quote"],
@@ -29,33 +31,57 @@ export function SiteHeader({
   return (
     <header className="hdr">
       <div className="hdr-in">
-        <Link href="/" className="brand">
-          <span className="mk">
-            <Icon name="shield" size={18} />
-          </span>
+        <Link href="/" className="brand" aria-label={company}>
+          <BrandMark size={42} />
           <span>
-            <span className="nm">{company}</span>
+            <span className="nm brand-word">{company}</span>
             <br />
             <span className="sl">{tagline}</span>
           </span>
         </Link>
-        <nav className="nav">
-          {NAV.map(([href, key]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={pathname === href ? "page" : undefined}
-            >
-              {t(key)}
-            </Link>
-          ))}
+        <nav className="nav" aria-label={t("nav_home") === "الرئيسية" ? "القائمة الرئيسية" : "Navigation principale"}>
+          {NAV.map(([href, key]) => {
+            const current =
+              href === "/#about"
+                ? false
+                : href === "/"
+                  ? pathname === "/"
+                  : pathname === href || pathname.startsWith(href + "/");
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={current ? "page" : undefined}
+              >
+                {t(key)}
+              </Link>
+            );
+          })}
         </nav>
-        <button type="button" className="btn btn-out btn-sm" onClick={toggle}>
+        <button
+          type="button"
+          id="lang-switch"
+          className="btn btn-out btn-sm lang-switch"
+          onClick={(e) => {
+            e.preventDefault();
+            toggle();
+          }}
+          aria-label={t("lang_switch")}
+        >
           {t("lang_switch")}
         </button>
-        <Link href="/panier" className="btn btn-out btn-sm cartbtn" aria-label={t("nav_cart")}>
+        <Link
+          href="/panier"
+          className="btn btn-out btn-sm cartbtn"
+          aria-label={t("nav_cart")}
+        >
           <Icon name="cart" size={17} />
-          {count > 0 ? <span className="cnt num">{count}</span> : null}
+          <span className="sr-only">{t("nav_cart")}</span>
+          {count > 0 ? (
+            <span className="cnt num" aria-label={`${count}`}>
+              {count}
+            </span>
+          ) : null}
         </Link>
         <Link href="/devis" className="btn btn-pri btn-sm">
           {t("nav_quote")}

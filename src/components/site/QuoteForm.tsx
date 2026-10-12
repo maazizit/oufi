@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { Settings } from "@/lib/types";
 import { CHANS, LOCALS, SVCS, TYPES } from "@/lib/data/constants";
 import { money } from "@/lib/data/i18n";
-import { feeFor } from "@/lib/utils";
+import { feeFor, isMoroccanPhone } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 import { useCart } from "./CartProvider";
 import { useLang } from "./LangProvider";
@@ -21,11 +21,18 @@ export function QuoteForm({
   const router = useRouter();
   const sp = useSearchParams();
   const { items, clear } = useCart();
+  const typeParam = sp.get("type");
+  const initialType =
+    mode === "cart"
+      ? "prod"
+      : typeParam === "maint" || typeParam === "fix" || typeParam === "install" || typeParam === "prod"
+        ? typeParam
+        : "install";
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState<Record<string, string | boolean>>({
-    type: mode === "cart" ? "prod" : "install",
+    type: initialType,
     svc: sp.get("svc") || (mode === "cart" ? "cam" : "cam"),
     chan: "phone",
     slot: "any",
@@ -65,7 +72,7 @@ export function QuoteForm({
       if (fv("chan") === "mail") {
         if (!/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(String(fv("email")))) e.email = t("err_mail");
       } else if (fv("chan")) {
-        if (!/^[\d\s+().-]{9,}$/.test(String(fv("phone")))) e.phone = t("err_phone");
+        if (!isMoroccanPhone(String(fv("phone")))) e.phone = t("err_phone");
       }
       if (!fv("ok")) e.ok = t("err_req");
     }
@@ -148,8 +155,9 @@ export function QuoteForm({
   return (
     <section className="sec wrap" style={{ maxWidth: 820 }}>
       <div className="sec-h rise">
-        <h1>{mode === "cart" ? t("cart_req") : t("q_title")}</h1>
+        {mode === "cart" ? <h1>{t("cart_req")}</h1> : <h2 style={{ fontSize: "clamp(21px, 2.6vw, 30px)" }}>{t("q_title")}</h2>}
         <p className="ink2">{mode === "cart" ? t("cart_note") : t("q_lead")}</p>
+        {mode === "form" ? <p className="sm muted">{t("h_callback")}</p> : null}
       </div>
 
       {mode === "form" ? (

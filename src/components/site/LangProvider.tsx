@@ -23,43 +23,81 @@ type LangCtx = {
 const Ctx = createContext<LangCtx | null>(null);
 const KEY = "oufi-lang";
 
+function applyDom(lang: Lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+}
+
+function persist(lang: Lang) {
+  try {
+    localStorage.setItem(KEY, lang);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("lang") !== lang) {
+      url.searchParams.set("lang", lang);
+      window.history.replaceState({}, "", url.toString());
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function readInitialLang(): Lang {
+  if (typeof window === "undefined") return "fr";
+  try {
+    const q = new URLSearchParams(window.location.search).get("lang");
+    if (q === "ar" || q === "fr") return q;
+    const stored = localStorage.getItem(KEY);
+    if (stored === "ar" || stored === "fr") return stored;
+  } catch {
+    /* ignore */
+  }
+  return "fr";
+}
+
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    try {
-      const l = localStorage.getItem(KEY);
-      if (l === "ar" || l === "fr") setLangState(l);
-    } catch {
-      /* ignore */
-    }
+    const initial = readInitialLang();
+    setLangState(initial);
+    applyDom(initial);
+    setReady(true);
   }, []);
 
-  const setLang = useCallback((l: Lang) => {
-    setLangState(l);
-    try {
-      localStorage.setItem(KEY, l);
-    } catch {
-      /* ignore */
-    }
-    document.documentElement.lang = l;
-    document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+  const setLang = useCallback((next: Lang) => {
+    setLangState(next);
+    persist(next);
+    applyDom(next);
+  }, []);
+
+  const toggle = useCallback(() => {
+    setLangState((prev) => {
+      const next: Lang = prev === "fr" ? "ar" : "fr";
+      persist(next);
+      applyDom(next);
+      return next;
+    });
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-  }, [lang]);
+    if (!ready) return;
+    applyDom(lang);
+  }, [lang, ready]);
 
   const value = useMemo(
     () => ({
       lang,
       setLang,
-      toggle: () => setLang(lang === "fr" ? "ar" : "fr"),
+      toggle,
       t: (key: string, vars?: Record<string, string | number>) => t(lang, key, vars),
       L: (o?: { fr: string; ar: string } | string | null) => L(lang, o),
     }),
-    [lang, setLang],
+    [lang, setLang, toggle],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

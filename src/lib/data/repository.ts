@@ -249,7 +249,7 @@ export async function createRequest(input: CreateRequestInput): Promise<Request>
   if (!supabase) throw new Error("Supabase unavailable");
 
   const { data: refData } = await supabase.rpc("next_request_ref");
-  const ref = (refData as string) || `DEV-${Date.now()}`;
+  const ref = (refData as string) || `AMP-${new Date().getFullYear()}-${String(Date.now()).slice(-4)}`;
   const now = new Date().toISOString();
 
   const row = {

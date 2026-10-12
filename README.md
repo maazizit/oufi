@@ -1,7 +1,8 @@
-# Oufi Sécurité — site vitrine + back-office
+# AMANPLANET — Conseil • Installation • Suivi
 
-Application Next.js (App Router) + Tailwind CSS + Supabase pour une entreprise
-marocaine d’installation et de vente de caméras, réseau et informatique.
+Application Next.js (App Router) + Tailwind CSS + Supabase pour **AMANPLANET**
+(C.I.S.) : e-commerce sécurité, installation et maintenance (caméras, routeurs,
+domotique, alarmes).
 
 La maquette source reste dans `maquettes/prototype.html`.
 
@@ -42,7 +43,7 @@ Sans variables Supabase, l’app tourne en **mode démo** (données en mémoire)
 
 1. Créez un projet sur [supabase.com](https://supabase.com).
 2. SQL Editor → exécutez `supabase/migrations/001_initial.sql` (schéma + seed).
-3. Authentication → Users → invitez / créez l’admin (ex. Ibrahim Oufi).
+3. Authentication → Users → invitez / créez l’admin.
 4. Project Settings → API → copiez URL et `anon` key dans `.env.local` / Vercel.
 5. (Optionnel) désactivez les inscriptions publiques (Auth → Providers / settings).
 

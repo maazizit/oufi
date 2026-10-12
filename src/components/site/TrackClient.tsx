@@ -1,10 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import type { Request } from "@/lib/types";
-import { statusOf } from "@/lib/utils";
-import { fmtDT } from "@/lib/utils";
+import type { Request, RequestStatus } from "@/lib/types";
+import { statusOf, fmtDT } from "@/lib/utils";
 import { useLang } from "./LangProvider";
+
+const FLOW: { id: RequestStatus | "install"; k: string }[] = [
+  { id: "new", k: "tr_step_new" },
+  { id: "visit", k: "tr_step_visit" },
+  { id: "sent", k: "tr_step_sent" },
+  { id: "won", k: "tr_step_won" },
+  { id: "done", k: "tr_step_done" },
+];
+
+function flowIndex(status: RequestStatus) {
+  if (status === "new" || status === "contacted") return 0;
+  if (status === "visit") return 1;
+  if (status === "sent") return 2;
+  if (status === "won") return 3;
+  if (status === "done") return 4;
+  if (status === "lost") return -1;
+  return 0;
+}
 
 export function TrackClient() {
   const { t } = useLang();
@@ -13,7 +30,9 @@ export function TrackClient() {
   const [busy, setBusy] = useState(false);
 
   async function search() {
+    if (!q.trim()) return;
     setBusy(true);
+    setRes(undefined);
     try {
       const r = await fetch(`/api/track?q=${encodeURIComponent(q.trim())}`);
       const data = await r.json();
@@ -23,16 +42,20 @@ export function TrackClient() {
     }
   }
 
-  const steps = ["new", "contacted", "visit", "sent", "done"] as const;
+  const reached = res ? flowIndex(res.status) : -1;
 
   return (
     <section className="sec wrap" style={{ maxWidth: 720 }}>
-      <div className="sec-h rise">
+      <div className="sec-h">
         <h1>{t("tr_t")}</h1>
         <p className="ink2">{t("tr_lead")}</p>
       </div>
-      <div className="toolbar rise d2">
+      <div className="toolbar">
+        <label className="sr-only" htmlFor="track-q">
+          {t("tr_ph")}
+        </label>
         <input
+          id="track-q"
           className="input search mono"
           placeholder={t("tr_ph")}
           value={q}
@@ -40,10 +63,11 @@ export function TrackClient() {
           onKeyDown={(e) => e.key === "Enter" && search()}
         />
         <button type="button" className="btn btn-pri" disabled={busy} onClick={search}>
-          {t("tr_btn")}
+          {busy ? t("tr_loading") : t("tr_btn")}
         </button>
       </div>
-      {res === null ? (
+      {busy ? <p className="muted" style={{ marginTop: 18 }}>{t("tr_loading")}</p> : null}
+      {!busy && res === null ? (
         <p className="muted" style={{ marginTop: 18 }}>
           {t("tr_none", { q })}
         </p>
@@ -56,22 +80,18 @@ export function TrackClient() {
           </div>
           <div>
             <div className="lab">{t("tr_state")}</div>
-            <div className="stepper" style={{ marginTop: 8 }}>
-              {steps.map((s, i) => {
-                const reached =
-                  steps.indexOf(res.status as (typeof steps)[number]) >= 0
-                    ? steps.indexOf(res.status as (typeof steps)[number])
-                    : res.status === "won"
-                      ? 3
-                      : 4;
-                return (
-                  <div key={s} className="s" data-on={i === reached ? 1 : 0} data-done={i < reached ? 1 : 0}>
-                    <b>{i + 1}</b>
-                    {t(statusOf(s).k)}
-                  </div>
-                );
-              })}
-            </div>
+            <ol className="track-flow">
+              {FLOW.map((s, i) => (
+                <li
+                  key={s.id}
+                  data-on={i === reached ? 1 : 0}
+                  data-done={i < reached ? 1 : 0}
+                >
+                  <b>{i + 1}</b>
+                  <span>{t(s.k)}</span>
+                </li>
+              ))}
+            </ol>
           </div>
           <div>
             <div className="lab" style={{ marginBottom: 8 }}>
@@ -85,7 +105,9 @@ export function TrackClient() {
                   <li key={i} data-on="1">
                     <span className="dot" />
                     <span>
-                      <span className="t">{e.k === "created" ? t("st_new") : t(statusOf(e.v || "new").k)}</span>
+                      <span className="t">
+                        {e.k === "created" ? t("tr_step_new") : t(statusOf(e.v || "new").k)}
+                      </span>
                       <span className="m">{fmtDT(e.at)}</span>
                     </span>
                   </li>

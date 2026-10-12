@@ -28,7 +28,7 @@ function db(): DemoDb {
       products: structuredClone(SEED_PRODUCTS),
       requests: [
         {
-          ref: "DEV-2026-0142",
+          ref: "AMP-2026-0142",
           src: "form",
           type: "install",
           svc: "cam",
@@ -72,7 +72,7 @@ function db(): DemoDb {
       interv: [
         {
           id: "TCK-0451",
-          ref: "DEV-2026-0142",
+          ref: "AMP-2026-0142",
           client: "Karim Belhaj — Épicerie Al Baraka",
           city: "Casablanca",
           obj: { fr: "État des lieux — 6 caméras", ar: "معاينة — 6 كاميرات" },
@@ -131,7 +131,7 @@ export function demoCreateRequest(
 ): Request {
   const d = db();
   const now = new Date().toISOString();
-  const ref = `DEV-${new Date().getFullYear()}-${String(d.seq++).padStart(4, "0")}`;
+  const ref = `AMP-${new Date().getFullYear()}-${String(d.seq++).padStart(4, "0")}`;
   const r: Request = {
     ...input,
     ref,
