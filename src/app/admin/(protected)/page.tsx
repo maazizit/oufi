@@ -14,8 +14,8 @@ import {
 } from "@/lib/data/repository";
 import { TYPES } from "@/lib/data/constants";
 import { chanOf, fmtD, fmtT, isToday, statusOf, typeOf } from "@/lib/utils";
-import { Icon } from "@/components/ui/Icon";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { AdminContactChannel } from "@/components/admin/AdminContactChannel";
 
 export default async function AdminDashboardPage() {
   await ensureAdminPage("dashboard");
@@ -123,10 +123,17 @@ export default async function AdminDashboardPage() {
                       </td>
                       <td>{labels[typeOf(r.type).k]}</td>
                       <td>
-                        <span style={{ display: "inline-flex", gap: 5, alignItems: "center" }}>
-                          <Icon name={chanOf(r.chan).ic} size={15} />
-                          {labels[chanOf(r.chan).k]}
-                        </span>
+                        <AdminContactChannel
+                          chan={r.chan}
+                          phone={r.phone}
+                          label={labels[chanOf(r.chan).k]}
+                          waMessage={
+                            lang === "ar"
+                              ? `مرحبا ${r.name}، بخصوص طلبكم ${r.ref} — AMANPLANET`
+                              : `Bonjour ${r.name}, concernant votre demande ${r.ref} — AMANPLANET`
+                          }
+                          showPhone
+                        />
                       </td>
                       <td>
                         <span className={`pill ${statusOf(r.status).p}`}>

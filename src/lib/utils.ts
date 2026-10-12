@@ -103,6 +103,27 @@ export function isMoroccanPhone(v: string) {
   return false;
 }
 
+/** Numéro WhatsApp (digits only, sans +) pour wa.me */
+export function phoneToWhatsAppDigits(raw: string): string | null {
+  const n = normalizePhone(raw);
+  if (!n) return null;
+  let digits = n.replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  if (digits.startsWith("212")) return digits;
+  if (digits.startsWith("0") && digits.length >= 10) return `212${digits.slice(1)}`;
+  if (/^[5-7]\d{8}$/.test(digits)) return `212${digits}`;
+  if (digits.length >= 10 && digits.length <= 15) return digits;
+  return null;
+}
+
+export function whatsAppHref(phone: string, text?: string): string | null {
+  const digits = phoneToWhatsAppDigits(phone);
+  if (!digits) return null;
+  const base = `https://wa.me/${digits}`;
+  if (!text) return base;
+  return `${base}?text=${encodeURIComponent(text)}`;
+}
+
 export { productSlug } from "./seo";
 
 export type { Localized };

@@ -137,6 +137,7 @@ const A: Record<string, Localized> = {
   adm_interv_by: { fr: "Envoyé par", ar: "أُرسل بواسطة" },
   adm_interv_actions: { fr: "Actions", ar: "إجراءات" },
   adm_today: { fr: "Aujourd'hui", ar: "اليوم" },
+  adm_open_whatsapp: { fr: "Ouvrir WhatsApp", ar: "فتح واتساب" },
 };
 
 export function adminT(lang: Lang, key: string, vars?: Record<string, string | number>) {

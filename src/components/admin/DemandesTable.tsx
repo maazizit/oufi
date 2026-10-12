@@ -10,7 +10,7 @@ import {
   listClientRequests,
   mergeRequests,
 } from "@/lib/client/demo-client-store";
-import { Icon } from "@/components/ui/Icon";
+import { AdminContactChannel } from "@/components/admin/AdminContactChannel";
 import { adminEntityLabels } from "@/lib/data/admin-i18n";
 import { useAdminLang } from "./AdminLangProvider";
 
@@ -88,10 +88,16 @@ export function DemandesTable({ list }: { list: Request[] }) {
                   <td className="sm">{r.svc || "—"}</td>
                   <td>{r.city}</td>
                   <td>
-                    <span style={{ display: "inline-flex", gap: 5, alignItems: "center" }}>
-                      <Icon name={chanOf(r.chan).ic} size={15} />
-                      {labels[chanOf(r.chan).k]}
-                    </span>
+                    <AdminContactChannel
+                      chan={r.chan}
+                      phone={r.phone}
+                      label={labels[chanOf(r.chan).k]}
+                      waMessage={
+                        lang === "ar"
+                          ? `مرحبا ${r.name}، بخصوص طلبكم ${r.ref} — AMANPLANET`
+                          : `Bonjour ${r.name}, concernant votre demande ${r.ref} — AMANPLANET`
+                      }
+                    />
                   </td>
                   <td>
                     <span className="tag-soft">{labels[`src_${r.src}`] || r.src}</span>

@@ -2487,6 +2487,24 @@ html[dir="rtl"] .admin .pane header h3 {
 html[dir="rtl"] .admin-login-card {
   text-align: start;
 }
+.admin-contact-wa,
+.admin-contact-tel {
+  color: var(--blue-ink);
+  text-decoration: none;
+  border-radius: 6px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+.admin-contact-wa:hover,
+.admin-contact-tel:hover {
+  background: var(--blue-soft);
+  text-decoration: underline;
+}
+.admin-contact-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .side {
   background: var(--navy);
   color: var(--on-navy);

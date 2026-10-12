@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { Product, Request, Settings, TeamMember } from "@/lib/types";
 import { LOCALS } from "@/lib/data/constants";
-import { chanOf, fmtDT, statusOf, typeOf } from "@/lib/utils";
+import { chanOf, fmtDT, statusOf, typeOf, whatsAppHref } from "@/lib/utils";
+import { useAdminLang } from "@/components/admin/AdminLangProvider";
 import { money as moneyI18n } from "@/lib/data/i18n";
 import { getClientRequest, listClientNotifs, listClientRequests } from "@/lib/client/demo-client-store";
 import { RequestActions } from "@/components/admin/RequestActions";
@@ -43,6 +44,12 @@ const labels: Record<string, string> = {
   src_contact: "Contact",
 };
 
+function waMessageFor(ref: string, name: string, lang: "fr" | "ar") {
+  return lang === "ar"
+    ? `مرحبا ${name}، بخصوص طلبكم ${ref} — AMANPLANET`
+    : `Bonjour ${name}, concernant votre demande ${ref} — AMANPLANET`;
+}
+
 export function DemandeDetailClient({
   refId,
   initial,
@@ -56,6 +63,7 @@ export function DemandeDetailClient({
   team: TeamMember[];
   settings: Settings;
 }) {
+  const { lang, t } = useAdminLang();
   const [request, setRequest] = useState<Request | null>(initial);
   const [ready, setReady] = useState(Boolean(initial));
 
@@ -161,14 +169,24 @@ export function DemandeDetailClient({
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {request.phone ? (
-              <span className="btn btn-sm btn-out" style={{ cursor: "default" }}>
+              <a className="btn btn-sm btn-out" href={`tel:${request.phone.replace(/[^\d+]/g, "")}`}>
                 <Icon name="phone" size={15} /> {request.phone}
-              </span>
+              </a>
+            ) : null}
+            {request.phone && whatsAppHref(request.phone, waMessageFor(request.ref, request.name, lang)) ? (
+              <a
+                className="btn btn-sm btn-pri admin-contact-wa-btn"
+                href={whatsAppHref(request.phone, waMessageFor(request.ref, request.name, lang))!}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon name="wa" size={15} /> {t("adm_open_whatsapp")}
+              </a>
             ) : null}
             {request.email ? (
-              <span className="btn btn-sm btn-out" style={{ cursor: "default" }}>
+              <a className="btn btn-sm btn-out" href={`mailto:${request.email}`}>
                 <Icon name="mail" size={15} /> {request.email}
-              </span>
+              </a>
             ) : null}
             <span className="tag-soft" style={{ alignSelf: "center" }}>
               Créneau : {labels[`sl_${request.slot}`] || request.slot}
