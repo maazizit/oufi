@@ -111,6 +111,13 @@ const paths: Record<string, ReactNode> = {
       <path d="M5 19.5c1.8-3.2 4.2-4.8 7-4.8s5.2 1.6 7 4.8" />
     </>
   ),
+  users: (
+    <>
+      <circle cx="9" cy="9" r="2.5" />
+      <circle cx="16" cy="10" r="2" />
+      <path d="M4.5 19c1.2-2.2 2.8-3.2 4.5-3.2s3.3 1 4.5 3.2M14 19c.8-1.6 1.8-2.4 3-2.6" />
+    </>
+  ),
   pc: (
     <>
       <rect x="3.5" y="4.5" width="17" height="12" rx="1.5" />

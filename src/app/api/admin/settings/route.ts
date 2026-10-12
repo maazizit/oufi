@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
 import type { Settings } from "@/lib/types";
 
 export async function PUT(req: Request) {
+  const guard = await adminApiGuard("reglages");
+  if (!guard.ok) return guard.response;
   const body = (await req.json()) as Settings;
 
   if (!isSupabaseConfigured()) {

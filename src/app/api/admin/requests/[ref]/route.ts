@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
 import { syncDemoFromCookies, overlaySetCookieHeader } from "@/lib/data/demo-sync";
 
 async function assertAdmin() {
-  if (!isSupabaseConfigured()) {
-    return true;
-  }
-  const supabase = await createClient();
-  if (!supabase) return false;
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return Boolean(user);
+  const guard = await adminApiGuard("demandes");
+  return guard.ok;
 }
 
 function withOverlay(res: NextResponse) {

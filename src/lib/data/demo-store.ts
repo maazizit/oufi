@@ -10,6 +10,8 @@ import type {
 } from "../types";
 import { SEED_PRODUCTS, SEED_SETTINGS } from "./constants";
 import type { DemoOverlay } from "./demo-overlay";
+import type { AdminUserRecord } from "../admin/users";
+import { defaultManagerPermissions, normalizePermissions } from "../admin/permissions";
 
 /** In-memory demo store when Supabase env vars are missing (local / preview without DB). */
 type DemoDb = {
@@ -19,6 +21,7 @@ type DemoDb = {
   notifs: Notif[];
   settings: Settings;
   seq: number;
+  adminUsers: AdminUserRecord[];
 };
 
 const g = globalThis as unknown as { __oufiDemo?: DemoDb };
@@ -145,9 +148,56 @@ function db(): DemoDb {
       ],
       settings: structuredClone(SEED_SETTINGS),
       seq: 143,
+      adminUsers: [
+        {
+          id: "demo-mgr-1",
+          email: "gestionnaire@amanplanet.local",
+          role: "manager",
+          permissions: defaultManagerPermissions(),
+          active: true,
+          userId: null,
+        },
+      ],
     };
   }
+  if (!g.__oufiDemo.adminUsers?.length) {
+    g.__oufiDemo.adminUsers = [
+      {
+        id: "demo-mgr-1",
+        email: "gestionnaire@amanplanet.local",
+        role: "manager",
+        permissions: defaultManagerPermissions(),
+        active: true,
+        userId: null,
+      },
+    ];
+  }
   return g.__oufiDemo;
+}
+
+export function demoGetAdminUsers(): AdminUserRecord[] {
+  return structuredClone(db().adminUsers);
+}
+
+export function demoGetAdminUserByEmail(email: string): AdminUserRecord | null {
+  const e = email.trim().toLowerCase();
+  const u = db().adminUsers.find((x) => x.email === e && x.active);
+  return u ? structuredClone(u) : null;
+}
+
+export function demoSaveAdminUser(user: AdminUserRecord) {
+  const d = db();
+  const i = d.adminUsers.findIndex(
+    (x) => x.id === user.id || x.email === user.email.toLowerCase(),
+  );
+  const next = {
+    ...user,
+    email: user.email.toLowerCase(),
+    permissions: normalizePermissions(user.permissions),
+  };
+  if (i >= 0) d.adminUsers[i] = next;
+  else d.adminUsers.push(next);
+  return structuredClone(next);
 }
 
 /** Merge cookie/serverless-persisted overlay into the in-memory demo DB. */

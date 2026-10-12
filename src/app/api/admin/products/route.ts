@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import * as demo from "@/lib/data/demo-store";
 import type { Product } from "@/lib/types";
 
 export async function POST(req: Request) {
+  const guard = await adminApiGuard("catalogue");
+  if (!guard.ok) return guard.response;
   const body = await req.json();
   const product: Product = {
     id: body.id,
@@ -54,6 +57,8 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  const guard = await adminApiGuard("catalogue");
+  if (!guard.ok) return guard.response;
   const body = await req.json();
   if (!isSupabaseConfigured()) {
     const all = demo.demoGetProducts(false);
@@ -85,6 +90,8 @@ export async function PATCH(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const guard = await adminApiGuard("catalogue");
+  if (!guard.ok) return guard.response;
   const body = await req.json();
   if (!isSupabaseConfigured()) {
     demo.demoDeleteProduct(body.id);

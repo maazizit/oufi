@@ -1,8 +1,10 @@
+import { ensureAdminPage } from "@/lib/admin/guard";
 import { getInterventions, getSettings } from "@/lib/data/repository";
 import { fmtD, fmtT, isToday } from "@/lib/utils";
 import { IntervActions } from "@/components/admin/IntervActions";
 
 export default async function InterventionsPage() {
+  await ensureAdminPage("interventions");
   const [list, settings] = await Promise.all([getInterventions(), getSettings()]);
   const techName = (id: string) => settings.team.find((t) => t.id === id)?.name || id || "—";
 

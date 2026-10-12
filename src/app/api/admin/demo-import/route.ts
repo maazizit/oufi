@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { adminApiGuard } from "@/lib/admin/api";
 import type { Notif, Request as QuoteRequest } from "@/lib/types";
 import * as demo from "@/lib/data/demo-store";
 import { syncDemoFromCookies, overlaySetCookieHeader } from "@/lib/data/demo-sync";
@@ -9,6 +10,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/server";
  * into the cookie-backed demo store so SSR/admin keep seeing them.
  */
 export async function POST(req: globalThis.Request) {
+  const guard = await adminApiGuard("demandes");
+  if (!guard.ok) return guard.response;
   if (isSupabaseConfigured()) {
     return NextResponse.json({ ok: true, skipped: true });
   }

@@ -1,7 +1,9 @@
+import { ensureAdminPage } from "@/lib/admin/guard";
 import { getSettings } from "@/lib/data/repository";
 import { SettingsClient } from "@/components/admin/SettingsClient";
 
 export default async function ReglagesPage() {
+  await ensureAdminPage("reglages");
   const settings = await getSettings();
   return (
     <>
