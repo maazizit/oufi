@@ -34,8 +34,9 @@ export async function chatWithGroq(
   lang: Lang,
   messages: ChatTurn[],
 ): Promise<ChatAssistantPayload> {
-  const key = process.env.GROQ_API_KEY;
-  const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+  const key = process.env.GROQ_API_KEY?.trim();
+  const model =
+    process.env.GROQ_MODEL?.trim() || "llama-3.3-70b-versatile";
   if (!key) {
     return {
       reply:
@@ -46,31 +47,48 @@ export async function chatWithGroq(
     };
   }
 
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  const groqMessages = [
+    { role: "system", content: systemPrompt(lang) },
+    ...messages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
+  ];
+
+  async function callGroq(jsonMode: boolean) {
+    const body: Record<string, unknown> = {
       model,
       temperature: 0.4,
       max_tokens: 600,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: systemPrompt(lang) },
-        ...messages.slice(-12).map((m) => ({ role: m.role, content: m.content })),
-      ],
-    }),
-  });
+      messages: groqMessages,
+    };
+    if (jsonMode) body.response_format = { type: "json_object" };
+    return fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  let res = await callGroq(true);
+  if (!res.ok && res.status === 400) {
+    res = await callGroq(false);
+  }
 
   if (!res.ok) {
+    const errText = await res.text().catch(() => "");
+    console.error("[chat/groq]", res.status, errText.slice(0, 240));
+    const authFailed = res.status === 401 || res.status === 403;
     return {
       reply:
         lang === "ar"
-          ? "حدث خطأ. جرّبوا لاحقاً أو اطلبوا عرض سعر مباشرة."
-          : "Une erreur est survenue. Réessayez plus tard ou demandez un devis directement.",
-      links: sanitizeLinks([{ href: "/devis" }]),
+          ? authFailed
+            ? "المساعد غير مُهيأ بعد. استخدموا نموذج العرض أو اتصلوا بنا."
+            : "حدث خطأ. جرّبوا لاحقاً أو اطلبوا عرض سعر مباشرة."
+          : authFailed
+            ? "L’assistant n’est pas encore configuré. Utilisez le devis ou contactez-nous."
+            : "Une erreur est survenue. Réessayez plus tard ou demandez un devis directement.",
+      links: sanitizeLinks([{ href: "/devis" }, { href: "/contact" }]),
     };
   }
 
