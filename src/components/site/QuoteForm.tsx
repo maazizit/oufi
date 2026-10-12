@@ -41,6 +41,14 @@ export function QuoteForm({
     chan: "phone",
     slot: "any",
     ok: false,
+    city: sp.get("city") || "",
+    desc: sp.get("desc") || "",
+    cams: sp.get("cams") || "",
+    local: sp.get("local") || "",
+    name: sp.get("name") || "",
+    company: sp.get("company") || "",
+    addr: sp.get("addr") || "",
+    phone: sp.get("phone") || "",
   });
 
   const catalogForSvc = useMemo(() => {
@@ -206,6 +214,13 @@ export function QuoteForm({
       <div className="card pad" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {mode === "form" && step === 1 ? (
           <>
+            {sp.get("from_chat") === "1" ? (
+              <p className="xs muted" style={{ marginBottom: 12 }}>
+                {lang === "ar"
+                  ? "تم تعبئة بعض الحقول من المساعد — راجعوا ثم أكملوا الطلب."
+                  : "Certains champs sont pré-remplis depuis l’assistant — vérifiez puis envoyez."}
+              </p>
+            ) : null}
             <div className="field">
               <span className="lab">{t("q_type")}</span>
               <div className="grid2">

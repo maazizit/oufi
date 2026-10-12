@@ -847,9 +847,12 @@ tbody tr[data-click]:hover {
 }
 .side-notifs {
   margin-inline-start: auto;
+  position: relative;
+  z-index: 40;
 }
 .admin-notifs {
   position: relative;
+  z-index: 40;
 }
 .admin-notifs-btn {
   position: relative;
@@ -881,12 +884,15 @@ tbody tr[data-click]:hover {
   place-items: center;
   padding: 0 4px;
 }
+/* Open to the right of the bell so the panel isn't clipped by the viewport edge */
 .admin-notifs-panel {
   position: absolute;
-  top: calc(100% + 8px);
-  inset-inline-end: 0;
-  width: min(320px, 82vw);
-  z-index: 50;
+  top: 0;
+  inset-inline-start: calc(100% + 10px);
+  inset-inline-end: auto;
+  width: min(340px, calc(100vw - 250px));
+  min-width: 260px;
+  z-index: 80;
   overflow: hidden;
   box-shadow: var(--sh-2);
   background: var(--surface);
@@ -924,6 +930,11 @@ tbody tr[data-click]:hover {
   padding: 10px 12px;
   border-bottom: 1px solid var(--line);
   color: inherit;
+}
+.admin-notifs-list li a .sm {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .admin-notifs-list li[data-unread="1"] a {
   background: var(--blue-soft);
@@ -1680,6 +1691,7 @@ tbody tr[data-click]:hover {
   display: flex;
   flex-direction: column;
   border-inline-end: 1px solid var(--navy-line);
+  overflow: visible;
 }
 .side .bd {
   display: flex;
@@ -1687,6 +1699,9 @@ tbody tr[data-click]:hover {
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid var(--navy-line);
+  overflow: visible;
+  position: relative;
+  z-index: 30;
 }
 .side .bd .mk {
   width: 34px;
@@ -1833,6 +1848,7 @@ tbody tr[data-click]:hover {
   .side {
     flex-direction: row;
     overflow-x: auto;
+    overflow-y: visible;
   }
   .side nav {
     flex-direction: row;
@@ -1843,6 +1859,14 @@ tbody tr[data-click]:hover {
   }
   .panes {
     grid-template-columns: 1fr;
+  }
+  /* Below the bell on narrow layouts — avoid off-screen left clip */
+  .admin-notifs-panel {
+    top: calc(100% + 8px);
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    width: min(320px, calc(100vw - 24px));
+    min-width: 0;
   }
 }
 .pane {
@@ -2065,6 +2089,127 @@ tbody tr[data-click]:hover {
 }
 .wa-float:hover {
   transform: scale(1.06);
+}
+.chat-fab {
+  position: fixed;
+  inset-inline-end: 16px;
+  bottom: 82px;
+  z-index: 56;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+  transition: transform 160ms var(--ease-out);
+}
+.chat-fab:hover {
+  transform: scale(1.06);
+}
+.chat-panel {
+  position: fixed;
+  inset-inline-end: 16px;
+  bottom: 148px;
+  z-index: 57;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(520px, 70vh);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+.chat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.chat-x {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted);
+}
+.chat-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.chat-chip {
+  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chat-bubble {
+  font-size: 13.5px;
+  line-height: 1.45;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  max-width: 95%;
+}
+.chat-bubble.chat-user {
+  align-self: flex-end;
+  background: var(--blue-soft);
+  color: var(--ink);
+}
+.chat-bubble.chat-assistant {
+  align-self: flex-start;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.chat-links {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chat-links a {
+  font-size: 12.5px;
+  color: var(--blue-ink);
+  text-decoration: underline;
+}
+.chat-foot {
+  padding: 10px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.chat-form {
+  display: flex;
+  gap: 8px;
+}
+.chat-form .input {
+  flex: 1;
+  min-width: 0;
+}
+.chat-devis {
+  text-align: center;
+  justify-content: center;
+}
+.chat-typing {
+  padding: 0 4px;
 }
 .svc-anchors {
   display: flex;
