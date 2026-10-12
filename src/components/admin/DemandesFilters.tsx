@@ -2,25 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const STATUSES = [
-  { id: "", label: "Toutes" },
-  { id: "new", label: "Nouvelle" },
-  { id: "contacted", label: "Contactée" },
-  { id: "visit", label: "Visite planifiée" },
-  { id: "sent", label: "Devis envoyé" },
-  { id: "won", label: "Acceptée" },
-  { id: "done", label: "Terminée" },
-  { id: "lost", label: "Annulée" },
-];
-
-const TYPES = [
-  { id: "", label: "Tous les types" },
-  { id: "install", label: "Installation" },
-  { id: "prod", label: "Devis matériel / achat" },
-  { id: "maint", label: "Maintenance" },
-  { id: "fix", label: "Dépannage" },
-];
+import { useAdminLang } from "./AdminLangProvider";
 
 export function DemandesFilters({
   status,
@@ -38,7 +20,27 @@ export function DemandesFilters({
   typeCounts: Record<string, number>;
 }) {
   const router = useRouter();
+  const { t } = useAdminLang();
   const [query, setQuery] = useState(q);
+
+  const STATUSES = [
+    { id: "", label: t("adm_filter_all") },
+    { id: "new", label: t("adm_st_new") },
+    { id: "contacted", label: t("adm_st_contacted") },
+    { id: "visit", label: t("adm_st_visit") },
+    { id: "sent", label: t("adm_st_sent") },
+    { id: "won", label: t("adm_st_won") },
+    { id: "done", label: t("adm_st_done") },
+    { id: "lost", label: t("adm_st_lost") },
+  ];
+
+  const TYPES = [
+    { id: "", label: t("adm_filter_types_all") },
+    { id: "install", label: t("adm_ty_install_short") },
+    { id: "prod", label: t("adm_ty_prod") },
+    { id: "maint", label: t("adm_ty_maint") },
+    { id: "fix", label: t("adm_ty_fix") },
+  ];
 
   function push(next: { status?: string; src?: string; type?: string; q?: string }) {
     const p = new URLSearchParams();
@@ -58,7 +60,7 @@ export function DemandesFilters({
       <div className="toolbar">
         <input
           className="input search"
-          placeholder="Réf., client, ville, téléphone…"
+          placeholder={t("adm_search_ph")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && push({ q: query })}
@@ -69,36 +71,37 @@ export function DemandesFilters({
           value={src}
           onChange={(e) => push({ src: e.target.value })}
         >
-          <option value="">Origine — Toutes</option>
-          <option value="form">Formulaire devis</option>
-          <option value="cart">Demande de devis / articles</option>
-          <option value="contact">Contact</option>
+          <option value="">{t("adm_src_all")}</option>
+          <option value="form">{t("adm_src_form_opt")}</option>
+          <option value="cart">{t("adm_src_cart_opt")}</option>
+          <option value="contact">{t("adm_src_contact_opt")}</option>
         </select>
       </div>
       <div className="admin-type-filters">
         {TYPES.map((ty) => (
           <button
-            key={ty.id || "all-types"}
+            key={ty.id || "all"}
             type="button"
-            className="chip"
-            aria-pressed={type === ty.id}
+            className={`btn btn-sm ${type === ty.id ? "btn-pri" : "btn-out"}`}
             onClick={() => push({ type: ty.id })}
           >
             {ty.label}
-            {ty.id ? ` (${typeCounts[ty.id] ?? 0})` : ` (${typeCounts.all ?? 0})`}
+            <span className="num" style={{ marginInlineStart: 6 }}>
+              {ty.id ? typeCounts[ty.id] ?? 0 : typeCounts.all}
+            </span>
           </button>
         ))}
       </div>
-      <div className="frow">
+      <div className="tabs">
         {STATUSES.map((s) => (
           <button
             key={s.id || "all"}
             type="button"
-            className="chip"
-            aria-pressed={status === s.id}
+            className={status === s.id ? "on" : ""}
             onClick={() => push({ status: s.id })}
           >
-            {s.label} ({counts[s.id] ?? 0})
+            {s.label}
+            <span className="num">{counts[s.id] ?? 0}</span>
           </button>
         ))}
       </div>

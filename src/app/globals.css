@@ -2480,6 +2480,13 @@ tbody tr[data-click]:hover {
   grid-template-columns: 230px minmax(0, 1fr);
   min-height: 100vh;
 }
+html[dir="rtl"] .admin .topbar h2,
+html[dir="rtl"] .admin .pane header h3 {
+  text-align: start;
+}
+html[dir="rtl"] .admin-login-card {
+  text-align: start;
+}
 .side {
   background: var(--navy);
   color: var(--on-navy);

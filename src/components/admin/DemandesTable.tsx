@@ -11,29 +11,13 @@ import {
   mergeRequests,
 } from "@/lib/client/demo-client-store";
 import { Icon } from "@/components/ui/Icon";
-
-const labels: Record<string, string> = {
-  ty_install: "Installation",
-  ty_prod: "Devis matériel",
-  ty_maint: "Maintenance",
-  ty_fix: "Dépannage",
-  st_new: "Nouvelle",
-  st_contacted: "Contactée",
-  st_visit: "Visite planifiée",
-  st_sent: "Devis envoyé",
-  st_won: "Acceptée",
-  st_done: "Terminée",
-  st_lost: "Annulée",
-  ch_phone: "Téléphone",
-  ch_wa: "WhatsApp",
-  ch_mail: "E-mail",
-  src_form: "Formulaire",
-  src_cart: "Demande de devis",
-  src_contact: "Contact",
-};
+import { adminEntityLabels } from "@/lib/data/admin-i18n";
+import { useAdminLang } from "./AdminLangProvider";
 
 export function DemandesTable({ list }: { list: Request[] }) {
   const router = useRouter();
+  const { lang, t } = useAdminLang();
+  const labels = adminEntityLabels(lang);
   const [rows, setRows] = useState(list);
 
   useEffect(() => {
@@ -58,16 +42,16 @@ export function DemandesTable({ list }: { list: Request[] }) {
       <table className="demandes-table">
         <thead>
           <tr>
-            <th>Réf.</th>
-            <th>Client</th>
-            <th>Type</th>
-            <th>Service</th>
-            <th>Ville</th>
-            <th>Canal</th>
-            <th>Origine</th>
-            <th>Articles</th>
-            <th>Reçue le</th>
-            <th>Statut</th>
+            <th>{t("adm_th_ref")}</th>
+            <th>{t("adm_th_client")}</th>
+            <th>{t("adm_th_type")}</th>
+            <th>{t("adm_th_service")}</th>
+            <th>{t("adm_th_city")}</th>
+            <th>{t("adm_th_chan")}</th>
+            <th>{t("adm_th_origin")}</th>
+            <th>{t("adm_th_items")}</th>
+            <th>{t("adm_th_received")}</th>
+            <th>{t("adm_th_status")}</th>
           </tr>
         </thead>
         <tbody>
@@ -125,8 +109,7 @@ export function DemandesTable({ list }: { list: Request[] }) {
           ) : (
             <tr>
               <td colSpan={10} className="muted">
-                Aucune demande. Envoyez un devis depuis le site (même navigateur en mode démo),
-                puis revenez ici.
+                {t("adm_demandes_empty")}
               </td>
             </tr>
           )}

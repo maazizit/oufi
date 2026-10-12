@@ -1,4 +1,5 @@
 import { AdminUsersClient } from "@/components/admin/AdminUsersClient";
+import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { ensureSuperAdmin } from "@/lib/admin/guard";
 import { listAdminUsersForSuper } from "@/lib/admin/session";
 
@@ -8,9 +9,7 @@ export default async function AdminUsersPage() {
 
   return (
     <>
-      <div className="topbar">
-        <h2>Utilisateurs &amp; accès</h2>
-      </div>
+      <AdminTopbar titleKey="adm_page_users" />
       <div className="content">
         <AdminUsersClient initial={users} />
       </div>

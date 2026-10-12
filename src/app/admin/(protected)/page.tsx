@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { ensureAdminPage } from "@/lib/admin/guard";
+import { getAdminLang } from "@/lib/admin/lang";
+import {
+  adminEntityLabels,
+  adminT,
+  adminWeekdayShort,
+} from "@/lib/data/admin-i18n";
 import {
   getInterventions,
   getProducts,
@@ -9,9 +15,14 @@ import {
 import { TYPES } from "@/lib/data/constants";
 import { chanOf, fmtD, fmtT, isToday, statusOf, typeOf } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
+import { AdminTopbar } from "@/components/admin/AdminTopbar";
 
 export default async function AdminDashboardPage() {
   await ensureAdminPage("dashboard");
+  const lang = await getAdminLang();
+  const labels = adminEntityLabels(lang);
+  const dn = adminWeekdayShort(lang);
+
   const [requests, interv, products, settings] = await Promise.all([
     getRequests(),
     getInterventions(),
@@ -37,87 +48,64 @@ export default async function AdminDashboardPage() {
     return requests.filter((r) => String(r.created).slice(0, 10) === k).length;
   });
   const mx = Math.max(1, ...counts);
-  const dn = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
   const byType = TYPES.map((ty) => ({
     k: ty.k,
     n: requests.filter((r) => r.type === ty.id).length,
   }));
   const mxT = Math.max(1, ...byType.map((x) => x.n));
 
-  const labels: Record<string, string> = {
-    ty_install: "Nouvelle installation",
-    ty_prod: "Devis matériel",
-    ty_maint: "Maintenance",
-    ty_fix: "Dépannage",
-    st_new: "Nouvelle",
-    st_contacted: "Contactée",
-    st_visit: "Visite planifiée",
-    st_sent: "Devis envoyé",
-    st_won: "Acceptée",
-    st_done: "Terminée",
-    st_lost: "Annulée",
-    ch_phone: "Téléphone",
-    ch_wa: "WhatsApp",
-    ch_mail: "E-mail",
-    i_sched: "Planifiée",
-    i_prog: "En cours",
-    i_done: "Terminée",
-  };
-
   return (
     <>
-      <div className="topbar">
-        <h2>Tableau de bord</h2>
-        <span className="sp" />
+      <AdminTopbar titleKey="adm_dash_title">
         <div className="who">
           <span className="av">IO</span>
           <span>
             <b>{settings.manager}</b>
             <br />
-            <span className="xs muted">Administrateur</span>
+            <span className="xs muted">{adminT(lang, "adm_administrator")}</span>
           </span>
         </div>
-      </div>
+      </AdminTopbar>
       <div className="content">
         <div className="kpis">
           <div className="kpi k-dan">
-            <span className="l">Nouvelles demandes</span>
+            <span className="l">{adminT(lang, "adm_kpi_new")}</span>
             <span className="v">{nw}</span>
-            <span className="d">à traiter aujourd&apos;hui</span>
+            <span className="d">{adminT(lang, "adm_kpi_new_d")}</span>
           </div>
           <div className="kpi">
-            <span className="l">Devis en attente</span>
+            <span className="l">{adminT(lang, "adm_kpi_sent")}</span>
             <span className="v">{sent}</span>
-            <span className="d">envoyés, sans réponse</span>
+            <span className="d">{adminT(lang, "adm_kpi_sent_d")}</span>
           </div>
           <div className="kpi k-ok">
-            <span className="l">Interventions du jour</span>
+            <span className="l">{adminT(lang, "adm_kpi_interv")}</span>
             <span className="v">{today}</span>
-            <span className="d">planifiées</span>
+            <span className="d">{adminT(lang, "adm_kpi_interv_d")}</span>
           </div>
           <div className="kpi k-warn">
-            <span className="l">Stock bas</span>
+            <span className="l">{adminT(lang, "adm_kpi_stock")}</span>
             <span className="v">{low}</span>
-            <span className="d">articles à réapprovisionner</span>
+            <span className="d">{adminT(lang, "adm_kpi_stock_d")}</span>
           </div>
         </div>
         <div className="panes">
           <section className="pane">
             <header>
-              <h3>Demandes récentes</h3>
+              <h3>{adminT(lang, "adm_recent_req")}</h3>
               <Link href="/admin/demandes" className="btn btn-sm btn-out">
-                Tout voir
+                {adminT(lang, "adm_see_all")}
               </Link>
             </header>
             <div className="tw" style={{ border: 0, borderRadius: 0 }}>
               <table>
                 <thead>
                   <tr>
-                    <th>Réf.</th>
-                    <th>Client</th>
-                    <th>Type</th>
-                    <th>Canal</th>
-                    <th>Statut</th>
+                    <th>{adminT(lang, "adm_th_ref")}</th>
+                    <th>{adminT(lang, "adm_th_client")}</th>
+                    <th>{adminT(lang, "adm_th_type")}</th>
+                    <th>{adminT(lang, "adm_th_chan")}</th>
+                    <th>{adminT(lang, "adm_th_status")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -154,7 +142,7 @@ export default async function AdminDashboardPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <section className="pane">
               <header>
-                <h3>Demandes des 7 derniers jours</h3>
+                <h3>{adminT(lang, "adm_chart_7d")}</h3>
               </header>
               <div className="bd">
                 <div className="bars">
@@ -170,7 +158,7 @@ export default async function AdminDashboardPage() {
             </section>
             <section className="pane">
               <header>
-                <h3>Répartition par type</h3>
+                <h3>{adminT(lang, "adm_by_type")}</h3>
               </header>
               <div className="bd" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {byType.map((x) => (
@@ -196,7 +184,7 @@ export default async function AdminDashboardPage() {
             </section>
             <section className="pane">
               <header>
-                <h3>Planning du jour</h3>
+                <h3>{adminT(lang, "adm_plan_today")}</h3>
               </header>
               <div className="bd" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {planning.length ? (
@@ -207,7 +195,7 @@ export default async function AdminDashboardPage() {
                       </b>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div className="sm" style={{ fontWeight: 600 }}>
-                          {i.obj.fr}
+                          {lang === "ar" ? i.obj.ar || i.obj.fr : i.obj.fr}
                         </div>
                         <div className="xs muted">{i.client}</div>
                       </div>
@@ -217,7 +205,7 @@ export default async function AdminDashboardPage() {
                     </div>
                   ))
                 ) : (
-                  <p className="muted sm">Aucun résultat.</p>
+                  <p className="muted sm">{adminT(lang, "adm_no_results")}</p>
                 )}
               </div>
             </section>

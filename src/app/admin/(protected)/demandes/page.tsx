@@ -2,6 +2,7 @@ import { ensureAdminPage } from "@/lib/admin/guard";
 import { getRequests } from "@/lib/data/repository";
 import { DemandesFilters } from "@/components/admin/DemandesFilters";
 import { DemandesTable } from "@/components/admin/DemandesTable";
+import { AdminTopbar } from "@/components/admin/AdminTopbar";
 
 export default async function DemandesPage({
   searchParams,
@@ -26,13 +27,7 @@ export default async function DemandesPage({
 
   return (
     <>
-      <div className="topbar">
-        <h2>Demandes</h2>
-        <span className="sp" />
-        <span className="xs muted">
-          Cliquez une ligne pour ouvrir la fiche · Installation · Matériel · Maintenance · Dépannage
-        </span>
-      </div>
+      <AdminTopbar titleKey="adm_page_demandes" hintKey="adm_demandes_hint" />
       <div className="content">
         <DemandesFilters
           status={sp.status || ""}

@@ -1,4 +1,5 @@
 import { AdminCompteClient } from "@/components/admin/AdminCompteClient";
+import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { getAdminSession } from "@/lib/admin/session";
 import { redirect } from "next/navigation";
 
@@ -8,9 +9,7 @@ export default async function AdminComptePage() {
 
   return (
     <>
-      <div className="topbar">
-        <h2>Mon compte</h2>
-      </div>
+      <AdminTopbar titleKey="adm_page_compte" />
       <div className="content">
         <AdminCompteClient session={session} />
       </div>

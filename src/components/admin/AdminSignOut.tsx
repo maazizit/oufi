@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useAdminLang } from "./AdminLangProvider";
 
 export function AdminSignOut() {
   const router = useRouter();
+  const { t } = useAdminLang();
   return (
     <button
       type="button"
@@ -15,7 +17,7 @@ export function AdminSignOut() {
         router.refresh();
       }}
     >
-      Déconnexion
+      {t("adm_sign_out")}
     </button>
   );
 }

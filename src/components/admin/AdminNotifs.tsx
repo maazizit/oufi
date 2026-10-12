@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import type { Notif } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
 import { fmtDT } from "@/lib/utils";
+import { L } from "@/lib/data/i18n";
+import { useAdminLang } from "./AdminLangProvider";
 import {
   listClientNotifs,
   listClientRequests,
@@ -22,6 +24,7 @@ export function AdminNotifs({
   const [notifs, setNotifs] = useState(initial);
   const root = useRef<HTMLDivElement>(null);
 
+  const { lang, t } = useAdminLang();
   const unread = notifs.filter((n) => !n.read).length;
 
   useEffect(() => {
@@ -78,7 +81,7 @@ export function AdminNotifs({
         type="button"
         className="admin-notifs-btn"
         aria-expanded={open}
-        aria-label="Notifications"
+        aria-label={t("adm_notifs")}
         onClick={() => setOpen((v) => !v)}
       >
         <Icon name="bell" size={18} />
@@ -87,16 +90,16 @@ export function AdminNotifs({
       {open ? (
         <div className="admin-notifs-panel card">
           <div className="admin-notifs-hd">
-            <b>Notifications</b>
+            <b>{t("adm_notifs")}</b>
             {unread > 0 ? (
               <button type="button" className="btn btn-sm btn-out" onClick={markAllRead}>
-                Tout marquer lu
+                {t("adm_notifs_mark")}
               </button>
             ) : null}
           </div>
           {notifs.length === 0 ? (
             <p className="sm muted" style={{ padding: "12px 14px" }}>
-              Aucune notification.
+              {t("adm_notifs_empty")}
             </p>
           ) : (
             <ul className="admin-notifs-list">
@@ -106,7 +109,7 @@ export function AdminNotifs({
                     href={n.ref ? `/admin/demandes/${encodeURIComponent(n.ref)}` : "/admin/demandes"}
                     onClick={() => setOpen(false)}
                   >
-                    <span className="sm">{n.txt.fr}</span>
+                    <span className="sm">{L(lang, n.txt)}</span>
                     <span className="xs muted mono">
                       {n.ref ? `${n.ref} · ` : ""}
                       {fmtDT(n.at)}
@@ -118,7 +121,7 @@ export function AdminNotifs({
           )}
           <div className="admin-notifs-ft">
             <Link href="/admin/demandes" onClick={() => setOpen(false)}>
-              Voir les demandes
+              {t("adm_notifs_see")}
             </Link>
           </div>
         </div>

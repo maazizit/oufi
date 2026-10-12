@@ -1,31 +1,34 @@
 import { ensureAdminPage } from "@/lib/admin/guard";
+import { getAdminLang } from "@/lib/admin/lang";
+import { adminEntityLabels, adminT } from "@/lib/data/admin-i18n";
 import { getInterventions, getSettings } from "@/lib/data/repository";
 import { fmtD, fmtT, isToday } from "@/lib/utils";
 import { IntervActions } from "@/components/admin/IntervActions";
+import { AdminTopbar } from "@/components/admin/AdminTopbar";
 
 export default async function InterventionsPage() {
   await ensureAdminPage("interventions");
+  const lang = await getAdminLang();
+  const labels = adminEntityLabels(lang);
   const [list, settings] = await Promise.all([getInterventions(), getSettings()]);
   const techName = (id: string) => settings.team.find((t) => t.id === id)?.name || id || "—";
 
   return (
     <>
-      <div className="topbar">
-        <h2>Interventions</h2>
-      </div>
+      <AdminTopbar titleKey="adm_page_interventions" />
       <div className="content">
         <div className="tw">
           <table>
             <thead>
               <tr>
-                <th>Réf.</th>
-                <th>Quand</th>
-                <th>Objet</th>
-                <th>Client</th>
-                <th>Envoyé sur place</th>
-                <th>Envoyé par</th>
-                <th>Statut</th>
-                <th>Actions</th>
+                <th>{adminT(lang, "adm_th_ref")}</th>
+                <th>{adminT(lang, "adm_interv_when")}</th>
+                <th>{adminT(lang, "adm_interv_subject")}</th>
+                <th>{adminT(lang, "adm_th_client")}</th>
+                <th>{adminT(lang, "adm_interv_onsite")}</th>
+                <th>{adminT(lang, "adm_interv_by")}</th>
+                <th>{adminT(lang, "adm_th_status")}</th>
+                <th>{adminT(lang, "adm_interv_actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -37,11 +40,11 @@ export default async function InterventionsPage() {
                     <span className="xs muted">{i.ref}</span>
                   </td>
                   <td className="num">
-                    <b>{isToday(i.when) ? "Aujourd'hui" : fmtD(i.when)}</b>
+                    <b>{isToday(i.when) ? adminT(lang, "adm_today") : fmtD(i.when)}</b>
                     <br />
                     {fmtT(i.when)}
                   </td>
-                  <td>{i.obj.fr}</td>
+                  <td>{lang === "ar" ? i.obj.ar || i.obj.fr : i.obj.fr}</td>
                   <td>
                     {i.client}
                     <br />
@@ -57,7 +60,7 @@ export default async function InterventionsPage() {
                         i.state === "done" ? "pill-ok" : i.state === "prog" ? "pill-warn" : "pill-new"
                       }`}
                     >
-                      {i.state === "done" ? "Terminée" : i.state === "prog" ? "En cours" : "Planifiée"}
+                      {labels[`i_${i.state}`]}
                     </span>
                   </td>
                   <td>
