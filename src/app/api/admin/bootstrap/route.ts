@@ -1,0 +1,40 @@
+import { NextResponse } from "next/server";
+import { ADMIN_EMAIL, adminPasswordFromEnv } from "@/lib/admin/credentials";
+import {
+  ensureSupabaseAdminUser,
+  resetSupabaseAdminPassword,
+} from "@/lib/admin/supabase-admin";
+import { isSupabaseConfigured } from "@/lib/supabase/server";
+
+/**
+ * Crée (ou réinitialise avec ?reset=1) le compte admin Supabase Auth.
+ * Mot de passe = ADMIN_PASSWORD (ou ADMIN_DEMO_PASSWORD) sur Vercel.
+ * À appeler une fois après déploiement prod.
+ */
+export async function POST(req: Request) {
+  if (!isSupabaseConfigured()) {
+    return NextResponse.json({ error: "supabase_required" }, { status: 503 });
+  }
+
+  const password = adminPasswordFromEnv();
+  if (!password) {
+    return NextResponse.json({ error: "admin_password_env_missing" }, { status: 503 });
+  }
+
+  const url = new URL(req.url);
+  const reset = url.searchParams.get("reset") === "1";
+
+  const ok = reset
+    ? await resetSupabaseAdminPassword(password)
+    : await ensureSupabaseAdminUser(password);
+
+  if (!ok) {
+    return NextResponse.json({ error: "bootstrap_failed" }, { status: 500 });
+  }
+
+  return NextResponse.json({
+    ok: true,
+    email: ADMIN_EMAIL,
+    reset,
+  });
+}

@@ -9,7 +9,7 @@ export function normalizeAdminLogin(raw: string): string {
 
 export function isAllowedAdminIdentifier(raw: string): boolean {
   const user = raw.trim().toLowerCase();
-  const expectedUser = (process.env.ADMIN_DEMO_USER || "admin").toLowerCase();
+  const expectedUser = (process.env.ADMIN_USER || process.env.ADMIN_DEMO_USER || "admin").toLowerCase();
   return (
     user === expectedUser ||
     user === "admin" ||
@@ -18,9 +18,10 @@ export function isAllowedAdminIdentifier(raw: string): boolean {
   );
 }
 
-export function verifyAdminPassword(password: string): boolean {
-  const expected = process.env.ADMIN_DEMO_PASSWORD || "oufi-admin";
-  return password === expected;
+/** Mot de passe initial stocké côté Vercel (bootstrap), pas vérifié au login. */
+export function adminPasswordFromEnv(): string | null {
+  const pw = process.env.ADMIN_PASSWORD || process.env.ADMIN_DEMO_PASSWORD;
+  return pw && pw.length > 0 ? pw : null;
 }
 
 export { ADMIN_EMAIL };
