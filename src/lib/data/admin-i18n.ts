@@ -81,6 +81,15 @@ const A: Record<string, Localized> = {
     fr: "Pas de mot évident (admin, oufi, 123456…)",
     ar: "بدون كلمات شائعة (admin، oufi، 123456…)",
   },
+  adm_pw_banner_text: {
+    fr: "Pour sécuriser votre accès, choisissez un mot de passe personnel robuste (page Mon compte).",
+    ar: "لتأمين حسابك، اختر كلمة مرور قوية وشخصية من صفحة «حسابي».",
+  },
+  adm_pw_banner_cta: { fr: "Changer maintenant", ar: "تغيير الآن" },
+  adm_pw_banner_required: {
+    fr: "Première connexion ou mot de passe réinitialisé : définissez votre mot de passe personnel ci-dessous avant d’utiliser le back-office.",
+    ar: "أول تسجيل أو إعادة تعيين: عيّن كلمة مرورك الشخصية أدناه قبل استخدام لوحة التحكم.",
+  },
 
   adm_dash_title: { fr: "Tableau de bord", ar: "لوحة المعلومات" },
   adm_kpi_new: { fr: "Nouvelles demandes", ar: "طلبات جديدة" },

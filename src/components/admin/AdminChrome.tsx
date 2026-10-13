@@ -11,6 +11,7 @@ import { AdminSignOut } from "./AdminSignOut";
 import { AdminNotifs } from "./AdminNotifs";
 import { AdminLangToggle } from "./AdminLangToggle";
 import { useAdminLang } from "./AdminLangProvider";
+import { AdminPasswordChangeGate } from "./AdminPasswordChangeGate";
 
 type Props = {
   session: AdminSession;
@@ -99,7 +100,10 @@ export function AdminChrome({
           </div>
         </div>
       </aside>
-      <div className="main">{children}</div>
+      <div className="main">
+        <AdminPasswordChangeGate mustChangePassword={session.mustChangePassword} />
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { AdminCompteClient } from "@/components/admin/AdminCompteClient";
 import { AdminTopbar } from "@/components/admin/AdminTopbar";
 import { getAdminSession } from "@/lib/admin/session";
@@ -11,7 +12,9 @@ export default async function AdminComptePage() {
     <>
       <AdminTopbar titleKey="adm_page_compte" />
       <div className="content">
-        <AdminCompteClient session={session} />
+        <Suspense fallback={null}>
+          <AdminCompteClient session={session} />
+        </Suspense>
       </div>
     </>
   );

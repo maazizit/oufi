@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { AdminSession } from "@/lib/admin/permissions";
 import { ADMIN_PAGE_LABELS, ADMIN_PAGE_KEYS } from "@/lib/admin/permissions";
@@ -9,7 +10,10 @@ import { useAdminLang } from "./AdminLangProvider";
 import { AdminPasswordRules } from "./AdminPasswordRules";
 
 export function AdminCompteClient({ session }: { session: AdminSession }) {
+  const router = useRouter();
+  const search = useSearchParams();
   const { t } = useAdminLang();
+  const forcedChange = search.get("change") === "1" || session.mustChangePassword;
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [msg, setMsg] = useState("");
@@ -55,6 +59,8 @@ export function AdminCompteClient({ session }: { session: AdminSession }) {
       setPassword2("");
       setMsg(t("adm_pw_ok"));
       setMsgOk(true);
+      router.replace("/admin/compte");
+      router.refresh();
     } catch {
       setMsg(t("adm_pw_err_update"));
     } finally {
@@ -86,6 +92,12 @@ export function AdminCompteClient({ session }: { session: AdminSession }) {
           </p>
         ) : null}
       </div>
+
+      {forcedChange ? (
+        <div className="admin-pw-banner admin-pw-banner-inline card pad" role="status">
+          <p className="sm" style={{ margin: 0 }}>{t("adm_pw_banner_required")}</p>
+        </div>
+      ) : null}
 
       <form className="card pad" onSubmit={changePassword}>
         <h3 style={{ marginTop: 0 }}>{t("adm_compte_pw_title")}</h3>

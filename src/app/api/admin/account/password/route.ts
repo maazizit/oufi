@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
-import { adminApiGuard } from "@/lib/admin/api";
+import { getAdminSession } from "@/lib/admin/session";
+import { mustChangePasswordUserMetadata } from "@/lib/admin/password-metadata";
 import { validateAdminPassword } from "@/lib/admin/password-policy";
 import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export async function POST(req: Request) {
-  const guard = await adminApiGuard("any");
-  if (!guard.ok) return guard.response;
+  const session = await getAdminSession();
+  if (!session) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "demo_mode" }, { status: 503 });
@@ -33,7 +36,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const { error } = await supabase.auth.updateUser({ password });
+  const { error } = await supabase.auth.updateUser({
+    password,
+    data: mustChangePasswordUserMetadata(false),
+  });
   if (error) {
     console.error("[admin/account/password]", error.message);
     return NextResponse.json({ error: "update_failed" }, { status: 500 });
