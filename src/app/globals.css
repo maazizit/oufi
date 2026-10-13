@@ -1291,6 +1291,50 @@ tbody tr[data-click]:hover {
   place-items: center;
   flex: 0 0 auto;
 }
+.admin-login-forgot .link {
+  word-break: break-all;
+}
+.admin-pw-rules {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted, #64748b);
+}
+.admin-pw-rules li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.admin-pw-rules li.ok {
+  color: var(--ok, #0d7a5f);
+}
+.admin-pw-rules-mark {
+  flex: 0 0 auto;
+  width: 1.1em;
+  text-align: center;
+}
+.admin-pw-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #fff8e6;
+  border: 1px solid #f0d78c;
+  color: #5c4a12;
+}
+.admin-pw-banner-inline {
+  margin-bottom: 0;
+  background: #eef6ff;
+  border-color: #b8d4f0;
+  color: #1e3a5f;
+}
 .side-notifs {
   margin-inline-start: auto;
   position: relative;

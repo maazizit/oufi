@@ -14,15 +14,21 @@ import {
   demoSaveAdminUser,
 } from "@/lib/data/demo-store";
 import type { AdminUserRecord } from "./users";
+import { mustChangePasswordFromMetadata } from "./password-metadata";
 import { isBootstrapSuperAdmin, parseSuperAdminEmails, superAdminFromEmail } from "./users";
 
-function recordToSession(rec: AdminUserRecord, userId: string): AdminSession {
+function recordToSession(
+  rec: AdminUserRecord,
+  userId: string,
+  mustChangePassword = false,
+): AdminSession {
   return {
     userId,
     email: rec.email,
     role: rec.role,
     permissions:
       rec.role === "super_admin" ? allPagePermissions() : rec.permissions,
+    mustChangePassword,
   };
 }
 
@@ -38,6 +44,7 @@ async function getDemoSession(): Promise<AdminSession | null> {
       email,
       role: "super_admin",
       permissions: allPagePermissions(),
+      mustChangePassword: false,
     };
   }
 
@@ -61,6 +68,7 @@ async function getDemoSession(): Promise<AdminSession | null> {
     email,
     role: "manager",
     permissions,
+    mustChangePassword: false,
   };
 }
 
@@ -150,7 +158,10 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 
   const rec = await loadSupabaseAdminUser(user.id, user.email);
   if (!rec) return null;
-  return recordToSession(rec, user.id);
+  const mustChangePassword = mustChangePasswordFromMetadata(
+    user.user_metadata as Record<string, unknown>,
+  );
+  return recordToSession(rec, user.id, mustChangePassword);
 }
 
 export async function requireAdminSession(

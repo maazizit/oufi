@@ -5,11 +5,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { useAdminLang } from "@/components/admin/AdminLangProvider";
 import { AdminLangToggle } from "@/components/admin/AdminLangToggle";
+import {
+  ADMIN_PASSWORD_SUPPORT_EMAIL,
+  forgotPasswordMailtoHref,
+} from "@/lib/admin/password-policy";
 
 export function AdminLoginForm() {
   const router = useRouter();
   const search = useSearchParams();
-  const { t } = useAdminLang();
+  const { t, lang } = useAdminLang();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -90,6 +94,13 @@ export function AdminLoginForm() {
         <button type="submit" className="btn btn-pri" disabled={busy}>
           {t("adm_login_submit")}
         </button>
+
+        <p className="xs muted admin-login-forgot" style={{ marginTop: 16, marginBottom: 0 }}>
+          {t("adm_login_forgot")}{" "}
+          <a href={forgotPasswordMailtoHref(lang)} className="link mono">
+            {ADMIN_PASSWORD_SUPPORT_EMAIL}
+          </a>
+        </p>
       </form>
     </div>
   );

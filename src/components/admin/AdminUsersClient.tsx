@@ -9,7 +9,9 @@ import {
   type AdminPermissions,
 } from "@/lib/admin/permissions";
 import type { AdminUserRecord } from "@/lib/admin/users";
+import { validateAdminPassword } from "@/lib/admin/password-policy";
 import { useAdminLang } from "./AdminLangProvider";
+import { AdminPasswordRules } from "./AdminPasswordRules";
 
 const PAGE_SIZE = 10;
 
@@ -49,9 +51,22 @@ export function AdminUsersClient({ initial }: { initial: AdminUserRecord[] }) {
 
   const openUser = users.find((u) => u.id === openId) || null;
 
+  function assertPassword(pw: string): boolean {
+    if (!pw) return true;
+    if (!validateAdminPassword(pw).ok) {
+      setMsg(t("adm_users_password_weak"));
+      return false;
+    }
+    return true;
+  }
+
   async function saveUser(user: AdminUserRecord, pw?: string) {
     setBusy(true);
     setMsg("");
+    if (pw && !assertPassword(pw)) {
+      setBusy(false);
+      return;
+    }
     try {
       const res = await fetch("/api/admin/users", {
         method: "PATCH",
@@ -90,6 +105,11 @@ export function AdminUsersClient({ initial }: { initial: AdminUserRecord[] }) {
   async function addManager() {
     const e = newEmail.trim().toLowerCase();
     if (!e) return;
+    const pw = newPassword.trim();
+    if (pw && !validateAdminPassword(pw).ok) {
+      setMsg(t("adm_users_password_weak"));
+      return;
+    }
     setBusy(true);
     setMsg("");
     try {
@@ -161,6 +181,7 @@ export function AdminUsersClient({ initial }: { initial: AdminUserRecord[] }) {
           {t("adm_users_add")}
         </button>
       </div>
+      {newPassword ? <AdminPasswordRules password={newPassword} /> : null}
 
       {msg ? <p className="sm muted">{msg}</p> : null}
 
@@ -268,6 +289,7 @@ export function AdminUsersClient({ initial }: { initial: AdminUserRecord[] }) {
               onChange={(ev) => setPassword(ev.target.value)}
             />
             <p className="xs muted">{t("adm_users_password_hint")}</p>
+            {password ? <AdminPasswordRules password={password} /> : null}
           </div>
           <button
             type="button"
@@ -298,6 +320,7 @@ export function AdminUsersClient({ initial }: { initial: AdminUserRecord[] }) {
               onChange={(ev) => setPassword(ev.target.value)}
             />
             <p className="xs muted">{t("adm_users_password_hint")}</p>
+            {password ? <AdminPasswordRules password={password} /> : null}
           </div>
           <button
             type="button"

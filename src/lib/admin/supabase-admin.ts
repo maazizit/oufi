@@ -1,4 +1,5 @@
 import { ADMIN_EMAIL } from "@/lib/admin/credentials";
+import { mustChangePasswordUserMetadata } from "@/lib/admin/password-metadata";
 import { createServiceClient } from "@/lib/supabase/server";
 
 /** Crée l'utilisateur admin Supabase Auth s'il n'existe pas encore. */
@@ -13,6 +14,7 @@ export async function ensureSupabaseAdminUser(password: string): Promise<boolean
     email: ADMIN_EMAIL,
     password,
     email_confirm: true,
+    user_metadata: mustChangePasswordUserMetadata(true),
   });
   if (!createErr && created.user) return true;
 
@@ -43,6 +45,7 @@ export async function resetSupabaseAdminPassword(password: string): Promise<bool
   const { error } = await service.auth.admin.updateUserById(user.id, {
     password,
     email_confirm: true,
+    user_metadata: mustChangePasswordUserMetadata(true),
   });
   if (error) {
     console.error("[admin/supabase] updateUser", error.message);

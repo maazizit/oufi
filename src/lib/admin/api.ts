@@ -16,5 +16,11 @@ export async function adminApiGuard(
       response: NextResponse.json({ error: "forbidden" }, { status: 403 }),
     };
   }
+  if (session.mustChangePassword) {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "password_change_required" }, { status: 403 }),
+    };
+  }
   return { ok: true, session };
 }
