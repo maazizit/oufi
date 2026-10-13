@@ -1,3 +1,4 @@
+import { validateAdminPassword } from "@/lib/admin/password-policy";
 import { createServiceClient } from "@/lib/supabase/server";
 
 async function findAuthUserIdByEmail(
@@ -26,7 +27,7 @@ export async function setAdminAuthPassword(email: string, password: string): Pro
   const service = createServiceClient();
   if (!service) return false;
   const normalized = email.trim().toLowerCase();
-  if (!normalized.includes("@") || password.length < 8) return false;
+  if (!normalized.includes("@") || !validateAdminPassword(password).ok) return false;
 
   const existingId = await findAuthUserIdByEmail(service, normalized);
   if (existingId) {

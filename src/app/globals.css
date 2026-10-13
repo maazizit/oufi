@@ -1291,6 +1291,32 @@ tbody tr[data-click]:hover {
   place-items: center;
   flex: 0 0 auto;
 }
+.admin-login-forgot .link {
+  word-break: break-all;
+}
+.admin-pw-rules {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted, #64748b);
+}
+.admin-pw-rules li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.admin-pw-rules li.ok {
+  color: var(--ok, #0d7a5f);
+}
+.admin-pw-rules-mark {
+  flex: 0 0 auto;
+  width: 1.1em;
+  text-align: center;
+}
 .side-notifs {
   margin-inline-start: auto;
   position: relative;
