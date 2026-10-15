@@ -187,7 +187,8 @@ export function productJsonLd(product: Product, lang: "fr" | "ar" = "fr") {
     name: L(lang, product.name),
     sku: product.ref,
     brand: { "@type": "Brand", name: product.brand },
-    description: `${L(lang, product.name)} — ${product.brand}. Prix indicatif ${product.price} MAD TTC, hors pose. Livraison / installation au Maroc via AMANPLANET.`,
+    description: `${L(lang, product.name)} — ${product.brand}. Installation caméra Marrakech et région, livraison Maroc. Prix indicatif ${product.price} MAD TTC hors pose. AMANPLANET C.I.S.`,
+    ...(product.img ? { image: `${SITE_URL}${product.img}` } : {}),
     offers: {
       "@type": "Offer",
       priceCurrency: "MAD",

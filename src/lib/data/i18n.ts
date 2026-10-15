@@ -197,6 +197,10 @@ export const T: Dict = {
   add_to_quote: { fr: "Ajouter au devis", ar: "إضافة إلى عرض السعر" },
   back_cat: { fr: "Retour au catalogue", ar: "العودة للكتالوج" },
   indicative: { fr: "Prix indicatif TTC, hors pose", ar: "سعر استرشادي شامل الضريبة، دون التركيب" },
+  prod_local_install: {
+    fr: "Installation et pose à Marrakech, Marrakech-Safi et partout au Maroc — étude sur site, câblage propre et mise en service. Demandez un devis installation caméra sans engagement.",
+    ar: "التركيب والتشغيل في مراكش والجهة وفي جميع أنحاء المغرب — معاينة ميدانية وتوصيل احترافي. اطلبوا عرض سعر للتركيب دون التزام.",
+  },
 
   q_title: { fr: "Demande de devis", ar: "طلب عرض سعر" },
   q_lead: { fr: "Plus vos réponses sont précises, plus le devis est juste. Trois minutes.", ar: "كلّما كانت إجاباتكم أدق كان عرض السعر أقرب للواقع. يستغرق الأمر نحو ثلاث دقائق." },

@@ -35,6 +35,61 @@ const A: Record<string, Localized> = {
     fr: "Accès refusé. Contactez un super administrateur.",
     ar: "الوصول مرفوض. تواصل مع المدير العام.",
   },
+  adm_login_forgot: {
+    fr: "Mot de passe oublié ? Contactez l’administrateur :",
+    ar: "نسيت كلمة المرور؟ تواصل مع المسؤول:",
+  },
+
+  adm_compte_profile: { fr: "Profil", ar: "الملف الشخصي" },
+  adm_compte_email: { fr: "E-mail", ar: "البريد" },
+  adm_compte_role: { fr: "Rôle", ar: "الدور" },
+  adm_compte_pages: { fr: "Pages autorisées :", ar: "الصفحات المسموحة:" },
+  adm_compte_pw_title: { fr: "Mot de passe", ar: "كلمة المرور" },
+  adm_compte_pw_intro: {
+    fr: "Choisissez un mot de passe robuste et unique. Personne ne peut le voir ici : vous le définissez vous-même après connexion.",
+    ar: "اختر كلمة مرور قوية وفريدة. لا يظهر هنا أي كلمة مرور — أنت من يحدّدها بعد تسجيل الدخول.",
+  },
+  adm_compte_pw_new: { fr: "Nouveau mot de passe", ar: "كلمة مرور جديدة" },
+  adm_compte_pw_confirm: { fr: "Confirmer", ar: "تأكيد" },
+  adm_compte_pw_submit: { fr: "Mettre à jour le mot de passe", ar: "تحديث كلمة المرور" },
+  adm_pw_ok: {
+    fr: "Mot de passe mis à jour. Conservez-le en lieu sûr.",
+    ar: "تم تحديث كلمة المرور. احفظها في مكان آمن.",
+  },
+  adm_pw_err_weak: {
+    fr: "Le mot de passe ne respecte pas les critères de sécurité ci-dessous.",
+    ar: "كلمة المرور لا تستوفي معايير الأمان أدناه.",
+  },
+  adm_pw_err_mismatch: {
+    fr: "Les deux mots de passe ne correspondent pas.",
+    ar: "كلمتا المرور غير متطابقتين.",
+  },
+  adm_pw_err_demo: {
+    fr: "Mode démo : mot de passe géré par les variables d’environnement.",
+    ar: "وضع تجريبي: كلمة المرور تُدار عبر متغيرات البيئة.",
+  },
+  adm_pw_err_update: {
+    fr: "Impossible de mettre à jour le mot de passe. Réessayez ou contactez l’administrateur.",
+    ar: "تعذّر تحديث كلمة المرور. أعد المحاولة أو تواصل مع المسؤول.",
+  },
+  adm_pw_rule_min: { fr: "Au moins 10 caractères", ar: "10 أحرف على الأقل" },
+  adm_pw_rule_lower: { fr: "Une lettre minuscule", ar: "حرف صغير" },
+  adm_pw_rule_upper: { fr: "Une lettre majuscule", ar: "حرف كبير" },
+  adm_pw_rule_digit: { fr: "Un chiffre", ar: "رقم" },
+  adm_pw_rule_symbol: { fr: "Un caractère spécial (!@#…)", ar: "رمز خاص (!@#…)" },
+  adm_pw_rule_common: {
+    fr: "Pas de mot évident (admin, oufi, 123456…)",
+    ar: "بدون كلمات شائعة (admin، oufi، 123456…)",
+  },
+  adm_pw_banner_text: {
+    fr: "Pour sécuriser votre accès, choisissez un mot de passe personnel robuste (page Mon compte).",
+    ar: "لتأمين حسابك، اختر كلمة مرور قوية وشخصية من صفحة «حسابي».",
+  },
+  adm_pw_banner_cta: { fr: "Changer maintenant", ar: "تغيير الآن" },
+  adm_pw_banner_required: {
+    fr: "Première connexion ou mot de passe réinitialisé : définissez votre mot de passe personnel ci-dessous avant d’utiliser le back-office.",
+    ar: "أول تسجيل أو إعادة تعيين: عيّن كلمة مرورك الشخصية أدناه قبل استخدام لوحة التحكم.",
+  },
 
   adm_dash_title: { fr: "Tableau de bord", ar: "لوحة المعلومات" },
   adm_kpi_new: { fr: "Nouvelles demandes", ar: "طلبات جديدة" },
@@ -187,8 +242,12 @@ const A: Record<string, Localized> = {
   adm_users_add: { fr: "Ajouter un gestionnaire", ar: "إضافة مسؤول" },
   adm_users_password: { fr: "Nouveau mot de passe", ar: "كلمة مرور جديدة" },
   adm_users_password_hint: {
-    fr: "Min. 8 caractères — met à jour Supabase Auth pour cet e-mail.",
-    ar: "8 أحرف على الأقل — يحدّث حساب Supabase لهذا البريد.",
+    fr: "Critères de sécurité (voir la liste) — le gestionnaire pourra le modifier ensuite dans Mon compte.",
+    ar: "معايير الأمان (انظر القائمة) — يمكن للمسؤول تغييرها لاحقاً من «حسابي».",
+  },
+  adm_users_password_weak: {
+    fr: "Mot de passe trop faible pour ce compte.",
+    ar: "كلمة المرور ضعيفة لهذا الحساب.",
   },
   adm_users_save: { fr: "Enregistrer", ar: "حفظ" },
   adm_users_saved: { fr: "Compte enregistré.", ar: "تم حفظ الحساب." },

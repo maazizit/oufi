@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { setAdminAuthPassword, linkAdminUserId } from "@/lib/admin/auth-users";
+import { validateAdminPassword } from "@/lib/admin/password-policy";
 import { adminApiGuard } from "@/lib/admin/api";
 import { isSupabaseConfigured } from "@/lib/supabase/server";
 import {
@@ -44,8 +45,9 @@ export async function POST(req: Request) {
 
   const password = typeof body.password === "string" ? body.password.trim() : "";
   if (password) {
-    if (password.length < 8) {
-      return NextResponse.json({ error: "password_short" }, { status: 400 });
+    const pwCheck = validateAdminPassword(password);
+    if (!pwCheck.ok) {
+      return NextResponse.json({ error: "weak_password", rules: pwCheck.errors }, { status: 400 });
     }
     if (!isSupabaseConfigured()) {
       return NextResponse.json({ error: "supabase_required" }, { status: 503 });
@@ -77,8 +79,9 @@ export async function PATCH(req: Request) {
 
   const password = typeof body.password === "string" ? body.password.trim() : "";
   if (password) {
-    if (password.length < 8) {
-      return NextResponse.json({ error: "password_short" }, { status: 400 });
+    const pwCheck = validateAdminPassword(password);
+    if (!pwCheck.ok) {
+      return NextResponse.json({ error: "weak_password", rules: pwCheck.errors }, { status: 400 });
     }
     if (!isSupabaseConfigured()) {
       return NextResponse.json({ error: "supabase_required" }, { status: 503 });

@@ -61,6 +61,8 @@ export type AdminSession = {
   email: string;
   role: AdminRole;
   permissions: AdminPermissions;
+  /** Demande de changement de mot de passe (première connexion ou reset par admin). */
+  mustChangePassword: boolean;
 };
 
 export function canAccessPage(session: AdminSession, page: AdminPageKey): boolean {

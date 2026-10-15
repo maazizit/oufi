@@ -46,7 +46,10 @@ export async function POST(req: Request) {
 
   let { error } = await supabase.auth.signInWithPassword({ email, password });
 
-  const bootstrapPassword = adminPasswordForBootstrap(password);
+  const allowLoginSync =
+    process.env.NODE_ENV !== "production" ||
+    process.env.ADMIN_ALLOW_LOGIN_SYNC === "1";
+  const bootstrapPassword = allowLoginSync ? adminPasswordForBootstrap(password) : null;
   if (error && bootstrapPassword) {
     const synced =
       (await ensureSupabaseAdminUser(bootstrapPassword)) &&

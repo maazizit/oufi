@@ -1,3 +1,5 @@
+import { validateAdminPassword } from "@/lib/admin/password-policy";
+import { mustChangePasswordUserMetadata } from "@/lib/admin/password-metadata";
 import { createServiceClient } from "@/lib/supabase/server";
 
 async function findAuthUserIdByEmail(
@@ -26,13 +28,14 @@ export async function setAdminAuthPassword(email: string, password: string): Pro
   const service = createServiceClient();
   if (!service) return false;
   const normalized = email.trim().toLowerCase();
-  if (!normalized.includes("@") || password.length < 8) return false;
+  if (!normalized.includes("@") || !validateAdminPassword(password).ok) return false;
 
   const existingId = await findAuthUserIdByEmail(service, normalized);
   if (existingId) {
     const { error } = await service.auth.admin.updateUserById(existingId, {
       password,
       email_confirm: true,
+      user_metadata: mustChangePasswordUserMetadata(true),
     });
     if (error) {
       console.error("[admin/auth-users] updateUser", error.message);
@@ -45,6 +48,7 @@ export async function setAdminAuthPassword(email: string, password: string): Pro
     email: normalized,
     password,
     email_confirm: true,
+    user_metadata: mustChangePasswordUserMetadata(true),
   });
   if (error) {
     console.error("[admin/auth-users] createUser", error.message);

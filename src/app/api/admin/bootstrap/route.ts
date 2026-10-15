@@ -12,8 +12,7 @@ import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 /**
  * Crée (ou réinitialise avec ?reset=1) le compte admin Supabase Auth.
- * Mot de passe = ADMIN_PASSWORD (ou ADMIN_DEMO_PASSWORD) sur Vercel.
- * À appeler une fois après déploiement prod.
+ * En production : ADMIN_BOOTSTRAP_SECRET obligatoire (Bearer ou x-admin-bootstrap-secret).
  */
 function bootstrapAuthToken(req: Request): string | null {
   const header =
@@ -22,28 +21,36 @@ function bootstrapAuthToken(req: Request): string | null {
   return header || null;
 }
 
+function bootstrapSecret(): string | null {
+  const explicit = process.env.ADMIN_BOOTSTRAP_SECRET?.trim();
+  if (explicit) return explicit;
+  if (process.env.NODE_ENV === "production") return null;
+  return adminPasswordFromEnv() || DEFAULT_ADMIN_PASSWORD;
+}
+
 export async function POST(req: Request) {
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "supabase_required" }, { status: 503 });
+  }
+
+  const secret = bootstrapSecret();
+  const auth = bootstrapAuthToken(req);
+  if (!secret || !auth || auth !== secret) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 
   const body = await req.json().catch(() => ({}));
   const envPassword = adminPasswordFromEnv();
   const requested =
     typeof body.password === "string" ? body.password.trim() : null;
-  const auth = bootstrapAuthToken(req);
-  const secret =
-    process.env.ADMIN_BOOTSTRAP_SECRET?.trim() ||
-    envPassword ||
-    null;
 
   let password = envPassword || DEFAULT_ADMIN_PASSWORD;
-  if (requested && auth && secret && auth === secret) {
+  if (requested && requested.length >= 8) {
     password = requested;
   }
 
   const url = new URL(req.url);
-  const reset = url.searchParams.get("reset") === "1" || Boolean(requested);
+  const reset = url.searchParams.get("reset") === "1";
 
   const ok = reset
     ? await resetSupabaseAdminPassword(password)
