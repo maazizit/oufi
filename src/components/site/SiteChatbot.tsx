@@ -21,9 +21,18 @@ const QUICK = [
   { id: "alarm", qFr: "Alarme / sécurité", qAr: "إنذار و أمان" },
 ] as const;
 
-export function SiteChatbot() {
+type SiteChatbotProps = {
+  onOpenChange?: (open: boolean) => void;
+};
+
+export function SiteChatbot({ onOpenChange }: SiteChatbotProps) {
   const { lang } = useLang();
   const [open, setOpen] = useState(false);
+
+  function setChatOpen(next: boolean) {
+    setOpen(next);
+    onOpenChange?.(next);
+  }
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [messages, setMessages] = useState<UiMessage[]>([]);
@@ -108,7 +117,7 @@ export function SiteChatbot() {
         className="chat-fab"
         aria-expanded={open}
         aria-controls="site-chat-panel"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setChatOpen(!open)}
       >
         <Icon name="doc" size={22} />
         <span className="sr-only">{open ? labelClose : labelOpen}</span>
@@ -118,7 +127,7 @@ export function SiteChatbot() {
         <div id="site-chat-panel" className="chat-panel card" role="dialog" aria-label={labelOpen}>
           <header className="chat-head">
             <strong>{labelOpen}</strong>
-            <button type="button" className="chat-x" onClick={() => setOpen(false)} aria-label={labelClose}>
+            <button type="button" className="chat-x" onClick={() => setChatOpen(false)} aria-label={labelClose}>
               ×
             </button>
           </header>
@@ -127,7 +136,7 @@ export function SiteChatbot() {
             {QUICK.map((q) => {
               if ("href" in q && q.href) {
                 return (
-                  <Link key={q.id} href={q.href} className="chat-chip" onClick={() => setOpen(false)}>
+                  <Link key={q.id} href={q.href} className="chat-chip" onClick={() => setChatOpen(false)}>
                     {lang === "ar" ? q.ar : q.fr}
                   </Link>
                 );
@@ -149,7 +158,7 @@ export function SiteChatbot() {
                   <ul className="chat-links">
                     {m.links.map((l) => (
                       <li key={l.href}>
-                        <Link href={l.href} onClick={() => setOpen(false)}>
+                        <Link href={l.href} onClick={() => setChatOpen(false)}>
                           {lang === "ar" ? l.titleAr : l.titleFr}
                         </Link>
                       </li>
@@ -162,7 +171,7 @@ export function SiteChatbot() {
           </div>
 
           <footer className="chat-foot">
-            <Link href={devisHref} className="btn btn-pri btn-sm chat-devis" onClick={() => setOpen(false)}>
+            <Link href={devisHref} className="btn btn-pri btn-sm chat-devis" onClick={() => setChatOpen(false)}>
               {devisLabel}
             </Link>
             <form

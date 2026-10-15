@@ -20,8 +20,8 @@ export async function generateMetadata({
   const product = products.find((p) => productSlug(p) === slug);
   if (!product) return { title: "Produit" };
   return pageMeta({
-    title: `${product.name.fr} — ${product.brand}`,
-    description: `${product.name.fr} (${product.ref}). Prix indicatif ${product.price} DH TTC, hors pose. Ajoutez à votre devis AMANPLANET.`,
+    title: `${product.name.fr} — installation Marrakech | ${product.brand}`,
+    description: `${product.name.fr} (${product.ref}). Installation caméra et vidéosurveillance à Marrakech et dans tout le Maroc par AMANPLANET. Prix indicatif ${product.price} DH TTC hors pose — devis pose sur site.`,
     path: `/catalogue/${slug}`,
   });
 }

@@ -17,6 +17,7 @@ import type {
   Settings,
   TeamMember,
 } from "@/lib/types";
+import { resolveProductImage } from "@/lib/products/images";
 import * as demo from "./demo-store";
 import { syncDemoFromCookies } from "./demo-sync";
 
@@ -82,7 +83,7 @@ function mapProduct(p: DbProduct): Product {
     specs: (p.specs as [string, string][]) || [],
     pop: p.pop,
     active: p.active,
-    ...(p.image_path ? { img: p.image_path } : {}),
+    img: resolveProductImage(p.id, p.cat, p.image_path),
   };
 }
 

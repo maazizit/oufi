@@ -59,8 +59,8 @@ export const CATEGORY_INTROS: Record<
 export function productCopy(id: string, nameFr: string, brand: string) {
   return (
     PRODUCT_LONG_COPY[id] || {
-      fr: `${nameFr} (${brand}) — matériel professionnel proposé par AMANPLANET. Prix TTC indicatif hors pose. Nous livrons et installons à Marrakech et dans tout le Maroc après validation de disponibilité. Ajoutez l’article à votre devis pour un rappel sous 24 h ouvrées et un chiffrage pose sur site.`,
-      ar: `${nameFr} من ${brand} — معدات احترافية من AMANPLANET مع إمكانية التركيب في المغرب.`,
+      fr: `${nameFr} (${brand}) — matériel professionnel AMANPLANET. Service d’installation caméra à Marrakech, Marrakech-Safi et tout le Maroc (commerces, riads, villas, entrepôts). Prix TTC indicatif hors pose ; devis après visite sur site. Recherche type « installation caméra Marrakech » : pose, câblage, NVR et formation inclus dans notre offre sur devis.`,
+      ar: `${nameFr} من ${brand} — تركيب كاميرات ومراقبة في مراكش وكل المغرب مع AMANPLANET. سعر استرشادي بدون التركيب؛ عرض سعر بعد زيارة الموقع.`,
     }
   );
 }

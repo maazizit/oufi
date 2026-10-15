@@ -874,12 +874,13 @@ tbody tr[data-click]:hover {
   position: absolute;
   inset: 0;
   background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59, 167, 232, 0.12), transparent 70%),
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 3px,
-      rgba(59, 167, 232, 0.03) 3px,
-      rgba(59, 167, 232, 0.03) 4px
+      rgba(59, 167, 232, 0.04) 3px,
+      rgba(59, 167, 232, 0.04) 4px
     ),
     #0e1729;
 }
@@ -2970,6 +2971,28 @@ html[dir="rtl"] .admin-login-card {
   transform: scale(1.05);
   background: #0f7a6e;
 }
+.site-chat-open .wa-fab,
+.site-chat-open .wa-float {
+  transition:
+    inset-inline-end 220ms var(--ease-out),
+    transform 160ms var(--ease-out),
+    background-color 160ms ease;
+}
+@media (min-width: 520px) {
+  .site-chat-open .wa-fab,
+  .site-chat-open .wa-float {
+    inset-inline-end: calc(
+      max(16px, env(safe-area-inset-right)) + min(380px, calc(100vw - 32px)) + 14px
+    );
+  }
+}
+@media (max-width: 519px) {
+  .site-chat-open .wa-fab,
+  .site-chat-open .wa-float {
+    inset-inline-end: calc(max(16px, env(safe-area-inset-right)) + 64px);
+    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 8px);
+  }
+}
 /* —— Page band (services & shared) —— */
 .page-band {
   background: #070c16;
@@ -3356,6 +3379,15 @@ html[dir="rtl"] .admin-login-card {
   line-height: 1.65;
   color: var(--ink-2);
   max-width: 58ch;
+}
+.prod-local-seo {
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 58ch;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-2, #f6f8fb);
 }
 .prod-detail-h {
   font-family: var(--font-mono);

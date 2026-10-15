@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { CartProvider } from "./CartProvider";
@@ -17,12 +18,13 @@ function ShellInner({
   settings: Settings;
   children: React.ReactNode;
 }) {
+  const [chatOpen, setChatOpen] = useState(false);
   return (
-    <div className="site">
+    <div className={`site${chatOpen ? " site-chat-open" : ""}`}>
       <SiteHeader company={settings.company} />
       <main id="contenu">{children}</main>
       <SiteFooter settings={settings} />
-      <SiteChatbot />
+      <SiteChatbot onOpenChange={setChatOpen} />
       <WhatsAppFab />
       <RevealObserver />
     </div>

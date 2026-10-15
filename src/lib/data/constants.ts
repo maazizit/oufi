@@ -1,3 +1,4 @@
+import { resolveProductImage } from "@/lib/products/images";
 import type { Localized, Product, ProductCategory } from "../types";
 import { SITE } from "@/lib/site";
 
@@ -178,7 +179,7 @@ export function P(
     specs,
     pop,
     active: true,
-    ...(img ? { img } : {}),
+    img: img || resolveProductImage(id, cat),
   };
 }
 

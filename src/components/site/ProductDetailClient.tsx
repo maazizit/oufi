@@ -73,8 +73,8 @@ export function ProductDetailClient({
             <p className="prod-detail-copy">
               <BidiText text={copy[lang] || copy.fr} lang={lang} />
             </p>
-            <p className="sm muted" style={{ marginTop: 8 }}>
-              Livraison / installation au Maroc — devis pose après visite. {SITE.hqCity}.
+            <p className="prod-local-seo sm" style={{ marginTop: 12 }}>
+              {t("prod_local_install")}
             </p>
 
             <h2 className="prod-detail-h">{t("specs")}</h2>
